@@ -126,7 +126,7 @@ private func autoDiff<T>(compare: (T, T) -> Bool)(old: [T], new: [T]) -> DataCha
     var extraNew2: [Int] = []
     for iNew in extraNew {
         let newItem = new[iNew]
-        if let (j, iOld) = (extraOld |> findFirst{ compare(old[$0], newItem) }) {
+        if let (j, iOld) = findFirst(extraOld, { compare(old[$0], newItem) }) {
             extraOld.removeAtIndex(j)
             let pathOld = NSIndexPath(forItem: iOld, inSection: 0)
             let pathNew = NSIndexPath(forItem: iNew, inSection: 0)
@@ -144,4 +144,13 @@ private func autoDiff<T>(compare: (T, T) -> Bool)(old: [T], new: [T]) -> DataCha
         batch.append(DataChangeInsertItems(extraNew.map{ NSIndexPath(forItem: $0, inSection: 0) }))
     }
     return DataChangeBatch(batch)
+}
+
+private func findFirst<S: SequenceType>(source: S, predicate: S.Generator.Element -> Bool) -> (Int, S.Generator.Element)? {
+    for (idx, s) in enumerate(source) {
+        if predicate(s) {
+            return (idx, s)
+        }
+    }
+    return nil
 }

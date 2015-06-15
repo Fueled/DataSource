@@ -3,7 +3,7 @@
 //
 
 /// Project version number for DataSource.
-FOUNDATION_EXPORT double DataSourceVersionNumber;
+extern double DataSourceVersionNumber;
 
 /// Project version string for DataSource.
-FOUNDATION_EXPORT const unsigned char DataSourceVersionString[];
+extern const unsigned char DataSourceVersionString[];
