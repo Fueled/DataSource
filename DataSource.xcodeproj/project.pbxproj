@@ -45,6 +45,9 @@
 		022B0FFC1B2F2D4C00DD4DCD /* TableViewDataSourceWithHeaderFooterTitles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FD91B2F2D4C00DD4DCD /* TableViewDataSourceWithHeaderFooterTitles.swift */; };
 		022B0FFD1B2F2D4C00DD4DCD /* TableViewDataSourceWithHeaderFooterViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FDA1B2F2D4C00DD4DCD /* TableViewDataSourceWithHeaderFooterViews.swift */; };
 		022B0FFE1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FDB1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift */; };
+		022B10321B2F33F900DD4DCD /* Box.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 022B102F1B2F33F900DD4DCD /* Box.framework */; };
+		022B10331B2F33F900DD4DCD /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 022B10301B2F33F900DD4DCD /* ReactiveCocoa.framework */; };
+		022B10341B2F33F900DD4DCD /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 022B10311B2F33F900DD4DCD /* Result.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +102,9 @@
 		022B0FD91B2F2D4C00DD4DCD /* TableViewDataSourceWithHeaderFooterTitles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewDataSourceWithHeaderFooterTitles.swift; sourceTree = "<group>"; };
 		022B0FDA1B2F2D4C00DD4DCD /* TableViewDataSourceWithHeaderFooterViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewDataSourceWithHeaderFooterViews.swift; sourceTree = "<group>"; };
 		022B0FDB1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewHeaderFooterView.swift; sourceTree = "<group>"; };
+		022B102F1B2F33F900DD4DCD /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = Carthage/Build/iOS/Box.framework; sourceTree = "<group>"; };
+		022B10301B2F33F900DD4DCD /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
+		022B10311B2F33F900DD4DCD /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +112,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				022B10321B2F33F900DD4DCD /* Box.framework in Frameworks */,
+				022B10331B2F33F900DD4DCD /* ReactiveCocoa.framework in Frameworks */,
+				022B10341B2F33F900DD4DCD /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -123,6 +132,7 @@
 		022B0F8F1B2F2AE500DD4DCD = {
 			isa = PBXGroup;
 			children = (
+				022B10351B2F341200DD4DCD /* Frameworks */,
 				022B0F9B1B2F2AE500DD4DCD /* DataSource */,
 				022B0FA81B2F2AE500DD4DCD /* DataSourceTests */,
 				022B0F9A1B2F2AE500DD4DCD /* Products */,
@@ -237,6 +247,16 @@
 				022B0FDB1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift */,
 			);
 			path = TableView;
+			sourceTree = "<group>";
+		};
+		022B10351B2F341200DD4DCD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				022B102F1B2F33F900DD4DCD /* Box.framework */,
+				022B10301B2F33F900DD4DCD /* ReactiveCocoa.framework */,
+				022B10311B2F33F900DD4DCD /* Result.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -439,7 +459,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -480,7 +500,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -497,6 +517,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = DataSource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -512,6 +536,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = DataSource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
