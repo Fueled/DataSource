@@ -40,6 +40,24 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
         self.disposable.dispose()
     }
     
+    public func configureCell(cell: CollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        cell.item.value = self.dataSource.itemAtIndexPath(indexPath)
+    }
+    
+    public func configureCellForItemAtIndexPath(indexPath: NSIndexPath) {
+        if let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) as? CollectionViewCell {
+            self.configureCell(cell, forItemAtIndexPath: indexPath)
+        }
+    }
+    
+    public func configureVisibleCells() {
+        if let indexPaths = self.collectionView?.indexPathsForVisibleItems() as? [NSIndexPath] {
+            for indexPath in indexPaths {
+                self.configureCellForItemAtIndexPath(indexPath)
+            }
+        }
+    }
+    
     public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
         return self.dataSource.numberOfSections
     }
@@ -61,7 +79,7 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
         let item: Any = self.dataSource.itemAtIndexPath(indexPath)
         let reuseIdentifier = self.reuseIdentifierForItem(indexPath, item)
         let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! CollectionViewCell
-        cell.item.value = item
+        self.configureCell(cell, forItemAtIndexPath: indexPath)
         return cell
     }
     
