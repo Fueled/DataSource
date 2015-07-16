@@ -33,7 +33,7 @@ public final class ProxyDataSource: DataSource {
                 if let this = self {
                     this.lastDisposable?.dispose()
                     sendNext(this.observer, changeDataSources(old, new, this.animatesChanges.value))
-                    this.lastDisposable = inner.changes.observe(this.observer)
+                    this.lastDisposable = new.changes.observe(this.observer)
                 }
             })
     }
