@@ -27,6 +27,26 @@ Such decoupling allows usage of same `DataSource` for both table and collection 
 
 `CompositeDataSource` automatically merges changes from inner `DataSource`s and properly maps the indices of all `DataChange`s. This means that corresponding sections of `UITableView` or `UICollectionView` are updated whenever any of the inner `DataSource`s emit changes.
 
+## Populating `UITableView`
+
+DataSource library contains a `TableViewDataSource` class that implements `UITableViewDataSource` protocol and can be used to populate an associated `UITableView` with data from any `DataSource`. `TableViewDataSource` receives and handles all `DataChange`s automatically.
+
+`TableViewCell` is a subclass of `UITableViewCell` that adds an `item` property which is populated with associated `DataSource` item by a `TableViewDataSource`.
+
+Just make `TableViewDataSource` instance a `dataSource` of your `UITableView`, connect the `UITableView` to `tableView` outlet of `TableViewDataSource` and assing your `DataSource` instance to `TableViewDataSource`'s `dataSource.innerDataSource` property.
+
+If you have only one cell prototype in your `UITableView` you can use `"DefaultCell"` for its `reuseIdentifier`. Otherwise, set `TableViewDataSource`'s `reuseIdentifierForItem` property to a block that returns an appropriate reuse identifier of a given item at a given index path.
+
+`TableViewDataSourceWithHeaderFooterTitles` and `TableViewDataSourceWithHeaderFooterViews` subclasses can be used to provide either titles or views for section headers and footers.
+
+You can subclass `TableViewDataSource` or any of its sublasses to extend or override any `UITableViewDataSource`-related logic.
+
+## Populating `UICollectionView`
+
+`UICollectionView` can be populated from a `DataSource` instance by using `CollectionViewDataSource` class in the same way `UITableView` is populated from a `TableViewDataSource`.
+
+Implementations for other collection-displaying views (e.g. map views with annotations) can be crafted in a similar fashion.
+
 ## Example
 
 Please see the [DataSourceExample](https://github.com/Vadim-Yelagin/DataSourceExample) project for examples of using DataSource.
