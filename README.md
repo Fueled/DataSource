@@ -1,12 +1,9 @@
 # DataSource [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
-DataSource is a Swift library that introduces a `DataSource` protocol together with a set of common implementations and related types.
+DataSource is a Swift framework that helps you specify, display and manipulate sectioned collections of items in `UITableview`  and `UICollectionView` in an MVVM ([Model-View-ViewModel](https://en.wikipedia.org/wiki/Model_View_ViewModel)) fashion without having to deal with index mapping or writing repetitive and error-prone code to handle and display changes of those collections.
 
-Basically a `DataSource` is a provider of items grouped into sections just like a `UITableViewDataSource` is a provider of `UITableViewCell`s or a `UICollectionViewDataSource` is a provider of `UICollectionViewCell`s.
-Thus a data source of a `UITableView` or a `UICollectionView` can be constructed by combining a `DataSource` with a common routine that provides a cell for each item.
-
-The benefit of this approach is that a `DataSource` is decoupled from any view-layer logic and contains only model or view-model items that in turn serve as view-models for corresponding cells.
-Such decoupling allows usage of same `DataSource` for both table and collection views as well as compositing several `DataSource`s into a single `CompositeDataSource` object without having to deal with view-related logic.
+DataSource framework introduces a `DataSource` protocol that specifies a provider of items grouped into sections just like a `UITableViewDataSource` is a provider of `UITableViewCell`s or a `UICollectionViewDataSource` is a provider of `UICollectionViewCell`s.
+A data source for a `UITableView` or a `UICollectionView` can be constructed by combining a `DataSource` with a common routine that provides a cell for each item.
 
 ## Requirements
 
@@ -14,6 +11,15 @@ Such decoupling allows usage of same `DataSource` for both table and collection 
 * Xcode 6.4
 * [Carthage 0.7.5](https://github.com/Carthage/Carthage/releases/tag/0.7.5)
 * [ReactiveCocoa 3.0 RC1](https://github.com/ReactiveCocoa/ReactiveCocoa/releases/tag/v3.0-RC.1)
+
+## Example Project
+
+You will find examples of using DataSource framework in [DataSourceExample](https://github.com/Vadim-Yelagin/DataSourceExample) project.
+
+## Rationale
+
+`DataSource` is decoupled from any view-layer logic and contains only model or view-model items that in turn serve as view-models for corresponding cells.
+Such decoupling allows usage of same `DataSource` for both table and collection views as well as compositing several `DataSource`s into a single `CompositeDataSource` object without having to deal with view-related logic.
 
 ## DataSource composition
 
@@ -29,17 +35,17 @@ Such decoupling allows usage of same `DataSource` for both table and collection 
 
 ## Populating `UITableView`
 
-DataSource library contains a `TableViewDataSource` class that implements `UITableViewDataSource` protocol and can be used to populate an associated `UITableView` with data from any `DataSource`. `TableViewDataSource` receives and handles all `DataChange`s automatically.
+DataSource framework contains a `TableViewDataSource` class that implements `UITableViewDataSource` protocol and can be used to populate an associated `UITableView` with data from any `DataSource`. `TableViewDataSource` receives and handles all `DataChange`s automatically.
 
 `TableViewCell` is a subclass of `UITableViewCell` that adds an `item` property which is populated with associated `DataSource` item by a `TableViewDataSource`.
 
-Just make `TableViewDataSource` instance a `dataSource` of your `UITableView`, connect the `UITableView` to `tableView` outlet of `TableViewDataSource` and assing your `DataSource` instance to `TableViewDataSource`'s `dataSource.innerDataSource` property.
+Just make `TableViewDataSource` instance a `dataSource` of your `UITableView`, connect the `UITableView` to `tableView` outlet of `TableViewDataSource` and assing your `DataSource` instance to `TableViewDataSource`’s `dataSource.innerDataSource` property.
 
-If you have only one cell prototype in your `UITableView` you can use `"DefaultCell"` for its `reuseIdentifier`. Otherwise, set `TableViewDataSource`'s `reuseIdentifierForItem` property to a block that returns an appropriate reuse identifier of a given item at a given index path.
+If you have only one cell prototype in your `UITableView` you can use `”DefaultCell”` for its `reuseIdentifier`. Otherwise, set `TableViewDataSource`’s `reuseIdentifierForItem` property to a block that returns an appropriate reuse identifier of a given item at a given index path.
 
 `TableViewDataSourceWithHeaderFooterTitles` and `TableViewDataSourceWithHeaderFooterViews` subclasses can be used to provide either titles or views for section headers and footers.
 
-You can subclass `TableViewDataSource` or any of its sublasses to extend or override any `UITableViewDataSource`-related logic.
+You can subclass `TableViewDataSource` or any of its sublcasses to extend or override any `UITableViewDataSource`-related logic.
 
 ## Populating `UICollectionView`
 
@@ -47,17 +53,14 @@ You can subclass `TableViewDataSource` or any of its sublasses to extend or over
 
 Implementations for other collection-displaying views (e.g. map views with annotations) can be crafted in a similar fashion.
 
-## Example
-
-Please see the [DataSourceExample](https://github.com/Vadim-Yelagin/DataSourceExample) project for examples of using DataSource.
-
 ## Using with CoreData, KVO and others
 
 `DataSource` protocol can be used to wrap any API that provides a collection of items and notifies of any changes of that collection.
 
-One of such APIs is `NSFetchedResultsController` from CoreData framework. DataSource comes with an implementation of `DataSource` protocol called `FetchedResultsDataSource` that does exactly that.
-`FetchedResultsDataSource` can be used just as any other `DataSource` without the need to manually implement `NSFetchedResultsControllerDelegate` protocol.
+DataSource framework provides implementations for two such collection-based APIs:
 
-`KVODataSource` implements another example of such API, Key-Value Observing (KVO) for ordered to-many relationships.
+1. `FetchedResultsDataSource` class implements `DataSource` protocol using `NSFetchedResultsController` for CoreData models.
+`FetchedResultsDataSource` can be used just as any other `DataSource` without the need to manually implement `NSFetchedResultsControllerDelegate` protocol.
+2. `KVODataSource` implements Key-Value Observing (KVO) for ordered to-many relationships.
 
 In case you need to handle data changes provided by other sources e.g. Photos framework or the new Contacts framework, similar `DataSource` implementations can be easily crafted.
