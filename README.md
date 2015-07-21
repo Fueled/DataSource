@@ -13,7 +13,7 @@ Such decoupling allows usage of same `DataSource` for both table and collection 
 * iOS 8.0+
 * Xcode 6.4
 * [Carthage 0.7.5](https://github.com/Carthage/Carthage/releases/tag/0.7.5)
-* [ReactiveCocoa 3.0 beta 9](https://github.com/ReactiveCocoa/ReactiveCocoa/releases/tag/v3.0-beta.9)
+* [ReactiveCocoa 3.0 RC1](https://github.com/ReactiveCocoa/ReactiveCocoa/releases/tag/v3.0-RC.1)
 
 ## DataSource composition
 
