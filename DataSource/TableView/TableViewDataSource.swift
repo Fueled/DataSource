@@ -47,7 +47,7 @@ public class TableViewDataSource: NSObject, UITableViewDataSource {
     }
     
     public func configureVisibleCells() {
-        if let indexPaths = self.tableView?.indexPathsForVisibleRows() as? [NSIndexPath] {
+        if let indexPaths = self.tableView?.indexPathsForVisibleRows {
             for indexPath in indexPaths {
                 self.configureCellForRowAtIndexPath(indexPath)
             }

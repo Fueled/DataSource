@@ -12,7 +12,7 @@ import ReactiveCocoa
 public final class MutableDataSource<T>: DataSource {
     
     public let changes: Signal<DataChange, NoError>
-    private let observer: SinkOf<Event<DataChange, NoError>>
+    private let observer: Event<DataChange, NoError> -> ()
     
     private let _items: MutableProperty<[T]>
     

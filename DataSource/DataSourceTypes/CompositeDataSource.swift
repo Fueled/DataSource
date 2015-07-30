@@ -20,10 +20,10 @@ public final class CompositeDataSource: DataSource {
     public init(_ inner: [DataSource]) {
         (self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
         self.innerDataSources = inner
-        for (index, dataSource) in enumerate(inner) {
+        for (index, dataSource) in inner.enumerate() {
             self.disposable += dataSource.changes
-                |> map { $0.mapSections(mapOutside(inner, index)) }
-                |> observe(self.observer)
+                .map { $0.mapSections(mapOutside(inner, index)) }
+                .observe(self.observer)
         }
     }
     
@@ -33,7 +33,7 @@ public final class CompositeDataSource: DataSource {
     }
     
     public var numberOfSections: Int {
-        return reduce(self.innerDataSources, 0) {
+        return self.innerDataSources.reduce(0) {
             subtotal, dataSource in
             return subtotal + dataSource.numberOfSections
         }
@@ -63,7 +63,7 @@ public final class CompositeDataSource: DataSource {
     
 }
 
-func mapInside(inner: [DataSource], outerSection: Int) -> (Int, Int) {
+func mapInside(inner: [DataSource], _ outerSection: Int) -> (Int, Int) {
     var innerSection = outerSection
     var index = 0
     while innerSection >= inner[index].numberOfSections {
@@ -73,7 +73,7 @@ func mapInside(inner: [DataSource], outerSection: Int) -> (Int, Int) {
     return (index, innerSection)
 }
 
-func mapOutside(inner: [DataSource], index: Int)(innerSection: Int) -> Int {
+func mapOutside(inner: [DataSource], _ index: Int)(innerSection: Int) -> Int {
     var outerSection = innerSection
     for i in 0 ..< index {
         outerSection += inner[i].numberOfSections

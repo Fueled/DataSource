@@ -51,7 +51,7 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
     }
     
     public func configureVisibleCells() {
-        if let indexPaths = self.collectionView?.indexPathsForVisibleItems() as? [NSIndexPath] {
+        if let indexPaths = self.collectionView?.indexPathsForVisibleItems() {
             for indexPath in indexPaths {
                 self.configureCellForItemAtIndexPath(indexPath)
             }

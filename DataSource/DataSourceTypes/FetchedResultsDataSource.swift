@@ -13,7 +13,7 @@ import CoreData
 public final class FetchedResultsDataSource: DataSource {
     
     public let changes: Signal<DataChange, NoError>
-    private let observer: SinkOf<Event<DataChange, NoError>>
+    private let observer: Event<DataChange, NoError> -> ()
     
     private let frc: NSFetchedResultsController
     private let frcDelegate: Delegate
@@ -31,7 +31,7 @@ public final class FetchedResultsDataSource: DataSource {
     }
     
     private func infoForSection(section: Int) -> NSFetchedResultsSectionInfo {
-        return self.frc.sections![section] as! NSFetchedResultsSectionInfo
+        return self.frc.sections![section] 
     }
     
     public var numberOfSections: Int {
@@ -53,32 +53,36 @@ public final class FetchedResultsDataSource: DataSource {
     
     public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
         let sectionInfo = self.infoForSection(indexPath.section)
-        return sectionInfo.objects[indexPath.item]
+        return sectionInfo.objects![indexPath.item]
     }
     
     public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
         return (self, indexPath)
     }
     
-    private final class Delegate: NSFetchedResultsControllerDelegate {
+    @objc private final class Delegate: NSObject, NSFetchedResultsControllerDelegate {
         
-        let observer: SinkOf<Event<DataChange, NoError>>
+        let observer: Event<DataChange, NoError> -> ()
         var currentBatch: [DataChange] = []
         
-        init(observer: SinkOf<Event<DataChange, NoError>>) {
+        init(observer: Event<DataChange, NoError> -> ()) {
             self.observer = observer
         }
         
-        func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        @objc func controllerWillChangeContent(controller: NSFetchedResultsController) {
             self.currentBatch = []
         }
         
-        func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        @objc func controllerDidChangeContent(controller: NSFetchedResultsController) {
             sendNext(self.observer, DataChangeBatch(self.currentBatch))
             self.currentBatch = []
         }
         
-        func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+        @objc func controller(controller: NSFetchedResultsController,
+            didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
+            atIndex sectionIndex: Int,
+            forChangeType type: NSFetchedResultsChangeType)
+        {
             switch type {
             case .Insert:
                 self.currentBatch.append(DataChangeInsertSections(sectionIndex))
@@ -89,7 +93,12 @@ public final class FetchedResultsDataSource: DataSource {
             }
         }
         
-        func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+        @objc func controller(controller: NSFetchedResultsController,
+            didChangeObject anObject: NSManagedObject,
+            atIndexPath indexPath: NSIndexPath?,
+            forChangeType type: NSFetchedResultsChangeType,
+            newIndexPath: NSIndexPath?)
+        {
             switch type {
             case .Insert:
                 self.currentBatch.append(DataChangeInsertItems(newIndexPath!))

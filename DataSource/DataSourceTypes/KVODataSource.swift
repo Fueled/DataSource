@@ -12,7 +12,7 @@ import ReactiveCocoa
 public final class  KVODataSource: NSObject, DataSource {
     
     public let changes: Signal<DataChange, NoError>
-    private let observer: SinkOf<Event<DataChange, NoError>>
+    private let observer: Event<DataChange, NoError> -> ()
     
     public let target: NSObject
     public let keyPath: String
@@ -24,7 +24,7 @@ public final class  KVODataSource: NSObject, DataSource {
         self.keyPath = keyPath
         self.supplementaryItems = supplementaryItems
         super.init()
-        self.target.addObserver(self, forKeyPath: self.keyPath, options: nil, context: nil)
+        self.target.addObserver(self, forKeyPath: self.keyPath, options: [], context: nil)
     }
     
     deinit {
@@ -54,8 +54,9 @@ public final class  KVODataSource: NSObject, DataSource {
         return self.target.valueForKeyPath(self.keyPath) as! NSArray
     }
     
-    public override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if let target = object as? NSObject,
+           let change = change,
            let type = change[NSKeyValueChangeKindKey] as? NSKeyValueChange,
            let indices = change[NSKeyValueChangeIndexesKey] as? NSIndexSet
            where keyPath == self.keyPath && target == self.target

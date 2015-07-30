@@ -25,8 +25,8 @@ public final class MutableCompositeDataSource: DataSource {
         (self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
         self._innerDataSources = MutableProperty(inner)
         self.disposable += self._innerDataSources.producer
-            |> flatMap(.Latest, changesOfInnerDataSources)
-            |> start(self.observer)
+            .flatMap(.Latest, transform: changesOfInnerDataSources)
+            .start(self.observer)
     }
     
     deinit {
@@ -35,7 +35,7 @@ public final class MutableCompositeDataSource: DataSource {
     }
     
     public var numberOfSections: Int {
-        return reduce(self._innerDataSources.value, 0) {
+        return self._innerDataSources.value.reduce(0) {
             subtotal, dataSource in
             return subtotal + dataSource.numberOfSections
         }
@@ -104,7 +104,7 @@ public final class MutableCompositeDataSource: DataSource {
         self._innerDataSources.value.insert(dataSource, atIndex: newIndex)
         let newLocation = mapOutside(self._innerDataSources.value, newIndex)(innerSection: 0)
         let numberOfSections = dataSource.numberOfSections
-        let batch: [DataChange] = map(0 ..< numberOfSections) {
+        let batch: [DataChange] = (0 ..< numberOfSections).map {
             DataChangeMoveSection(from: oldLocation + $0, to: newLocation + $0)
         }
         if !batch.isEmpty {
@@ -127,12 +127,11 @@ public final class MutableCompositeDataSource: DataSource {
 }
 
 private func changesOfInnerDataSources(innerDataSources: [DataSource]) -> SignalProducer<DataChange, NoError> {
-    let arrayOfSignals = map(enumerate(innerDataSources)) {
+    let arrayOfSignals = innerDataSources.enumerate().map {
         index, dataSource in
-        return dataSource.changes
-            |> map {
-                $0.mapSections(mapOutside(innerDataSources, index))
-            }
+        return dataSource.changes.map {
+            $0.mapSections(mapOutside(innerDataSources, index))
+        }
     }
     return SignalProducer {
         observer, disposable in

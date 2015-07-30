@@ -27,10 +27,10 @@ public final class AutoDiffDataSource<T>: DataSource {
         self.supplementaryItems = supplementaryItems
         self.compare = compare
         self.disposable = self.items.producer
-            |> combinePrevious(items)
-            |> skip(1)
-            |> map(autoDiff(compare))
-            |> start(self.observer)
+            .combinePrevious(items)
+            .skip(1)
+            .map(autoDiff(compare))
+            .start(self.observer)
     }
     
     deinit {
@@ -71,7 +71,7 @@ private func autoDiff<T>(compare: (T, T) -> Bool)(old: [T], new: [T]) -> DataCha
                 Array(count: new.count, repeatedValue: LCSMove.Unknown))
     var lengths = Array(count: old.count, repeatedValue:
                   Array(count: new.count, repeatedValue: 0))
-    func getLength(iOld: Int, iNew: Int) -> Int {
+    func getLength(iOld: Int, _ iNew: Int) -> Int {
         return (iOld >= 0 && iNew >= 0) ? lengths[iOld][iNew] : 0
     }
     // fill the table
@@ -84,7 +84,7 @@ private func autoDiff<T>(compare: (T, T) -> Bool)(old: [T], new: [T]) -> DataCha
                 curLength = getLength(iOld - 1, iNew - 1) + 1
             } else {
                 let prevOldLength = getLength(iOld - 1, iNew)
-                var prevNewLength = getLength(iOld, iNew - 1)
+                let prevNewLength = getLength(iOld, iNew - 1)
                 if prevOldLength > prevNewLength {
                     curMove = .FromPrevOld
                     curLength = prevOldLength
@@ -126,8 +126,8 @@ private func autoDiff<T>(compare: (T, T) -> Bool)(old: [T], new: [T]) -> DataCha
     var extraNew2: [Int] = []
     for iNew in extraNew {
         let newItem = new[iNew]
-        if let (j, iOld) = findFirst(extraOld, { compare(old[$0], newItem) }) {
-            extraOld.removeAtIndex(j)
+        if let j = extraOld.indexOf({ compare(old[$0], newItem) }) {
+            let iOld = extraOld.removeAtIndex(j)
             let pathOld = NSIndexPath(forItem: iOld, inSection: 0)
             let pathNew = NSIndexPath(forItem: iNew, inSection: 0)
             batch.append(DataChangeMoveItem(from: pathOld, to: pathNew))
@@ -144,13 +144,4 @@ private func autoDiff<T>(compare: (T, T) -> Bool)(old: [T], new: [T]) -> DataCha
         batch.append(DataChangeInsertItems(extraNew.map{ NSIndexPath(forItem: $0, inSection: 0) }))
     }
     return DataChangeBatch(batch)
-}
-
-private func findFirst<S: SequenceType>(source: S, predicate: S.Generator.Element -> Bool) -> (Int, S.Generator.Element)? {
-    for (idx, s) in enumerate(source) {
-        if predicate(s) {
-            return (idx, s)
-        }
-    }
-    return nil
 }
