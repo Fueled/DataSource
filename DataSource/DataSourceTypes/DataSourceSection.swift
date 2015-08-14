@@ -1,5 +1,5 @@
 //
-//  StaticDataSourceSection.swift
+//  DataSourceSection.swift
 //  DataSource
 //
 //  Created by Vadim Yelagin on 04/06/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public final class StaticDataSourceSection<T> {
+public final class DataSourceSection<T> {
     
     public let items: [T]
     public let supplementaryItems: [String: Any]
