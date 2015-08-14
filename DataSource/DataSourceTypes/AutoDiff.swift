@@ -17,6 +17,20 @@ public struct AutoDiff {
         public var inserted: [Int] = []
         public var moved: [(Int, Int)] = []
         
+        public func toSectionChanges() -> [DataChange] {
+            var changes: [DataChange] = []
+            if !deleted.isEmpty {
+                changes.append(DataChangeDeleteSections(NSIndexSet(ds_sequence: deleted)))
+            }
+            if !inserted.isEmpty {
+                changes.append(DataChangeInsertSections(NSIndexSet(ds_sequence: inserted)))
+            }
+            for (from, to) in moved {
+                changes.append(DataChangeMoveSection(from: from, to: to))
+            }
+            return changes
+        }
+        
         public func toItemChanges(#oldSection: Int, newSection: Int) -> [DataChange] {
             var changes: [DataChange] = []
             if !deleted.isEmpty {
