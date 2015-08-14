@@ -14,9 +14,9 @@ public final class StaticDataSource<T>: DataSource {
     public let changes: Signal<DataChange, NoError>
     private let observer: Signal<DataChange, NoError>.Observer
     
-    public let sections: [StaticDataSourceSection<T>]
+    public let sections: [DataSourceSection<T>]
     
-    public init(sections: [StaticDataSourceSection<T>]) {
+    public init(sections: [DataSourceSection<T>]) {
         (self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
         self.sections = sections
     }
@@ -26,7 +26,7 @@ public final class StaticDataSource<T>: DataSource {
     }
     
     public convenience init(items: [T]) {
-        self.init(sections: [StaticDataSourceSection(items: items)])
+        self.init(sections: [DataSourceSection(items: items)])
     }
     
     public var numberOfSections: Int {

@@ -37,7 +37,7 @@
 		022B0FF41B2F2D4C00DD4DCD /* MutableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FD01B2F2D4C00DD4DCD /* MutableDataSource.swift */; };
 		022B0FF51B2F2D4C00DD4DCD /* ProxyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FD11B2F2D4C00DD4DCD /* ProxyDataSource.swift */; };
 		022B0FF61B2F2D4C00DD4DCD /* StaticDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FD21B2F2D4C00DD4DCD /* StaticDataSource.swift */; };
-		022B0FF71B2F2D4C00DD4DCD /* StaticDataSourceSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FD31B2F2D4C00DD4DCD /* StaticDataSourceSection.swift */; };
+		022B0FF71B2F2D4C00DD4DCD /* DataSourceSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FD31B2F2D4C00DD4DCD /* DataSourceSection.swift */; };
 		022B0FF81B2F2D4C00DD4DCD /* IndexPathExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FD41B2F2D4C00DD4DCD /* IndexPathExtensions.swift */; };
 		022B0FF91B2F2D4C00DD4DCD /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FD61B2F2D4C00DD4DCD /* TableViewCell.swift */; };
 		022B0FFA1B2F2D4C00DD4DCD /* TableViewChangeTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FD71B2F2D4C00DD4DCD /* TableViewChangeTarget.swift */; };
@@ -47,6 +47,8 @@
 		022B0FFE1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FDB1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift */; };
 		022B10331B2F33F900DD4DCD /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 022B10301B2F33F900DD4DCD /* ReactiveCocoa.framework */; };
 		022B10341B2F33F900DD4DCD /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 022B10311B2F33F900DD4DCD /* Result.framework */; };
+		028602ED1B7E076300474D04 /* AutoDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602EC1B7E076200474D04 /* AutoDiff.swift */; };
+		028602F51B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,7 +95,7 @@
 		022B0FD01B2F2D4C00DD4DCD /* MutableDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableDataSource.swift; sourceTree = "<group>"; };
 		022B0FD11B2F2D4C00DD4DCD /* ProxyDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProxyDataSource.swift; sourceTree = "<group>"; };
 		022B0FD21B2F2D4C00DD4DCD /* StaticDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticDataSource.swift; sourceTree = "<group>"; };
-		022B0FD31B2F2D4C00DD4DCD /* StaticDataSourceSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticDataSourceSection.swift; sourceTree = "<group>"; };
+		022B0FD31B2F2D4C00DD4DCD /* DataSourceSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceSection.swift; sourceTree = "<group>"; };
 		022B0FD41B2F2D4C00DD4DCD /* IndexPathExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexPathExtensions.swift; sourceTree = "<group>"; };
 		022B0FD61B2F2D4C00DD4DCD /* TableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		022B0FD71B2F2D4C00DD4DCD /* TableViewChangeTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewChangeTarget.swift; sourceTree = "<group>"; };
@@ -104,6 +106,8 @@
 		022B102F1B2F33F900DD4DCD /* Box.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Box.framework; path = Carthage/Build/iOS/Box.framework; sourceTree = "<group>"; };
 		022B10301B2F33F900DD4DCD /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
 		022B10311B2F33F900DD4DCD /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
+		028602EC1B7E076200474D04 /* AutoDiff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoDiff.swift; sourceTree = "<group>"; };
+		028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoDiffSectionsDataSouce.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -219,8 +223,11 @@
 		022B0FC81B2F2D4C00DD4DCD /* DataSourceTypes */ = {
 			isa = PBXGroup;
 			children = (
+				028602EC1B7E076200474D04 /* AutoDiff.swift */,
 				022B0FC91B2F2D4C00DD4DCD /* AutoDiffDataSource.swift */,
+				028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift */,
 				022B0FCA1B2F2D4C00DD4DCD /* CompositeDataSource.swift */,
+				022B0FD31B2F2D4C00DD4DCD /* DataSourceSection.swift */,
 				022B0FCB1B2F2D4C00DD4DCD /* EmptyDataSource.swift */,
 				022B0FCC1B2F2D4C00DD4DCD /* FetchedResultsDataSource.swift */,
 				022B0FCD1B2F2D4C00DD4DCD /* KVODataSource.swift */,
@@ -229,7 +236,6 @@
 				022B0FD01B2F2D4C00DD4DCD /* MutableDataSource.swift */,
 				022B0FD11B2F2D4C00DD4DCD /* ProxyDataSource.swift */,
 				022B0FD21B2F2D4C00DD4DCD /* StaticDataSource.swift */,
-				022B0FD31B2F2D4C00DD4DCD /* StaticDataSourceSection.swift */,
 			);
 			path = DataSourceTypes;
 			sourceTree = "<group>";
@@ -366,6 +372,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				028602F51B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift in Sources */,
 				022B0FDF1B2F2D4C00DD4DCD /* CollectionViewReusableView.swift in Sources */,
 				022B0FF61B2F2D4C00DD4DCD /* StaticDataSource.swift in Sources */,
 				022B0FFB1B2F2D4C00DD4DCD /* TableViewDataSource.swift in Sources */,
@@ -390,9 +397,10 @@
 				022B0FF01B2F2D4C00DD4DCD /* FetchedResultsDataSource.swift in Sources */,
 				022B0FE81B2F2D4C00DD4DCD /* DataChangeMoveSection.swift in Sources */,
 				022B0FF21B2F2D4C00DD4DCD /* MappedDataSource.swift in Sources */,
-				022B0FF71B2F2D4C00DD4DCD /* StaticDataSourceSection.swift in Sources */,
+				022B0FF71B2F2D4C00DD4DCD /* DataSourceSection.swift in Sources */,
 				022B0FDC1B2F2D4C00DD4DCD /* CollectionViewCell.swift in Sources */,
 				022B0FE61B2F2D4C00DD4DCD /* DataChangeInsertSections.swift in Sources */,
+				028602ED1B7E076300474D04 /* AutoDiff.swift in Sources */,
 				022B0FE01B2F2D4C00DD4DCD /* DataChange.swift in Sources */,
 				022B0FE21B2F2D4C00DD4DCD /* DataChangeBatch.swift in Sources */,
 				022B0FF81B2F2D4C00DD4DCD /* IndexPathExtensions.swift in Sources */,
