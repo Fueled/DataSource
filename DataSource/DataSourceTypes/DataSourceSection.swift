@@ -8,10 +8,10 @@
 
 import Foundation
 
-public final class DataSourceSection<T> {
+public struct DataSourceSection<T> {
     
-    public let items: [T]
-    public let supplementaryItems: [String: Any]
+    public var items: [T]
+    public var supplementaryItems: [String: Any]
     
     public init(items: [T], supplementaryItems: [String: Any] = [:]) {
         self.items = items
