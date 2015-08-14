@@ -21,13 +21,13 @@ public final class AutoDiffDataSource<T>: DataSource {
     
     public let compare: (T, T) -> Bool
     
-    public init(_ items: [T] = [], supplementaryItems: [String: Any] = [:], _ compare: (T, T) -> Bool) {
+    public init(_ items: [T] = [], supplementaryItems: [String: Any] = [:], findMoves: Bool = true, _ compare: (T, T) -> Bool) {
         (self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
         self.items = MutableProperty(items)
         self.supplementaryItems = supplementaryItems
         self.compare = compare
         func autoDiff(old: [T], new: [T]) -> DataChange {
-            return AutoDiff.compare(old: old, new: new, findMoves: true, compare: compare).toItemChanges()
+            return AutoDiff.compare(old: old, new: new, findMoves: findMoves, compare: compare).toItemChanges()
         }
         self.disposable = self.items.producer
             |> combinePrevious(items)
