@@ -52,10 +52,10 @@ public final class AutoDiffSectionsDataSouce<T>: DataSource {
             return DataChangeBatch(changes)
         }
         self.disposable = self.sections.producer
-            |> combinePrevious(sections)
-            |> skip(1)
-            |> map(autoDiff)
-            |> start(self.observer)
+            .combinePrevious(sections)
+            .skip(1)
+            .map(autoDiff)
+            .start(self.observer)
     }
     
     deinit {

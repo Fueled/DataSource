@@ -31,17 +31,17 @@ public struct AutoDiff {
             return changes
         }
         
-        public func toItemChanges(#oldSection: Int, newSection: Int) -> [DataChange] {
+        public func toItemChanges(oldSection oldSection: Int, newSection: Int) -> [DataChange] {
             var changes: [DataChange] = []
             if !deleted.isEmpty {
                 let indexPaths = deleted.map {
-                    NSIndexPath(forItem: $0, inSection: oldSection)!
+                    NSIndexPath(forItem: $0, inSection: oldSection)
                 }
                 changes.append(DataChangeDeleteItems(indexPaths))
             }
             if !inserted.isEmpty {
                 let indexPaths = inserted.map {
-                    NSIndexPath(forItem: $0, inSection: newSection)!
+                    NSIndexPath(forItem: $0, inSection: newSection)
                 }
                 changes.append(DataChangeInsertItems(indexPaths))
             }
@@ -60,12 +60,12 @@ public struct AutoDiff {
     }
     
     // http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
-    public static func compare<T>(#old: [T], new: [T], findMoves: Bool, compare: (T, T) -> Bool) -> Result {
+    public static func compare<T>(old old: [T], new: [T], findMoves: Bool, compare: (T, T) -> Bool) -> Result {
         var moves = Array(count: old.count, repeatedValue:
             Array(count: new.count, repeatedValue: LCSMove.Unknown))
         var lengths = Array(count: old.count, repeatedValue:
             Array(count: new.count, repeatedValue: 0))
-        func getLength(iOld: Int, iNew: Int) -> Int {
+        func getLength(iOld: Int, _ iNew: Int) -> Int {
             return (iOld >= 0 && iNew >= 0) ? lengths[iOld][iNew] : 0
         }
         // fill the table
@@ -78,7 +78,7 @@ public struct AutoDiff {
                     curLength = getLength(iOld - 1, iNew - 1) + 1
                 } else {
                     let prevOldLength = getLength(iOld - 1, iNew)
-                    var prevNewLength = getLength(iOld, iNew - 1)
+                    let prevNewLength = getLength(iOld, iNew - 1)
                     if prevOldLength > prevNewLength {
                         curMove = .FromPrevOld
                         curLength = prevOldLength
@@ -145,7 +145,7 @@ public struct AutoDiff {
         (source: S, _ predicate: S.Generator.Element -> Bool)
         -> (Int, S.Generator.Element)?
     {
-        for (idx, s) in enumerate(source) {
+        for (idx, s) in source.enumerate() {
             if predicate(s) {
                 return (idx, s)
             }
