@@ -17,7 +17,7 @@ public struct AutoDiff {
         public var inserted: [Int] = []
         public var moved: [(Int, Int)] = []
         
-        public func toItemChanges(#oldSection: Int, newSection: Int) -> DataChangeBatch {
+        public func toItemChanges(#oldSection: Int, newSection: Int) -> [DataChange] {
             var changes: [DataChange] = []
             if !deleted.isEmpty {
                 let indexPaths = deleted.map {
@@ -36,10 +36,10 @@ public struct AutoDiff {
                 let toPath = NSIndexPath(forItem: to, inSection: newSection)
                 changes.append(DataChangeMoveItem(from: fromPath, to: toPath))
             }
-            return DataChangeBatch(changes)
+            return changes
         }
         
-        public func toItemChanges(section: Int = 0) -> DataChangeBatch {
+        public func toItemChanges(section: Int = 0) -> [DataChange] {
             return toItemChanges(oldSection: section, newSection: section)
         }
         

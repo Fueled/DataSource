@@ -31,7 +31,8 @@ public final class AutoDiffDataSource<T>: DataSource {
         self.supplementaryItems = supplementaryItems
         self.compare = compare
         func autoDiff(old: [T], new: [T]) -> DataChange {
-            return AutoDiff.compare(old: old, new: new, findMoves: findMoves, compare: compare).toItemChanges()
+            let result = AutoDiff.compare(old: old, new: new, findMoves: findMoves, compare: compare)
+            return DataChangeBatch(result.toItemChanges())
         }
         self.disposable = self.items.producer
             |> combinePrevious(items)
