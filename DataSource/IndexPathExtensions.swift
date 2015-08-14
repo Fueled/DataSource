@@ -22,6 +22,14 @@ public extension NSIndexSet {
         self.init(indexesInRange: NSRange(location: ds_range.startIndex, length: ds_range.endIndex - ds_range.startIndex))
     }
     
+    public convenience init<S: SequenceType where S.Generator.Element == Int>(ds_sequence: S) {
+        let res = NSMutableIndexSet()
+        for i in ds_sequence {
+            res.addIndex(i)
+        }
+        self.init(indexSet: res)
+    }
+    
     public func ds_map(transform: Int -> Int) -> NSIndexSet {
         let res = NSMutableIndexSet()
         self.enumerateIndexesUsingBlock {
