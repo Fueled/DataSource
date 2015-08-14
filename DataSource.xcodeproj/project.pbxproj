@@ -49,6 +49,7 @@
 		022B10331B2F33F900DD4DCD /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 022B10301B2F33F900DD4DCD /* ReactiveCocoa.framework */; };
 		022B10341B2F33F900DD4DCD /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 022B10311B2F33F900DD4DCD /* Result.framework */; };
 		028602ED1B7E076300474D04 /* AutoDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602EC1B7E076200474D04 /* AutoDiff.swift */; };
+		028602F51B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -107,6 +108,7 @@
 		022B10301B2F33F900DD4DCD /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveCocoa.framework; path = Carthage/Build/iOS/ReactiveCocoa.framework; sourceTree = "<group>"; };
 		022B10311B2F33F900DD4DCD /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		028602EC1B7E076200474D04 /* AutoDiff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoDiff.swift; sourceTree = "<group>"; };
+		028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoDiffSectionsDataSouce.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +227,7 @@
 			children = (
 				028602EC1B7E076200474D04 /* AutoDiff.swift */,
 				022B0FC91B2F2D4C00DD4DCD /* AutoDiffDataSource.swift */,
+				028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift */,
 				022B0FCA1B2F2D4C00DD4DCD /* CompositeDataSource.swift */,
 				022B0FD31B2F2D4C00DD4DCD /* DataSourceSection.swift */,
 				022B0FCB1B2F2D4C00DD4DCD /* EmptyDataSource.swift */,
@@ -369,6 +372,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				028602F51B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift in Sources */,
 				022B0FDF1B2F2D4C00DD4DCD /* CollectionViewReusableView.swift in Sources */,
 				022B0FF61B2F2D4C00DD4DCD /* StaticDataSource.swift in Sources */,
 				022B0FFB1B2F2D4C00DD4DCD /* TableViewDataSource.swift in Sources */,
