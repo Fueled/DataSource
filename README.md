@@ -9,7 +9,7 @@ A data source for a `UITableView` or a `UICollectionView` can be constructed by 
 
 * iOS 8.0+
 * Xcode 6.4
-* [Carthage 0.7.5](https://github.com/Carthage/Carthage/releases/tag/0.7.5)
+* [Carthage 0.8](https://github.com/Carthage/Carthage/releases/tag/0.8)
 * [ReactiveCocoa 3.0 RC1](https://github.com/ReactiveCocoa/ReactiveCocoa/releases/tag/v3.0-RC.1)
 
 ## Example Project
