@@ -28,12 +28,12 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
     
     public override init() {
         super.init()
-        self.disposable += self.dataSource.changes.observe(next: {
+        self.disposable += self.dataSource.changes.observeNext {
             [weak self] change in
             if let collectionView = self?.collectionView {
                 change.apply(collectionView)
             }
-        })
+        }
     }
     
     deinit {
