@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 
 public protocol DataChange {
-    
-    func apply(target: DataChangeTarget)
-    
-    func mapSections(map: Int -> Int) -> Self
-    
+
+	func apply(target: DataChangeTarget)
+
+	func mapSections(map: Int -> Int) -> Self
+
 }

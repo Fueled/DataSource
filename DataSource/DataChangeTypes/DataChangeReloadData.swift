@@ -9,13 +9,13 @@
 import Foundation
 
 public struct DataChangeReloadData: DataChange {
-    
-    public func apply(target: DataChangeTarget) {
-        target.ds_reloadData()
-    }
-    
-    public func mapSections(map: Int -> Int) -> DataChangeReloadData {
-        return self
-    }
-    
+
+	public func apply(target: DataChangeTarget) {
+		target.ds_reloadData()
+	}
+
+	public func mapSections(map: Int -> Int) -> DataChangeReloadData {
+		return self
+	}
+
 }

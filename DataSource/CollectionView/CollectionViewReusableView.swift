@@ -10,7 +10,7 @@ import UIKit
 import ReactiveCocoa
 
 public class CollectionViewReusableView: UICollectionReusableView {
-    
-    public final let item = MutableProperty<Any?>(nil)
-        
+
+	public final let item = MutableProperty<Any?>(nil)
+
 }

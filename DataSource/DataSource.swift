@@ -10,17 +10,17 @@ import Foundation
 import ReactiveCocoa
 
 public protocol DataSource {
-    
-    var changes: Signal<DataChange, NoError> { get }
-    
-    var numberOfSections: Int { get }
-    
-    func numberOfItemsInSection(section: Int) -> Int
-    
-    func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any?
-    
-    func itemAtIndexPath(indexPath: NSIndexPath) -> Any
-    
-    func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath)
-    
+
+	var changes: Signal<DataChange, NoError> { get }
+
+	var numberOfSections: Int { get }
+
+	func numberOfItemsInSection(section: Int) -> Int
+
+	func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any?
+
+	func itemAtIndexPath(indexPath: NSIndexPath) -> Any
+
+	func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath)
+
 }

@@ -9,15 +9,15 @@
 import UIKit
 
 public class TableViewDataSourceWithHeaderFooterTitles: TableViewDataSource {
-    
-    public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionHeader, inSection: section)
-        return item as? String
-    }
-    
-    public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionFooter, inSection: section)
-        return item as? String
-    }
-    
+
+	public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionHeader, inSection: section)
+		return item as? String
+	}
+
+	public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+		let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionFooter, inSection: section)
+		return item as? String
+	}
+
 }

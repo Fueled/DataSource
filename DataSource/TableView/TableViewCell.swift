@@ -11,7 +11,6 @@ import ReactiveCocoa
 
 public class TableViewCell: UITableViewCell {
 
-    public final let item = MutableProperty<Any?>(nil)
+	public final let item = MutableProperty<Any?>(nil)
 
 }
-
