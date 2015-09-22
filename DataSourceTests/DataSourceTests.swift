@@ -8,6 +8,8 @@
 
 import UIKit
 import XCTest
+import DataSource
+import ReactiveCocoa
 
 class DataSourceTests: XCTestCase {
 
