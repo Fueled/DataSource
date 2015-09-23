@@ -36,12 +36,14 @@ public class TableViewDataSource: NSObject, UITableViewDataSource {
 		self.disposable.dispose()
 	}
 
-	public func configureCell(cell: TableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-		cell.item.value = self.dataSource.itemAtIndexPath(indexPath)
+	public func configureCell(cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+		if let itemReceiver = cell as? DataSourceItemReceiver {
+			itemReceiver.setItem(self.dataSource.itemAtIndexPath(indexPath))
+		}
 	}
 
 	public func configureCellForRowAtIndexPath(indexPath: NSIndexPath) {
-		if let cell = self.tableView?.cellForRowAtIndexPath(indexPath) as? TableViewCell {
+		if let cell = self.tableView?.cellForRowAtIndexPath(indexPath) {
 			self.configureCell(cell, forRowAtIndexPath: indexPath)
 		}
 	}
@@ -65,7 +67,7 @@ public class TableViewDataSource: NSObject, UITableViewDataSource {
 	public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let item: Any = self.dataSource.itemAtIndexPath(indexPath)
 		let reuseIdentifier = self.reuseIdentifierForItem(indexPath, item)
-		let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath) as! TableViewCell
+		let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
 		self.configureCell(cell, forRowAtIndexPath: indexPath)
 		return cell
 	}

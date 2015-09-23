@@ -40,12 +40,14 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		self.disposable.dispose()
 	}
 
-	public func configureCell(cell: CollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-		cell.item.value = self.dataSource.itemAtIndexPath(indexPath)
+	public func configureCell(cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+		if let itemReceiver = cell as? DataSourceItemReceiver {
+			itemReceiver.setItem(self.dataSource.itemAtIndexPath(indexPath))
+		}
 	}
 
 	public func configureCellForItemAtIndexPath(indexPath: NSIndexPath) {
-		if let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) as? CollectionViewCell {
+		if let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) {
 			self.configureCell(cell, forItemAtIndexPath: indexPath)
 		}
 	}
@@ -70,15 +72,17 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		let section = indexPath.section
 		let item = self.dataSource.supplementaryItemOfKind(kind, inSection: section)
 		let reuseIdentifier = self.reuseIdentifierForSupplementaryItem(kind, section, item)
-		let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier, forIndexPath: indexPath) as! CollectionViewReusableView
-		view.item.value = item
+		let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier, forIndexPath: indexPath)
+		if let itemReceiver = view as? DataSourceItemReceiver {
+			itemReceiver.setItem(item)
+		}
 		return view
 	}
 
 	public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
 		let item: Any = self.dataSource.itemAtIndexPath(indexPath)
 		let reuseIdentifier = self.reuseIdentifierForItem(indexPath, item)
-		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath) as! CollectionViewCell
+		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
 		self.configureCell(cell, forItemAtIndexPath: indexPath)
 		return cell
 	}

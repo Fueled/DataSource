@@ -9,8 +9,12 @@
 import UIKit
 import ReactiveCocoa
 
-public class TableViewHeaderFooterView: UITableViewHeaderFooterView {
+public class TableViewHeaderFooterView: UITableViewHeaderFooterView, DataSourceItemReceiver {
 
 	public final let item = MutableProperty<Any?>(nil)
+
+	public func setItem(item: Any) {
+		self.item.value = item
+	}
 
 }

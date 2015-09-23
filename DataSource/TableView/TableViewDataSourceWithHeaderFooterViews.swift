@@ -20,16 +20,20 @@ public class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITa
 	public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionHeader, inSection: section)
 		let reuseIdentifier = self.reuseIdentifierForHeaderItem(section, item)
-		let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(reuseIdentifier) as! TableViewHeaderFooterView
-		view.item.value = item
+		let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(reuseIdentifier)
+		if let itemReceiver = view as? DataSourceItemReceiver {
+			itemReceiver.setItem(item)
+		}
 		return view
 	}
 
 	public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
 		let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionFooter, inSection: section)
 		let reuseIdentifier = self.reuseIdentifierForFooterItem(section, item)
-		let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(reuseIdentifier) as! TableViewHeaderFooterView
-		view.item.value = item
+		let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(reuseIdentifier)
+		if let itemReceiver = view as? DataSourceItemReceiver {
+			itemReceiver.setItem(item)
+		}
 		return view
 	}
 
