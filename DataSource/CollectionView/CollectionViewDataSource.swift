@@ -69,7 +69,7 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
 	public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
 		let section = indexPath.section
-		let item = self.dataSource.supplementaryItemOfKind(kind, inSection: section)
+		let item = self.dataSource.supplementaryItemOfKind(kind, inSection: section)!
 		let reuseIdentifier = self.reuseIdentifierForSupplementaryItem(kind, section, item)
 		let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier, forIndexPath: indexPath)
 		configureReceiver(view, withItem: item)
