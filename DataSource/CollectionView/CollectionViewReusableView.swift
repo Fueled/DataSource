@@ -13,7 +13,7 @@ public class CollectionViewReusableView: UICollectionReusableView, DataSourceIte
 
 	public final let item = MutableProperty<Any?>(nil)
 
-	public func setItem(item: Any) {
+	public func ds_setItem(item: Any) {
 		self.item.value = item
 	}
 

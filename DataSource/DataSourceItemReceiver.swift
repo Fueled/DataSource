@@ -11,22 +11,22 @@ import ReactiveCocoa
 
 public protocol DataSourceItemReceiver {
 
-	func setItem(item: Any)
+	func ds_setItem(item: Any)
 
 }
 
 @objc public protocol DataSourceObjectItemReceiver {
 
-	@objc func setItem(item: AnyObject)
+	@objc func ds_setItem(item: AnyObject)
 
 }
 
 func configureReceiver(receiver: AnyObject, withItem item: Any) {
 	if let receiver = receiver as? DataSourceItemReceiver {
-		receiver.setItem(item)
+		receiver.ds_setItem(item)
 	} else if let receiver = receiver as? DataSourceObjectItemReceiver,
 		item = item as? AnyObject
 	{
-		receiver.setItem(item)
+		receiver.ds_setItem(item)
 	}
 }
