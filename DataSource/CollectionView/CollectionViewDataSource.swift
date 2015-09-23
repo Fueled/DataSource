@@ -41,9 +41,8 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 	}
 
 	public func configureCell(cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-		if let itemReceiver = cell as? DataSourceItemReceiver {
-			itemReceiver.setItem(self.dataSource.itemAtIndexPath(indexPath))
-		}
+		let item = self.dataSource.itemAtIndexPath(indexPath)
+		configureReceiver(cell, withItem: item)
 	}
 
 	public func configureCellForItemAtIndexPath(indexPath: NSIndexPath) {
@@ -73,9 +72,7 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		let item = self.dataSource.supplementaryItemOfKind(kind, inSection: section)
 		let reuseIdentifier = self.reuseIdentifierForSupplementaryItem(kind, section, item)
 		let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier, forIndexPath: indexPath)
-		if let itemReceiver = view as? DataSourceItemReceiver {
-			itemReceiver.setItem(item)
-		}
+		configureReceiver(view, withItem: item)
 		return view
 	}
 

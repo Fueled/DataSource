@@ -37,9 +37,8 @@ public class TableViewDataSource: NSObject, UITableViewDataSource {
 	}
 
 	public func configureCell(cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-		if let itemReceiver = cell as? DataSourceItemReceiver {
-			itemReceiver.setItem(self.dataSource.itemAtIndexPath(indexPath))
-		}
+		let item = self.dataSource.itemAtIndexPath(indexPath)
+		configureReceiver(cell, withItem: item)
 	}
 
 	public func configureCellForRowAtIndexPath(indexPath: NSIndexPath) {
