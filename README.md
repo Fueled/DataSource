@@ -37,7 +37,7 @@ Such decoupling allows usage of same `DataSource` for both table and collection 
 
 DataSource framework contains a `TableViewDataSource` class that implements `UITableViewDataSource` protocol and can be used to populate an associated `UITableView` with data from any `DataSource`. `TableViewDataSource` receives and handles all `DataChange`s automatically.
 
-`TableViewDataSource` expects your instances of `UITableViewCell` to conform to `DataSourceItemReceiver` protocol (containing `ds_setItem:` function) in order to populate them with corresponding items. `TableViewCell` is a subclass of `UITableViewCell` that already implements `DataSourceItemReceiver` protocol by populating its `MutableProperty` called `item`.
+`TableViewDataSource` expects your instances of `UITableViewCell` and `UITableViewHeaderFooterView` to conform to `DataSourceItemReceiver` protocol. This protocol contains `ds_setItem:` function that is used to populate those views with corresponding data source items. Cells and views implemented in Objective-C can alternatively conform to `@objc protocol DataSourceObjectItemReceiver` with the restriction that items must be objects (of `AnyObject` type).
 
 Just make `TableViewDataSource` instance a `dataSource` of your `UITableView`, connect the `UITableView` to `tableView` outlet of `TableViewDataSource` and assing your `DataSource` instance to `TableViewDataSource`’s `dataSource.innerDataSource` property.
 
