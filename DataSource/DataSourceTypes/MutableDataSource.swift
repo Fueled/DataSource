@@ -9,6 +9,11 @@
 import Foundation
 import ReactiveCocoa
 
+/// `DataSource` implementation that has one section of items of type T.
+///
+/// The array of items can be modified by calling methods that perform
+/// individual changes and instantly make the dataSource emit
+/// a corresponding dataChange.
 public final class MutableDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
@@ -50,24 +55,32 @@ public final class MutableDataSource<T>: DataSource {
 		return (self, indexPath)
 	}
 
+	/// Inserts a given item at a given index
+	/// and emits `DataChangeInsertItems`.
 	public func insertItem(item: T, atIndex index: Int) {
 		self._items.value.insert(item, atIndex: index)
 		let change = DataChangeInsertItems(z(index))
 		sendNext(self.observer, change)
 	}
 
+	/// Deletes an item at a given index
+	/// and emits `DataChangeDeleteItems`.
 	public func deleteItemAtIndex(index: Int) {
 		self._items.value.removeAtIndex(index)
 		let change = DataChangeDeleteItems(z(index))
 		sendNext(self.observer, change)
 	}
 
+	/// Replaces an item at a given index with another item
+	/// and emits `DataChangeReloadItems`.
 	public func replaceItemAtIndex(index: Int, withItem item: T) {
 		self._items.value[index] = item
 		let change = DataChangeReloadItems(z(index))
 		sendNext(self.observer, change)
 	}
 
+	/// Moves an item at a given index to another index
+	/// and emits `DataChangeMoveItem`.
 	public func moveItemAtIndex(index oldIndex: Int, toIndex newIndex: Int) {
 		let item = self._items.value.removeAtIndex(oldIndex)
 		self._items.value.insert(item, atIndex: newIndex)
@@ -75,6 +88,8 @@ public final class MutableDataSource<T>: DataSource {
 		sendNext(self.observer, change)
 	}
 
+	/// Replaces all items with a given array of items
+	/// and emits `DataChangeReloadSections`.
 	public func replaceItemsWithItems(items: [T]) {
 		self._items.value = items
 		let change = DataChangeReloadSections(0)
