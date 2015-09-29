@@ -9,18 +9,37 @@
 import Foundation
 import ReactiveCocoa
 
+/// `DataSource` implementation that has one section of items of type T.
+///
+/// Whenever the array of items is changed, the autoDiffDataSource compares
+/// each pair of old and new items via `compare` function,
+/// and produces minimal batch of dataChanges that delete,
+/// insert and move individual items.
 public final class AutoDiffDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
 	private let observer: Signal<DataChange, NoError>.Observer
 	private let disposable: Disposable
 
+	/// Mutable array of items in the only section of the autoDiffDataSource.
+	///
+	/// Every modification of the array causes calculation
+	/// and emission of appropriate dataChanges.
 	public let items: MutableProperty<[T]>
 
 	public let supplementaryItems: [String: Any]
 
+	/// Function that is used to compare a pair of items for equality.
+	/// Returns `true` if the items are equal, and no dataChange is required
+	/// to replace the first item with the second.
 	public let compare: (T, T) -> Bool
 
+	/// - parameters:
+	///   - items: Initial array of items of the only section of the autoDiffDataSource.
+	///   - supplementaryItems: Supplementary items of the section.
+	///   - findMoves: Set `findMoves` to `false` to make the dataSource emit
+	///		a pair of deletion and insertion instead of item movement dataChanges.
+	///   - compare: Function that is used to compare a pair of items for equality.
 	public init(_ items: [T] = [],
 		supplementaryItems: [String: Any] = [:],
 		findMoves: Bool = true,
