@@ -8,6 +8,20 @@
 
 import UIKit
 
+/// A `TableViewDataSource` subclass that additionally provides
+/// views for headers and footers of tableView sections.
+///
+/// `TableViewDataSourceWithHeaderFooterViews` needs to be the tableView's delegate.
+///
+/// Header and footer views are dequeued from a tableView
+/// by reuseIdentifiers returned by `reuseIdentifierForHeaderItem`
+/// and `reuseIdentifierForFooterItem` function.
+///
+/// DataSource supplementary items of `UICollectionElementKindSectionHeader` kind
+/// are used as section header titles.
+///
+/// DataSource supplementary items of `UICollectionElementKindSectionFooter` kind
+/// are used as section footer titles.
 public class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITableViewDelegate {
 
 	public final var reuseIdentifierForHeaderItem: (Int, Any?) -> String = {

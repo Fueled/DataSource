@@ -8,6 +8,14 @@
 
 import UIKit
 
+/// A `TableViewDataSource` subclass that additionally provides
+/// titles for headers and footers of tableView sections.
+///
+/// DataSource supplementary items of `UICollectionElementKindSectionHeader` kind
+/// are used as section header titles, provided they are of `String` type.
+///
+/// DataSource supplementary items of `UICollectionElementKindSectionFooter` kind
+/// are used as section footer titles, provided they are of `String` type.
 public class TableViewDataSourceWithHeaderFooterTitles: TableViewDataSource {
 
 	public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

@@ -10,6 +10,24 @@ import Foundation
 import UIKit
 import ReactiveCocoa
 
+/// An object that implements `UICollectionViewDataSource` protocol
+/// by returning the data from an associated dataSource.
+///
+/// The number of section and numbers of items in sections
+/// are taken directly from the dataSource.
+///
+/// The cells are dequeued from a collectionView
+/// by reuseIdentifiers returned by `reuseIdentifierForItem` function.
+///
+/// Supplementary views are dequeued from a collectionView by reuseIdentifiers
+/// returned by `reuseIdentifierForSupplementaryItem` function.
+///
+/// If a cell or reusableView implements the `DataSourceItemReceiver` protocol
+/// (e.g. by subclassing the `CollectionViewCell` or `CollectionViewReusableView` class),
+/// the item at the indexPath is passed to it via `ds_setItem` method.
+///
+/// A collectionViewDataSource observes changes of the associated dataSource
+/// and applies those changes to the associated collectionView.
 public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
 	@IBOutlet public final var collectionView: UICollectionView?

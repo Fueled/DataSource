@@ -9,8 +9,17 @@
 import Foundation
 import ReactiveCocoa
 
+/// A provider of items grouped into sections.
+/// Each section can optionally have a collection
+/// of supplementary items identified by arbitrary strings called kinds.
+///
+/// A dataSource can be mutable, i.e. change the number and/or contents of its sections.
+/// Immediately after any such change, a dataSource emits a dataChange value representing
+/// that change via its `changes` property.
 public protocol DataSource {
 
+	/// A push-driven stream of values that represent every modification
+	/// of the dataSource contents immediately after they happen.
 	var changes: Signal<DataChange, NoError> { get }
 
 	var numberOfSections: Int { get }
@@ -21,6 +30,14 @@ public protocol DataSource {
 
 	func itemAtIndexPath(indexPath: NSIndexPath) -> Any
 
+	/// Asks the dataSource for the original dataSource that contains the item at the given indexPath,
+	/// and the indexPath of that item in that dataSource.
+	///
+	/// If the receiving dataSource is composed of other dataSources that provide its items,
+	/// this method finds the dataSource responsible for providing an item for the given indexPath,
+	/// and this method is called on it recursively.
+	///
+	/// Otherwise, this method simply returns the receiving dataSource itself and the given indexPath unchanged.
 	func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath)
 
 }

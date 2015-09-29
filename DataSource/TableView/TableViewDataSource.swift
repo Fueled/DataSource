@@ -10,6 +10,21 @@ import Foundation
 import UIKit
 import ReactiveCocoa
 
+/// An object that implements `UITableViewDataSource` protocol
+/// by returning the data from an associated dataSource.
+///
+/// The number of section and numbers of rows in sections
+/// are taken directly from the dataSource.
+///
+/// The cells are dequeued from a tableView
+/// by reuseIdentifiers returned by `reuseIdentifierForItem` function.
+///
+/// If a cell implements the `DataSourceItemReceiver` protocol
+/// (e.g. by subclassing the `TableViewCell` class),
+/// the item at the indexPath is passed to it via `ds_setItem` method.
+///
+/// A tableViewDataSource observes changes of the associated dataSource
+/// and applies those changes to the associated tableView.
 public class TableViewDataSource: NSObject, UITableViewDataSource {
 
 	@IBOutlet public final var tableView: UITableView?

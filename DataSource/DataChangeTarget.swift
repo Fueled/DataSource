@@ -8,6 +8,12 @@
 
 import Foundation
 
+/// A target onto which different types of dataChanges can be applied.
+/// When a dataChange is applied, the target transitions from reflecting
+/// the state of the corresponding dataSource prior to the dataChange
+/// to reflecting the dataSource state after the dataChange.
+///
+/// `UITableView` and `UICollectionView` are implementing this protocol.
 public protocol DataChangeTarget {
 
 	func ds_performBatchChanges(batchChanges: ()->())
