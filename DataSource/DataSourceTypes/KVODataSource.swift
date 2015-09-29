@@ -9,6 +9,12 @@
 import Foundation
 import ReactiveCocoa
 
+/// `DataSource` implementation that has a single section and
+/// uses key-value coding (KVC) to returns objects from an ordered
+/// to-many relation of a target object as its items.
+///
+/// Uses key-value observing (KVO) internally to observe changes
+/// in the to-many relationship and emit them as its own dataChanges.
 public final class  KVODataSource: NSObject, DataSource {
 
 	public let changes: Signal<DataChange, NoError>

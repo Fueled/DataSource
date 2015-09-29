@@ -10,6 +10,12 @@ import Foundation
 import ReactiveCocoa
 import CoreData
 
+/// `DataSource` implementation whose items are Core Data managed objects fetched by an `NSFetchedResultsController`.
+///
+/// Returns names of fetched sections as supplementary items of `UICollectionElementKindSectionHeader` kind.
+///
+/// Uses `NSFetchedResultsControllerDelegate` protocol internally to observe changes
+/// in fetched objects and emit them as its own dataChanges.
 public final class FetchedResultsDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
