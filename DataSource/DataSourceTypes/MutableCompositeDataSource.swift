@@ -9,6 +9,14 @@
 import Foundation
 import ReactiveCocoa
 
+/// `DataSource` implementation that is composed of a mutable array
+/// of other dataSources (called inner dataSources).
+///
+/// See `CompositeDataSource` for details.
+///
+/// The array of innerDataSources can be modified by calling methods that perform
+/// individual changes and instantly make the dataSource emit
+/// a corresponding dataChange.
 public final class MutableCompositeDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
@@ -63,6 +71,8 @@ public final class MutableCompositeDataSource: DataSource {
 		return self._innerDataSources.value[index].leafDataSourceAtIndexPath(innerPath)
 	}
 
+	/// Inserts a given inner dataSource at a given index
+	/// and emits `DataChangeInsertSections` for its sections.
 	public func insertDataSource(dataSource: DataSource, atIndex index: Int) {
 		let sections = self.sectionsOfDataSource(dataSource, atIndex: index)
 		self._innerDataSources.value.insert(dataSource, atIndex: index)
@@ -72,6 +82,8 @@ public final class MutableCompositeDataSource: DataSource {
 		}
 	}
 
+	/// Deletes an inner dataSource at a given index
+	/// and emits `DataChangeDeleteSections` for its sections.
 	public func deleteDataSourceAtIndex(index: Int) {
 		let sections = self.sectionsOfDataSourceAtIndex(index)
 		self._innerDataSources.value.removeAtIndex(index)
@@ -81,6 +93,9 @@ public final class MutableCompositeDataSource: DataSource {
 		}
 	}
 
+	/// Replaces an inner dataSource at a given index with another inner dataSource
+	/// and emits a batch of `DataChangeDeleteSections` and `DataChangeInsertSections`
+	/// for their sections.
 	public func replaceDataSourceAtIndex(index: Int, withDataSource dataSource: DataSource) {
 		var batch: [DataChange] = []
 		let oldSections = self.sectionsOfDataSourceAtIndex(index)
@@ -98,6 +113,8 @@ public final class MutableCompositeDataSource: DataSource {
 		}
 	}
 
+	/// Moves an inner dataSource at a given index to another index
+	/// and emits a batch of `DataChangeMoveSection` for its sections.
 	public func moveDataSourceAtIndex(index oldIndex: Int, toIndex newIndex: Int) {
 		let oldLocation = mapOutside(self._innerDataSources.value, oldIndex)(innerSection: 0)
 		let dataSource = self._innerDataSources.value.removeAtIndex(oldIndex)
