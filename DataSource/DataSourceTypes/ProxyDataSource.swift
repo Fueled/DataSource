@@ -10,7 +10,7 @@ import Foundation
 import ReactiveCocoa
 
 /// `DataSource` implementation that returns data from
-/// another dataSources (called inner dataSource).
+/// another dataSource (called inner dataSource).
 ///
 /// The inner dataSource can be switched to a different
 /// dataSource instance. In this case the proxyDataSource

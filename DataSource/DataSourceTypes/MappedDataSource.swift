@@ -9,6 +9,13 @@
 import Foundation
 import ReactiveCocoa
 
+/// `DataSource` implementation that returns data from
+/// another dataSource (called inner dataSource) after transforming
+/// its items with `transform` function and transforming its
+/// supplementary items with `supplementaryTransform` function.
+///
+/// MappedDataSource listens to dataChanges of its inner dataSource
+/// and emits them as its own changes.
 public final class MappedDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
@@ -17,8 +24,14 @@ public final class MappedDataSource: DataSource {
 
 	public let innerDataSource: DataSource
 
+	/// Function that is applied to items of the inner dataSource
+	/// before they are returned as items of the mappedDataSource.
 	private let transform: Any -> Any
 
+	/// Function that is applied to supplementary items of the inner dataSource
+	/// before they are returned as supplementary items of the mappedDataSource.
+	///
+	/// The first parameter is the kind of the supplementary item.
 	private let supplementaryTransform: (String, Any?) -> Any?
 
 	public init(_ inner: DataSource, supplementaryTransform: ((String, Any?) -> Any?) = { $1 }, transform: Any -> Any) {
