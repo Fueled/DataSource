@@ -34,6 +34,7 @@ public final class AutoDiffDataSource<T>: DataSource {
 	/// to replace the first item with the second.
 	public let compare: (T, T) -> Bool
 
+	/// Creates an autoDiffDataSource.
 	/// - parameters:
 	///   - items: Initial array of items of the only section of the autoDiffDataSource.
 	///   - supplementaryItems: Supplementary items of the section.
