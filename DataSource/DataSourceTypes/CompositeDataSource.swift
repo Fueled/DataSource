@@ -16,7 +16,7 @@ import ReactiveCocoa
 /// in the following order: first all the sections of the first inner dataSource,
 /// then all the sections of the second inner dataSource, and so on.
 ///
-/// CompositeDataSource listen to dataChanges in all of its inner dataSources
+/// CompositeDataSource listens to dataChanges in all of its inner dataSources
 /// and emits them as its own changes, after mapping section indices in them
 /// to correspond to the structure of the compositeDataSource.
 public final class CompositeDataSource: DataSource {
