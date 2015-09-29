@@ -9,6 +9,15 @@
 import Foundation
 import ReactiveCocoa
 
+/// `DataSource` implementation that returns data from
+/// another dataSources (called inner dataSource).
+///
+/// The inner dataSource can be switched to a different
+/// dataSource instance. In this case the proxyDataSource
+/// emits a dataChange reloading its entire data.
+///
+/// ProxyDataSource listens to dataChanges of its inner dataSource
+/// and emits them as its own changes.
 public final class ProxyDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
@@ -18,6 +27,12 @@ public final class ProxyDataSource: DataSource {
 
 	public let innerDataSource: MutableProperty<DataSource>
 
+	/// When `true`, switching innerDataSource produces
+	/// a dataChange consisting of deletions of all the
+	/// sections of the old inner dataSource and insertion of all
+	/// the sections of the new innerDataSource.
+	///
+	/// when `false`, switching innerDataSource produces `DataChangeReloadData`.
 	public let animatesChanges: MutableProperty<Bool>
 
 	public init(_ inner: DataSource = EmptyDataSource(), animateChanges: Bool = true) {
