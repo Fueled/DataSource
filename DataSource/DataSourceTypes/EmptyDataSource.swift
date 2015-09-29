@@ -9,6 +9,9 @@
 import Foundation
 import ReactiveCocoa
 
+/// `DataSource` implementation that has zero sections.
+///
+/// Never emits any dataChanges.
 public final class EmptyDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
