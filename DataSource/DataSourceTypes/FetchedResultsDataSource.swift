@@ -19,7 +19,7 @@ import CoreData
 public final class FetchedResultsDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Event<DataChange, NoError> -> ()
+	private let observer: Observer<DataChange, NoError>
 
 	private let frc: NSFetchedResultsController
 	private let frcDelegate: Delegate
@@ -33,7 +33,7 @@ public final class FetchedResultsDataSource: DataSource {
 
 	deinit {
 		self.frc.delegate = nil
-		sendCompleted(self.observer)
+		self.observer.sendCompleted()
 	}
 
 	private func infoForSection(section: Int) -> NSFetchedResultsSectionInfo {
@@ -68,10 +68,10 @@ public final class FetchedResultsDataSource: DataSource {
 
 	@objc private final class Delegate: NSObject, NSFetchedResultsControllerDelegate {
 
-		let observer: Event<DataChange, NoError> -> ()
+		let observer: Observer<DataChange, NoError>
 		var currentBatch: [DataChange] = []
 
-		init(observer: Event<DataChange, NoError> -> ()) {
+		init(observer: Observer<DataChange, NoError>) {
 			self.observer = observer
 		}
 
@@ -80,7 +80,7 @@ public final class FetchedResultsDataSource: DataSource {
 		}
 
 		@objc func controllerDidChangeContent(controller: NSFetchedResultsController) {
-			sendNext(self.observer, DataChangeBatch(self.currentBatch))
+			self.observer.sendNext(DataChangeBatch(self.currentBatch))
 			self.currentBatch = []
 		}
 

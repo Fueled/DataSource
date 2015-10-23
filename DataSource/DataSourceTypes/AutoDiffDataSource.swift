@@ -18,7 +18,7 @@ import ReactiveCocoa
 public final class AutoDiffDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Signal<DataChange, NoError>.Observer
+	private let observer: Observer<DataChange, NoError>
 	private let disposable: Disposable
 
 	/// Mutable array of items in the only section of the autoDiffDataSource.
@@ -62,7 +62,7 @@ public final class AutoDiffDataSource<T>: DataSource {
 	}
 
 	deinit {
-		sendCompleted(self.observer)
+		self.observer.sendCompleted()
 		self.disposable.dispose()
 	}
 

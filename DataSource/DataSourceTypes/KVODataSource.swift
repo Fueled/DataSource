@@ -18,7 +18,7 @@ import ReactiveCocoa
 public final class  KVODataSource: NSObject, DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Event<DataChange, NoError> -> ()
+	private let observer: Observer<DataChange, NoError>
 
 	public let target: NSObject
 	public let keyPath: String
@@ -35,7 +35,7 @@ public final class  KVODataSource: NSObject, DataSource {
 
 	deinit {
 		self.target.removeObserver(self, forKeyPath: self.keyPath, context: nil)
-		sendCompleted(self.observer)
+		self.observer.sendCompleted()
 	}
 
 	public let numberOfSections = 1
@@ -79,13 +79,13 @@ public final class  KVODataSource: NSObject, DataSource {
 		}
 		switch type {
 		case .Insertion:
-			sendNext(self.observer, DataChangeInsertItems(indexPaths))
+			self.observer.sendNext(DataChangeInsertItems(indexPaths))
 		case .Removal:
-			sendNext(self.observer, DataChangeDeleteItems(indexPaths))
+			self.observer.sendNext(DataChangeDeleteItems(indexPaths))
 		case .Replacement:
-			sendNext(self.observer, DataChangeReloadItems(indexPaths))
+			self.observer.sendNext(DataChangeReloadItems(indexPaths))
 		case .Setting:
-			sendNext(self.observer, DataChangeReloadSections(0))
+			self.observer.sendNext(DataChangeReloadSections(0))
 		}
 	}
 

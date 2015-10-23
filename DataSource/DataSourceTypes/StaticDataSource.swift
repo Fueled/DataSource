@@ -28,7 +28,7 @@ public final class StaticDataSource<T>: DataSource {
 	}
 
 	deinit {
-		sendCompleted(self.observer)
+		self.observer.sendCompleted()
 	}
 
 	/// Convenience initialize that creates a staticDataSource

@@ -20,13 +20,13 @@ import ReactiveCocoa
 public final class MutableCompositeDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Signal<DataChange, NoError>.Observer
+	private let observer: Observer<DataChange, NoError>
 	private let disposable = CompositeDisposable()
 
 	private let _innerDataSources: MutableProperty<[DataSource]>
 
-	public var innerDataSources: PropertyOf<[DataSource]> {
-		return PropertyOf(_innerDataSources)
+	public var innerDataSources: AnyProperty<[DataSource]> {
+		return AnyProperty(_innerDataSources)
 	}
 
 	public init(_ inner: [DataSource] = []) {
@@ -38,7 +38,7 @@ public final class MutableCompositeDataSource: DataSource {
 	}
 
 	deinit {
-		sendCompleted(self.observer)
+		self.observer.sendCompleted()
 		self.disposable.dispose()
 	}
 
@@ -78,7 +78,7 @@ public final class MutableCompositeDataSource: DataSource {
 		self._innerDataSources.value.insert(dataSource, atIndex: index)
 		if sections.count > 0 {
 			let change = DataChangeInsertSections(sections)
-			sendNext(self.observer, change)
+			self.observer.sendNext(change)
 		}
 	}
 
@@ -89,7 +89,7 @@ public final class MutableCompositeDataSource: DataSource {
 		self._innerDataSources.value.removeAtIndex(index)
 		if sections.count > 0 {
 			let change = DataChangeDeleteSections(sections)
-			sendNext(self.observer, change)
+			self.observer.sendNext(change)
 		}
 	}
 
@@ -109,7 +109,7 @@ public final class MutableCompositeDataSource: DataSource {
 		self._innerDataSources.value[index] = dataSource
 		if !batch.isEmpty {
 			let change = DataChangeBatch(batch)
-			sendNext(self.observer, change)
+			self.observer.sendNext(change)
 		}
 	}
 
@@ -126,7 +126,7 @@ public final class MutableCompositeDataSource: DataSource {
 		}
 		if !batch.isEmpty {
 			let change = DataChangeBatch(batch)
-			sendNext(self.observer, change)
+			self.observer.sendNext(change)
 		}
 	}
 

@@ -15,14 +15,14 @@ import ReactiveCocoa
 public final class EmptyDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Signal<DataChange, NoError>.Observer
+	private let observer: Observer<DataChange, NoError>
 
 	public init() {
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 	}
 
 	deinit {
-		sendCompleted(self.observer)
+		self.observer.sendCompleted()
 	}
 
 	public let numberOfSections = 0

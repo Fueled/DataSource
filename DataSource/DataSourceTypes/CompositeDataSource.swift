@@ -38,7 +38,7 @@ public final class CompositeDataSource: DataSource {
 	}
 
 	deinit {
-		sendCompleted(self.observer)
+		self.observer.sendCompleted()
 		self.disposable.dispose()
 	}
 

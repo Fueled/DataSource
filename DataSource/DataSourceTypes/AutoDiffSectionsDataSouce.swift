@@ -98,7 +98,7 @@ public final class AutoDiffSectionsDataSouce<T>: DataSource {
 	}
 
 	deinit {
-		sendCompleted(self.observer)
+		self.observer.sendCompleted()
 		self.disposable.dispose()
 	}
 

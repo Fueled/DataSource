@@ -19,7 +19,7 @@ import ReactiveCocoa
 public final class MappedDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Event<DataChange, NoError> -> ()
+	private let observer: Observer<DataChange, NoError>
 	private let disposable: Disposable?
 
 	public let innerDataSource: DataSource
@@ -43,7 +43,7 @@ public final class MappedDataSource: DataSource {
 	}
 
 	deinit {
-		sendCompleted(self.observer)
+		self.observer.sendCompleted()
 		self.disposable?.dispose()
 	}
 

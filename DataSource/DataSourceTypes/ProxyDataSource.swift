@@ -21,7 +21,7 @@ import ReactiveCocoa
 public final class ProxyDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Event<DataChange, NoError> -> ()
+	private let observer: Observer<DataChange, NoError>
 	private let disposable = CompositeDisposable()
 	private var lastDisposable: Disposable?
 
@@ -47,14 +47,14 @@ public final class ProxyDataSource: DataSource {
 				[weak self] old, new in
 				if let this = self {
 					this.lastDisposable?.dispose()
-					sendNext(this.observer, changeDataSources(old, new, this.animatesChanges.value))
+					this.observer.sendNext(changeDataSources(old, new, this.animatesChanges.value))
 					this.lastDisposable = new.changes.observe(this.observer)
 				}
 		}
 	}
 
 	deinit {
-		sendCompleted(self.observer)
+		self.observer.sendCompleted()
 		self.disposable.dispose()
 		self.lastDisposable?.dispose()
 	}
