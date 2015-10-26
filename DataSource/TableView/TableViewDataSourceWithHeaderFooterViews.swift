@@ -35,7 +35,9 @@ public class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITa
 		let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionHeader, inSection: section)
 		let reuseIdentifier = self.reuseIdentifierForHeaderItem(section, item)
 		let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(reuseIdentifier)!
-		configureReceiver(view, withItem: item)
+		if let item = item {
+			configureReceiver(view, withItem: item)
+		}
 		return view
 	}
 
@@ -43,7 +45,9 @@ public class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITa
 		let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionFooter, inSection: section)
 		let reuseIdentifier = self.reuseIdentifierForFooterItem(section, item)
 		let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(reuseIdentifier)!
-		configureReceiver(view, withItem: item)
+		if let item = item {
+			configureReceiver(view, withItem: item)
+		}
 		return view
 	}
 
