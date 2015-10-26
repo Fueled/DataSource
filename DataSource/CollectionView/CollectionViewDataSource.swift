@@ -38,7 +38,7 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		_ in "DefaultCell"
 	}
 
-	public final var reuseIdentifierForSupplementaryItem: (String, Int, Any?) -> String = {
+	public final var reuseIdentifierForSupplementaryItem: (String, Int, Any) -> String = {
 		_ in "DefaultSupplementaryView"
 	}
 
@@ -87,7 +87,9 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
 	public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
 		let section = indexPath.section
-		let item = self.dataSource.supplementaryItemOfKind(kind, inSection: section)!
+		guard let item = self.dataSource.supplementaryItemOfKind(kind, inSection: section) else {
+			fatalError("Expected item for collection view supplementary item of kind \(kind) in section \(section), but found nil")
+		}
 		let reuseIdentifier = self.reuseIdentifierForSupplementaryItem(kind, section, item)
 		let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier, forIndexPath: indexPath)
 		configureReceiver(view, withItem: item)

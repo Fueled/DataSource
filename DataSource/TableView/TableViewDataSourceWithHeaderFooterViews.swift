@@ -24,30 +24,30 @@ import UIKit
 /// are used as section footer titles.
 public class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITableViewDelegate {
 
-	public final var reuseIdentifierForHeaderItem: (Int, Any?) -> String = {
+	public final var reuseIdentifierForHeaderItem: (Int, Any) -> String = {
 		_ in "DefaultHeaderView"
 	}
-	public final var reuseIdentifierForFooterItem: (Int, Any?) -> String = {
+	public final var reuseIdentifierForFooterItem: (Int, Any) -> String = {
 		_ in "DefaultFooterView"
 	}
 
 	public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionHeader, inSection: section)
+		guard let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionHeader, inSection: section) else {
+			fatalError("Expected item for table view header in section \(section), but found nil")
+		}
 		let reuseIdentifier = self.reuseIdentifierForHeaderItem(section, item)
 		let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(reuseIdentifier)!
-		if let item = item {
-			configureReceiver(view, withItem: item)
-		}
+		configureReceiver(view, withItem: item)
 		return view
 	}
 
 	public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-		let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionFooter, inSection: section)
+		guard let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionFooter, inSection: section) else {
+			fatalError("Expected item for table view footer in section \(section), but found nil")
+		}
 		let reuseIdentifier = self.reuseIdentifierForFooterItem(section, item)
 		let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(reuseIdentifier)!
-		if let item = item {
-			configureReceiver(view, withItem: item)
-		}
+		configureReceiver(view, withItem: item)
 		return view
 	}
 
