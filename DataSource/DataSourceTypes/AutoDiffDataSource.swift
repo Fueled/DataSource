@@ -44,7 +44,7 @@ public final class AutoDiffDataSource<T>: DataSource {
 	public init(_ items: [T] = [],
 		supplementaryItems: [String: Any] = [:],
 		findMoves: Bool = true,
-		_ compare: (T, T) -> Bool)
+		compare: (T, T) -> Bool)
 	{
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.items = MutableProperty(items)
