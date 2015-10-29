@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		021FAD3F1BB1C258001300A0 /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 022B10301B2F33F900DD4DCD /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		021FAD411BB1C279001300A0 /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 022B10311B2F33F900DD4DCD /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		021FAD3F1BB1C258001300A0 /* ReactiveCocoa.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0286CF9E1BE26FB900F76C86 /* ReactiveCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		021FAD411BB1C279001300A0 /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0286CFA01BE26FC000F76C86 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		021FAD431BB1C3D8001300A0 /* DataSource.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 022B0F991B2F2AE500DD4DCD /* DataSource.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		021FAD451BB2D77C001300A0 /* DataSourceItemReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021FAD441BB2D77C001300A0 /* DataSourceItemReceiver.swift */; };
 		022B0F9F1B2F2AE500DD4DCD /* DataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 022B0F9E1B2F2AE500DD4DCD /* DataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
