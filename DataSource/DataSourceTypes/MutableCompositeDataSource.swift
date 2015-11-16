@@ -1,6 +1,6 @@
 //
 //  MutableCompositeDataSource.swift
-//  YouHue
+//  DataSource
 //
 //  Created by Vadim Yelagin on 15/06/15.
 //  Copyright (c) 2015 Fueled. All rights reserved.

@@ -1,6 +1,6 @@
 //
 //  KVODataSource.swift
-//  YouHue
+//  DataSource
 //
 //  Created by Vadim Yelagin on 14/06/15.
 //  Copyright (c) 2015 Fueled. All rights reserved.
