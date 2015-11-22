@@ -31,9 +31,14 @@ public final class CompositeDataSource: DataSource {
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.innerDataSources = inner
 		for (index, dataSource) in inner.enumerate() {
-			self.disposable += dataSource.changes
-				.map { $0.mapSections(mapOutside(inner, index)) }
-				.observe(self.observer)
+			self.disposable += dataSource.changes.observeNext {
+				[weak self] change in
+				if let this = self {
+					let map = mapOutside(this.innerDataSources, index)
+					let mapped = change.mapSections(map)
+					this.observer.sendNext(mapped)
+				}
+			}
 		}
 	}
 
