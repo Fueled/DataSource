@@ -16,9 +16,15 @@ import ReactiveCocoa
 ///   to use your cell subclass with `TableViewDataSource`.
 ///   Instead you can implement `DataSourceItemReceiver`
 ///   protocol directly in any `UITableViewCell` subclass.
-public class TableViewCell: UITableViewCell, DataSourceItemReceiver {
+public class TableViewCell: UITableViewCell, DataSourceItemReceiver, Disposing {
 
 	public final let item = MutableProperty<Any?>(nil)
+
+	public final let disposable = CompositeDisposable()
+
+	deinit {
+		disposable.dispose()
+	}
 
 	public func ds_setItem(item: Any) {
 		self.item.value = item
