@@ -9,15 +9,15 @@
 import Foundation
 import ReactiveCocoa
 
-protocol Disposing: AnyObject {
+public protocol Disposing: AnyObject {
 
 	var disposable: CompositeDisposable { get }
 
 }
 
-extension SignalProducerType {
+public extension SignalProducerType {
 
-	func start<O: Disposing>(target: O, _ method: O -> Value -> ()) -> Disposable {
+	public func start<O: Disposing>(target: O, _ method: O -> Value -> ()) -> Disposable {
 		let disposable = self.startWithNext {
 			[weak target] value in
 			if let target = target {
