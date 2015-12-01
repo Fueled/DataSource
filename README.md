@@ -8,9 +8,13 @@ A data source for a `UITableView` or a `UICollectionView` can be constructed by 
 ## Requirements
 
 * iOS 8.0+
-* Xcode 7
-* [Carthage](https://github.com/Carthage/Carthage/releases/)
+* Xcode 7.1
 * [ReactiveCocoa](https://github.com/ReactiveCocoa/ReactiveCocoa/releases/)
+
+## Installation
+
+The recommended way to add DataSource to your project is with [Carthage](https://github.com/Carthage/Carthage/releases/).
+Add `github "Vadim-Yelagin/DataSource"` line to your Cartfile and proceed with your favorite way to update and integrate your Carthage dependencies.
 
 ## Example Project
 
