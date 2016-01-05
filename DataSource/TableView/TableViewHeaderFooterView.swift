@@ -10,7 +10,7 @@ import UIKit
 import ReactiveCocoa
 
 /// `UITableViewHeaderFooterView` subclass that implements `DataSourceItemReceiver` protocol
-/// by putting received dataSource items into a `MutableProperty` called `item`.
+/// by putting received dataSource items into a `MutableProperty` called `viewModel`.
 /// - note:
 ///   You are not required to subclass `TableViewHeaderFooterView` class in order
 ///   to use your cell subclass with `TableViewDataSourceWithHeaderFooterViews`.
@@ -18,7 +18,7 @@ import ReactiveCocoa
 ///   protocol directly in any `UITableViewHeaderFooterView` subclass.
 public class TableViewHeaderFooterView: UITableViewHeaderFooterView, DataSourceItemReceiver, Disposing {
 
-	public final let item = MutableProperty<Any?>(nil)
+	public final let viewModel = MutableProperty<Any?>(nil)
 
 	public final let disposable = CompositeDisposable()
 
@@ -27,7 +27,7 @@ public class TableViewHeaderFooterView: UITableViewHeaderFooterView, DataSourceI
 	}
 
 	public func ds_setItem(item: Any) {
-		self.item.value = item
+		self.viewModel.value = item
 	}
 
 }

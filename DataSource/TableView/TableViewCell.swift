@@ -10,7 +10,7 @@ import UIKit
 import ReactiveCocoa
 
 /// `UITableViewCell` subclass that implements `DataSourceItemReceiver` protocol
-/// by putting received dataSource items into a `MutableProperty` called `item`.
+/// by putting received dataSource items into a `MutableProperty` called `cellModel`.
 /// - note:
 ///   You are not required to subclass `TableViewCell` class in order
 ///   to use your cell subclass with `TableViewDataSource`.
@@ -18,7 +18,7 @@ import ReactiveCocoa
 ///   protocol directly in any `UITableViewCell` subclass.
 public class TableViewCell: UITableViewCell, DataSourceItemReceiver, Disposing {
 
-	public final let item = MutableProperty<Any?>(nil)
+	public final let cellModel = MutableProperty<Any?>(nil)
 
 	public final let disposable = CompositeDisposable()
 
@@ -27,7 +27,7 @@ public class TableViewCell: UITableViewCell, DataSourceItemReceiver, Disposing {
 	}
 
 	public func ds_setItem(item: Any) {
-		self.item.value = item
+		self.cellModel.value = item
 	}
 
 }
