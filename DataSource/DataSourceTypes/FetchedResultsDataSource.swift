@@ -8,6 +8,7 @@
 
 import Foundation
 import ReactiveCocoa
+import Result
 import CoreData
 
 /// `DataSource` implementation whose items are Core Data managed objects fetched by an `NSFetchedResultsController`.

@@ -8,6 +8,7 @@
 
 import Foundation
 import ReactiveCocoa
+import Result
 
 /// `DataSource` implementation that returns data from
 /// another dataSource (called inner dataSource) after transforming

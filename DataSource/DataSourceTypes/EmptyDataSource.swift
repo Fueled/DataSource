@@ -8,6 +8,7 @@
 
 import Foundation
 import ReactiveCocoa
+import Result
 
 /// `DataSource` implementation that has zero sections.
 ///

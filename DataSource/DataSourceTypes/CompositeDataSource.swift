@@ -8,6 +8,7 @@
 
 import Foundation
 import ReactiveCocoa
+import Result
 
 /// `DataSource` implementation that is composed of an array
 /// of other dataSources (called inner dataSources).

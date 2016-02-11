@@ -8,6 +8,7 @@
 
 import Foundation
 import ReactiveCocoa
+import Result
 
 /// `DataSource` implementation that has a single section and
 /// uses key-value coding (KVC) to returns objects from an ordered

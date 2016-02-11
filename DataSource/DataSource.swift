@@ -8,6 +8,7 @@
 
 import Foundation
 import ReactiveCocoa
+import Result
 
 /// A provider of items grouped into sections.
 /// Each section can optionally have a collection
