@@ -49,7 +49,7 @@
 		022B0FFD1B2F2D4C00DD4DCD /* TableViewDataSourceWithHeaderFooterViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FDA1B2F2D4C00DD4DCD /* TableViewDataSourceWithHeaderFooterViews.swift */; };
 		022B0FFE1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FDB1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift */; };
 		028602ED1B7E076300474D04 /* AutoDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602EC1B7E076200474D04 /* AutoDiff.swift */; };
-		028602F51B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift */; };
+		028602F51B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift */; };
 		0286CF9F1BE26FB900F76C86 /* ReactiveCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0286CF9E1BE26FB900F76C86 /* ReactiveCocoa.framework */; };
 		0286CFA11BE26FC000F76C86 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0286CFA01BE26FC000F76C86 /* Result.framework */; };
 		02EDED7C1C01B59C00376938 /* RACExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EDED7B1C01B59C00376938 /* RACExtensions.swift */; };
@@ -124,7 +124,7 @@
 		022B0FDA1B2F2D4C00DD4DCD /* TableViewDataSourceWithHeaderFooterViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewDataSourceWithHeaderFooterViews.swift; sourceTree = "<group>"; };
 		022B0FDB1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewHeaderFooterView.swift; sourceTree = "<group>"; };
 		028602EC1B7E076200474D04 /* AutoDiff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoDiff.swift; sourceTree = "<group>"; };
-		028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoDiffSectionsDataSouce.swift; sourceTree = "<group>"; };
+		028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoDiffSectionsDataSource.swift; sourceTree = "<group>"; };
 		0286CF9E1BE26FB900F76C86 /* ReactiveCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveCocoa.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0286CFA01BE26FC000F76C86 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02EDED7B1C01B59C00376938 /* RACExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RACExtensions.swift; sourceTree = "<group>"; };
@@ -239,7 +239,7 @@
 			children = (
 				028602EC1B7E076200474D04 /* AutoDiff.swift */,
 				022B0FC91B2F2D4C00DD4DCD /* AutoDiffDataSource.swift */,
-				028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift */,
+				028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift */,
 				022B0FCA1B2F2D4C00DD4DCD /* CompositeDataSource.swift */,
 				022B0FD31B2F2D4C00DD4DCD /* DataSourceSection.swift */,
 				022B0FCB1B2F2D4C00DD4DCD /* EmptyDataSource.swift */,
@@ -385,7 +385,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				028602F51B7E1D2B00474D04 /* AutoDiffSectionsDataSouce.swift in Sources */,
+				028602F51B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift in Sources */,
 				022B0FDF1B2F2D4C00DD4DCD /* CollectionViewReusableView.swift in Sources */,
 				022B0FF61B2F2D4C00DD4DCD /* StaticDataSource.swift in Sources */,
 				022B0FFB1B2F2D4C00DD4DCD /* TableViewDataSource.swift in Sources */,

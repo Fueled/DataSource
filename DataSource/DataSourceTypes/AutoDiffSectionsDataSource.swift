@@ -1,5 +1,5 @@
 //
-//  AutoDiffSectionsDataSouce.swift
+//  AutoDiffSectionsDataSource.swift
 //  DataSource
 //
 //  Created by Vadim Yelagin on 14/08/15.
@@ -20,16 +20,16 @@ import Result
 /// within each pair of matching sections and produces minimal sets of dataChanges
 /// for non-matching items within those sections.
 ///
-/// `AutoDiffSectionsDataSouce` never generates movement of sections.
+/// `AutoDiffSectionsDataSource` never generates movement of sections.
 /// Items are only compared withing sections, hence movement of items
 /// between sections are never found either.
 ///
-/// When comparing sections, `AutoDiffSectionsDataSouce` does not rely
+/// When comparing sections, `AutoDiffSectionsDataSource` does not rely
 /// on the items they comprise. Instead it calls `compareSections` that
 /// you provide it with. Sections are usually compared based on some
 /// userData that is used to identify them. Such data can be stored in
 /// sections' `supplementaryItems` dictionary under some user-defined key.
-public final class AutoDiffSectionsDataSouce<T>: DataSource {
+public final class AutoDiffSectionsDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
 	private let observer: Signal<DataChange, NoError>.Observer
