@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "022B0F981B2F2AE500DD4DCD"
                BuildableName = "DataSource.framework"
-               BlueprintName = "DataSource"
+               BlueprintName = "DataSource-iOS"
                ReferencedContainer = "container:DataSource.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -58,7 +58,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "022B0F981B2F2AE500DD4DCD"
             BuildableName = "DataSource.framework"
-            BlueprintName = "DataSource"
+            BlueprintName = "DataSource-iOS"
             ReferencedContainer = "container:DataSource.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -80,7 +80,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "022B0F981B2F2AE500DD4DCD"
             BuildableName = "DataSource.framework"
-            BlueprintName = "DataSource"
+            BlueprintName = "DataSource-iOS"
             ReferencedContainer = "container:DataSource.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -98,7 +98,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "022B0F981B2F2AE500DD4DCD"
             BuildableName = "DataSource.framework"
-            BlueprintName = "DataSource"
+            BlueprintName = "DataSource-iOS"
             ReferencedContainer = "container:DataSource.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
