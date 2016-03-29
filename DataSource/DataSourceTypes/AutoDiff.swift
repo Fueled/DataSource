@@ -99,22 +99,24 @@ public struct AutoDiff {
 			switch moves[iOld][iNew] {
 			case .FromPrevOld:
 				result.deleted.append(iOld)
-				--iOld
+				iOld -= 1
 			case .FromPrevNew:
 				result.inserted.append(iNew)
-				--iNew
+				iNew -= 1
 			default:
 				let pair = (iOld, iNew)
 				result.matches.append(pair)
-				--iOld
-				--iNew
+				iOld -= 1
+				iNew -= 1
 			}
 		}
 		while iOld >= 0 {
-			result.deleted.append(iOld--)
+			result.deleted.append(iOld)
+			iOld -= 1
 		}
 		while iNew >= 0 {
-			result.inserted.append(iNew--)
+			result.inserted.append(iNew)
+			iNew -= 1
 		}
 		if !findMoves {
 			return result

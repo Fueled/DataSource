@@ -8,12 +8,16 @@
 
 import Foundation
 
-func setSection(section: Int)(_ indexPath: NSIndexPath) -> NSIndexPath {
-	return NSIndexPath(forItem: indexPath.item, inSection: section)
+public extension NSIndexPath {
+
+	public func ds_setSection(section: Int) -> NSIndexPath {
+		return NSIndexPath(forItem: self.item, inSection: section)
+	}
+
 }
 
-func mapSection(map: Int -> Int)(_ indexPath: NSIndexPath) -> NSIndexPath {
-	return setSection(map(indexPath.section))(indexPath)
+func mapSection(transform: Int -> Int) -> NSIndexPath -> NSIndexPath {
+	return { $0.ds_setSection(transform($0.section)) }
 }
 
 public extension NSIndexSet {

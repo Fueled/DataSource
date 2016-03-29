@@ -62,13 +62,13 @@ public final class MutableCompositeDataSource: DataSource {
 
 	public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
 		let (index, innerSection) = mapInside(self._innerDataSources.value, indexPath.section)
-		let innerPath = setSection(innerSection)(indexPath)
+		let innerPath = indexPath.ds_setSection(innerSection)
 		return self._innerDataSources.value[index].itemAtIndexPath(innerPath)
 	}
 
 	public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
 		let (index, innerSection) = mapInside(self._innerDataSources.value, indexPath.section)
-		let innerPath = setSection(innerSection)(indexPath)
+		let innerPath = indexPath.ds_setSection(innerSection)
 		return self._innerDataSources.value[index].leafDataSourceAtIndexPath(innerPath)
 	}
 
@@ -117,10 +117,10 @@ public final class MutableCompositeDataSource: DataSource {
 	/// Moves an inner dataSource at a given index to another index
 	/// and emits a batch of `DataChangeMoveSection` for its sections.
 	public func moveDataSourceAtIndex(index oldIndex: Int, toIndex newIndex: Int) {
-		let oldLocation = mapOutside(self._innerDataSources.value, oldIndex)(innerSection: 0)
+		let oldLocation = mapOutside(self._innerDataSources.value, oldIndex)(0)
 		let dataSource = self._innerDataSources.value.removeAtIndex(oldIndex)
 		self._innerDataSources.value.insert(dataSource, atIndex: newIndex)
-		let newLocation = mapOutside(self._innerDataSources.value, newIndex)(innerSection: 0)
+		let newLocation = mapOutside(self._innerDataSources.value, newIndex)(0)
 		let numberOfSections = dataSource.numberOfSections
 		let batch: [DataChange] = (0 ..< numberOfSections).map {
 			DataChangeMoveSection(from: oldLocation + $0, to: newLocation + $0)
@@ -132,7 +132,7 @@ public final class MutableCompositeDataSource: DataSource {
 	}
 
 	private func sectionsOfDataSource(dataSource: DataSource, atIndex index: Int) -> NSIndexSet {
-		let location = mapOutside(self._innerDataSources.value, index)(innerSection: 0)
+		let location = mapOutside(self._innerDataSources.value, index)(0)
 		let length = dataSource.numberOfSections
 		return NSIndexSet(indexesInRange: NSMakeRange(location, length))
 	}

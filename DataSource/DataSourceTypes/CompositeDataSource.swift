@@ -67,13 +67,13 @@ public final class CompositeDataSource: DataSource {
 
 	public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
 		let (index, innerSection) = mapInside(self.innerDataSources, indexPath.section)
-		let innerPath = setSection(innerSection)(indexPath)
+		let innerPath = indexPath.ds_setSection(innerSection)
 		return self.innerDataSources[index].itemAtIndexPath(innerPath)
 	}
 
 	public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
 		let (index, innerSection) = mapInside(self.innerDataSources, indexPath.section)
-		let innerPath = setSection(innerSection)(indexPath)
+		let innerPath = indexPath.ds_setSection(innerSection)
 		return self.innerDataSources[index].leafDataSourceAtIndexPath(innerPath)
 	}
 
@@ -84,15 +84,17 @@ func mapInside(inner: [DataSource], _ outerSection: Int) -> (Int, Int) {
 	var index = 0
 	while innerSection >= inner[index].numberOfSections {
 		innerSection -= inner[index].numberOfSections
-		index++
+		index += 1
 	}
 	return (index, innerSection)
 }
 
-func mapOutside(inner: [DataSource], _ index: Int)(innerSection: Int) -> Int {
-	var outerSection = innerSection
-	for i in 0 ..< index {
-		outerSection += inner[i].numberOfSections
+func mapOutside(inner: [DataSource], _ index: Int) -> Int -> Int {
+	return { innerSection in
+		var outerSection = innerSection
+		for i in 0 ..< index {
+			outerSection += inner[i].numberOfSections
+		}
+		return outerSection
 	}
-	return outerSection
 }
