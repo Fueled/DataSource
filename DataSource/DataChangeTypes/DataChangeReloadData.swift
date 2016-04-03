@@ -10,6 +10,8 @@ import Foundation
 
 public struct DataChangeReloadData: DataChange {
 
+	public init() {}
+
 	public func apply(target: DataChangeTarget) {
 		target.ds_reloadData()
 	}
