@@ -25,11 +25,13 @@ public final class FetchedResultsDataSource: DataSource {
 	private let frc: NSFetchedResultsController
 	private let frcDelegate: Delegate
 
-	public init(fetchRequest: NSFetchRequest, managedObjectContext: NSManagedObjectContext, sectionNameKeyPath: String? = nil, cacheName: String? = nil) {
+	public init(fetchRequest: NSFetchRequest, managedObjectContext: NSManagedObjectContext, sectionNameKeyPath: String? = nil, cacheName: String? = nil) throws {
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: sectionNameKeyPath, cacheName: cacheName)
 		self.frcDelegate = Delegate(observer: self.observer)
 		self.frc.delegate = self.frcDelegate
+
+		try self.frc.performFetch()
 	}
 
 	deinit {
