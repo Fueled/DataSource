@@ -18,9 +18,9 @@ public protocol Disposing: AnyObject {
 public extension SignalProducerType {
 
 	public func start<O: Disposing>(target: O, _ method: O -> Value -> ()) -> Disposable {
-		let disposable = self.startWithNext {
+		let disposable = self.startWithResult {
 			[weak target] value in
-			if let target = target {
+			if let value = try? value.dematerialize(), let target = target {
 				method(target)(value)
 			}
 		}
