@@ -20,12 +20,12 @@ public struct DataChangeInsertItems: DataChange {
 		self.init([indexPath])
 	}
 
-	public func apply(_ target: DataChangeTarget) {
-		target.ds_insertItemsAtIndexPaths(indexPaths)
+	public func apply(to target: DataChangeTarget) {
+		target.ds_insertItems(at: indexPaths)
 	}
 
-	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeInsertItems {
-		return DataChangeInsertItems(indexPaths.map(mapSection(transform)))
+	public func mapSections(_ transform: (Int) -> Int) -> DataChangeInsertItems {
+		return DataChangeInsertItems(indexPaths.map { $0.ds_mapSection(transform) })
 	}
 
 }

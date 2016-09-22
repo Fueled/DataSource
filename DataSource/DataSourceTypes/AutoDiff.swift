@@ -20,10 +20,10 @@ public struct AutoDiff {
 		public func toSectionChanges() -> [DataChange] {
 			var changes: [DataChange] = []
 			if !deleted.isEmpty {
-				changes.append(DataChangeDeleteSections(sections: deleted))
+				changes.append(DataChangeDeleteSections(deleted))
 			}
 			if !inserted.isEmpty {
-				changes.append(DataChangeInsertSections(sections: inserted))
+				changes.append(DataChangeInsertSections(inserted))
 			}
 			for (from, to) in moved {
 				changes.append(DataChangeMoveSection(from: from, to: to))
@@ -141,16 +141,16 @@ public struct AutoDiff {
 		case match
 	}
 
-	fileprivate static func findFirst<S: Sequence>
-		(_ source: S, _ predicate: (S.Iterator.Element) -> Bool)
-		-> (Int, S.Iterator.Element)?
-	{
-		for (idx, s) in source.enumerated() {
-			if predicate(s) {
-				return (idx, s)
-			}
-		}
-		return nil
-	}
+}
 
+fileprivate func findFirst<S: Sequence>
+	(_ source: S, _ predicate: (S.Iterator.Element) -> Bool)
+	-> (Int, S.Iterator.Element)?
+{
+	for (idx, s) in source.enumerated() {
+		if predicate(s) {
+			return (idx, s)
+		}
+	}
+	return nil
 }

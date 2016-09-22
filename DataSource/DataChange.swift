@@ -14,10 +14,10 @@ import UIKit
 public protocol DataChange {
 
 	/// Applies the dataChange to a given target.
-	func apply(_ target: DataChangeTarget)
+	func apply(to target: DataChangeTarget)
 
 	/// Returns a new dataChange of same type with its section indicies transformed
 	/// by the given function.
-	func mapSections(_ transform: @escaping (Int) -> Int) -> Self
+	func mapSections(_ transform: (Int) -> Int) -> Self
 
 }

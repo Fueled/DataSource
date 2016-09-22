@@ -34,9 +34,7 @@ public protocol DataSourceItemReceiver {
 func configureReceiver(_ receiver: AnyObject, withItem item: Any) {
 	if let receiver = receiver as? DataSourceItemReceiver {
 		receiver.ds_setItem(item)
-	} else if let receiver = receiver as? DataSourceObjectItemReceiver,
-		let item = item as? AnyObject
-	{
-		receiver.ds_setItem(item)
+	} else if let receiver = receiver as? DataSourceObjectItemReceiver {
+		receiver.ds_setItem(item as AnyObject)
 	}
 }

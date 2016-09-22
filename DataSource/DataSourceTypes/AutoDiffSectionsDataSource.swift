@@ -115,11 +115,11 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 		return self.sections.value[section].supplementaryItems[kind]
 	}
 
-	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+	public func item(at indexPath: IndexPath) -> Any {
 		return self.sections.value[indexPath.section].items[indexPath.item]
 	}
 
-	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
+	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
 

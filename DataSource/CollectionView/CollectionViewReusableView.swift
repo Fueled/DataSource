@@ -16,15 +16,9 @@ import ReactiveSwift
 ///   to use your cell subclass with `CollectionViewDataSource`.
 ///   Instead you can implement `DataSourceItemReceiver`
 ///   protocol directly in any `UICollectionReusableView` subclass.
-open class CollectionViewReusableView: UICollectionReusableView, DataSourceItemReceiver, Disposing {
+open class CollectionViewReusableView: UICollectionReusableView, DataSourceItemReceiver {
 
 	public final let viewModel = MutableProperty<Any?>(nil)
-
-	public final let disposable = CompositeDisposable()
-
-	deinit {
-		disposable.dispose()
-	}
 
 	open func ds_setItem(_ item: Any) {
 		self.viewModel.value = item

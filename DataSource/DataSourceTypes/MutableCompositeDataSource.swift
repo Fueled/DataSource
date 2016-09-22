@@ -60,16 +60,16 @@ public final class MutableCompositeDataSource: DataSource {
 		return self._innerDataSources.value[index].supplementaryItemOfKind(kind, inSection: innerSection)
 	}
 
-	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+	public func item(at indexPath: IndexPath) -> Any {
 		let (index, innerSection) = mapInside(self._innerDataSources.value, indexPath.section)
 		let innerPath = indexPath.ds_setSection(innerSection)
-		return self._innerDataSources.value[index].itemAtIndexPath(innerPath)
+		return self._innerDataSources.value[index].item(at: innerPath)
 	}
 
-	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
+	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
 		let (index, innerSection) = mapInside(self._innerDataSources.value, indexPath.section)
 		let innerPath = indexPath.ds_setSection(innerSection)
-		return self._innerDataSources.value[index].leafDataSourceAtIndexPath(innerPath)
+		return self._innerDataSources.value[index].leafDataSource(at: innerPath)
 	}
 
 	/// Inserts a given inner dataSource at a given index
@@ -78,7 +78,7 @@ public final class MutableCompositeDataSource: DataSource {
 		let sections = self.sectionsOfDataSource(dataSource, atIndex: index)
 		self._innerDataSources.value.insert(dataSource, at: index)
 		if sections.count > 0 {
-			let change = DataChangeInsertSections(sections: sections)
+			let change = DataChangeInsertSections(sections)
 			self.observer.send(value: change)
 		}
 	}
@@ -89,7 +89,7 @@ public final class MutableCompositeDataSource: DataSource {
 		let sections = self.sectionsOfDataSourceAtIndex(index)
 		self._innerDataSources.value.remove(at: index)
 		if sections.count > 0 {
-			let change = DataChangeDeleteSections(sections: sections)
+			let change = DataChangeDeleteSections(sections)
 			self.observer.send(value: change)
 		}
 	}
@@ -101,11 +101,11 @@ public final class MutableCompositeDataSource: DataSource {
 		var batch: [DataChange] = []
 		let oldSections = self.sectionsOfDataSourceAtIndex(index)
 		if oldSections.count > 0 {
-			batch.append(DataChangeDeleteSections(sections: oldSections))
+			batch.append(DataChangeDeleteSections(oldSections))
 		}
 		let newSections = self.sectionsOfDataSource(dataSource, atIndex: index)
 		if newSections.count > 0 {
-			batch.append(DataChangeInsertSections(sections: newSections))
+			batch.append(DataChangeInsertSections(newSections))
 		}
 		self._innerDataSources.value[index] = dataSource
 		if !batch.isEmpty {

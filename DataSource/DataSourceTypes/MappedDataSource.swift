@@ -64,15 +64,15 @@ public final class MappedDataSource: DataSource {
 		return self.supplementaryTransform(kind, supplementaryItem)
 	}
 
-	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+	public func item(at indexPath: IndexPath) -> Any {
 		let inner = self.innerDataSource
-		let item = inner.itemAtIndexPath(indexPath)
+		let item = inner.item(at: indexPath)
 		return self.transform(item)
 	}
 
-	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
+	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
 		let inner = self.innerDataSource
-		return inner.leafDataSourceAtIndexPath(indexPath)
+		return inner.leafDataSource(at: indexPath)
 	}
 
 }

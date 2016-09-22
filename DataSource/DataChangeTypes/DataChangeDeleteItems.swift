@@ -20,12 +20,12 @@ public struct DataChangeDeleteItems: DataChange {
 		self.init([indexPath])
 	}
 
-	public func apply(_ target: DataChangeTarget) {
-		target.ds_deleteItemsAtIndexPaths(indexPaths)
+	public func apply(to target: DataChangeTarget) {
+		target.ds_deleteItems(at: indexPaths)
 	}
 
-	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeDeleteItems {
-		return DataChangeDeleteItems(indexPaths.map(mapSection(transform)))
+	public func mapSections(_ transform: (Int) -> Int) -> DataChangeDeleteItems {
+		return DataChangeDeleteItems(indexPaths.map { $0.ds_mapSection(transform) })
 	}
 
 }

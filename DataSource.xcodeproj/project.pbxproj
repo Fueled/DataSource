@@ -52,7 +52,6 @@
 		028602F51B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift */; };
 		0286CF9F1BE26FB900F76C86 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0286CF9E1BE26FB900F76C86 /* ReactiveSwift.framework */; };
 		0286CFA11BE26FC000F76C86 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0286CFA01BE26FC000F76C86 /* Result.framework */; };
-		02EDED7C1C01B59C00376938 /* RACExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EDED7B1C01B59C00376938 /* RACExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,7 +126,6 @@
 		028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoDiffSectionsDataSource.swift; sourceTree = "<group>"; };
 		0286CF9E1BE26FB900F76C86 /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0286CFA01BE26FC000F76C86 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		02EDED7B1C01B59C00376938 /* RACExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RACExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,7 +172,6 @@
 				021FAD441BB2D77C001300A0 /* DataSourceItemReceiver.swift */,
 				022B0FC81B2F2D4C00DD4DCD /* DataSourceTypes */,
 				022B0FD41B2F2D4C00DD4DCD /* IndexPathExtensions.swift */,
-				02EDED7B1C01B59C00376938 /* RACExtensions.swift */,
 				022B0F9C1B2F2AE500DD4DCD /* Supporting Files */,
 				022B0FD51B2F2D4C00DD4DCD /* TableView */,
 			);
@@ -412,7 +409,6 @@
 				022B0FF01B2F2D4C00DD4DCD /* FetchedResultsDataSource.swift in Sources */,
 				022B0FE81B2F2D4C00DD4DCD /* DataChangeMoveSection.swift in Sources */,
 				021FAD451BB2D77C001300A0 /* DataSourceItemReceiver.swift in Sources */,
-				02EDED7C1C01B59C00376938 /* RACExtensions.swift in Sources */,
 				022B0FF21B2F2D4C00DD4DCD /* MappedDataSource.swift in Sources */,
 				022B0FF71B2F2D4C00DD4DCD /* DataSourceSection.swift in Sources */,
 				022B0FDC1B2F2D4C00DD4DCD /* CollectionViewCell.swift in Sources */,

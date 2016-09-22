@@ -53,11 +53,11 @@ public final class StaticDataSource<T>: DataSource {
 		return self.sections[section].supplementaryItems[kind]
 	}
 
-	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+	public func item(at indexPath: IndexPath) -> Any {
 		return self.sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).item]
 	}
 
-	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
+	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
 

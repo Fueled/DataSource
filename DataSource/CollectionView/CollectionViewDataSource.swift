@@ -49,7 +49,7 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		self.disposable += self.dataSource.changes.observeValues {
 			[weak self] change in
 			if let collectionView = self?.collectionView {
-				change.apply(collectionView)
+				change.apply(to: collectionView)
 			}
 		}
 	}
@@ -58,21 +58,21 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		self.disposable.dispose()
 	}
 
-	open func configureCell(_ cell: UICollectionViewCell, forItemAtIndexPath indexPath: IndexPath) {
-		let item = self.dataSource.itemAtIndexPath(indexPath)
+	open func configureCell(_ cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		let item = self.dataSource.item(at: indexPath)
 		configureReceiver(cell, withItem: item)
 	}
 
-	open func configureCellForItemAtIndexPath(_ indexPath: IndexPath) {
+	open func configureCellForItem(at indexPath: IndexPath) {
 		if let cell = self.collectionView?.cellForItem(at: indexPath) {
-			self.configureCell(cell, forItemAtIndexPath: indexPath)
+			self.configureCell(cell, forItemAt: indexPath)
 		}
 	}
 
 	open func configureVisibleCells() {
 		if let indexPaths = self.collectionView?.indexPathsForVisibleItems {
 			for indexPath in indexPaths {
-				self.configureCellForItemAtIndexPath(indexPath)
+				self.configureCellForItem(at: indexPath)
 			}
 		}
 	}
@@ -97,10 +97,10 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 	}
 
 	open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		let item: Any = self.dataSource.itemAtIndexPath(indexPath)
+		let item: Any = self.dataSource.item(at: indexPath)
 		let reuseIdentifier = self.reuseIdentifierForItem(indexPath, item)
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-		self.configureCell(cell, forItemAtIndexPath: indexPath)
+		self.configureCell(cell, forItemAt: indexPath)
 		return cell
 	}
 

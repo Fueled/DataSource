@@ -42,7 +42,7 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 		self.disposable += self.dataSource.changes.observeValues {
 			[weak self] change in
 			if let tableView = self?.tableView {
-				change.apply(tableView)
+				change.apply(to: tableView)
 			}
 		}
 	}
@@ -51,21 +51,21 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 		self.disposable.dispose()
 	}
 
-	open func configureCell(_ cell: UITableViewCell, forRowAtIndexPath indexPath: IndexPath) {
-		let item = self.dataSource.itemAtIndexPath(indexPath)
+	open func configureCell(_ cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		let item = self.dataSource.item(at: indexPath)
 		configureReceiver(cell, withItem: item)
 	}
 
-	open func configureCellForRowAtIndexPath(_ indexPath: IndexPath) {
+	open func configureCellForRow(at indexPath: IndexPath) {
 		if let cell = self.tableView?.cellForRow(at: indexPath) {
-			self.configureCell(cell, forRowAtIndexPath: indexPath)
+			self.configureCell(cell, forRowAt: indexPath)
 		}
 	}
 
 	open func configureVisibleCells() {
 		if let indexPaths = self.tableView?.indexPathsForVisibleRows {
 			for indexPath in indexPaths {
-				self.configureCellForRowAtIndexPath(indexPath)
+				self.configureCellForRow(at: indexPath)
 			}
 		}
 	}
@@ -79,10 +79,10 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 	}
 
 	open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let item: Any = self.dataSource.itemAtIndexPath(indexPath)
+		let item: Any = self.dataSource.item(at: indexPath)
 		let reuseIdentifier = self.reuseIdentifierForItem(indexPath, item)
 		let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
-		self.configureCell(cell, forRowAtIndexPath: indexPath)
+		self.configureCell(cell, forRowAt: indexPath)
 		return cell
 	}
 

@@ -12,16 +12,16 @@ public struct DataChangeInsertSections: DataChange {
 
 	public let sections: [Int]
 
-	public init(sections: [Int]) {
+	public init(_ sections: [Int]) {
 		self.sections = sections
 	}
 
-	public func apply(_ target: DataChangeTarget) {
+	public func apply(to target: DataChangeTarget) {
 		target.ds_insertSections(sections)
 	}
 
-	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeInsertSections {
-		return DataChangeInsertSections(sections: sections.map(transform))
+	public func mapSections(_ transform: (Int) -> Int) -> DataChangeInsertSections {
+		return DataChangeInsertSections(sections.map(transform))
 	}
 
 }

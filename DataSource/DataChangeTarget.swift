@@ -18,21 +18,21 @@ public protocol DataChangeTarget {
 
 	func ds_performBatchChanges(_ batchChanges: @escaping ()->())
 
-	func ds_deleteItemsAtIndexPaths(_ indexPaths: [IndexPath])
+	func ds_deleteItems(at indexPaths: [IndexPath])
 
 	func ds_deleteSections(_ sections: [Int])
 
-	func ds_insertItemsAtIndexPaths(_ indexPaths: [IndexPath])
+	func ds_insertItems(at indexPaths: [IndexPath])
 
 	func ds_insertSections(_ sections: [Int])
 
-	func ds_moveItemAtIndexPath(_ oldIndexPath: IndexPath, toIndexPath newIndexPath: IndexPath)
+	func ds_moveItem(at oldIndexPath: IndexPath, to newIndexPath: IndexPath)
 
 	func ds_moveSection(_ oldSection: Int, toSection newSection: Int)
 
 	func ds_reloadData()
 
-	func ds_reloadItemsAtIndexPaths(_ indexPaths: [IndexPath])
+	func ds_reloadItems(at indexPaths: [IndexPath])
 
 	func ds_reloadSections(_ sections: [Int])
 

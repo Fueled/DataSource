@@ -17,23 +17,23 @@ extension UITableView: DataChangeTarget {
 		self.endUpdates()
 	}
 
-	public func ds_deleteItemsAtIndexPaths(_ indexPaths: [IndexPath]) {
+	public func ds_deleteItems(at indexPaths: [IndexPath]) {
 		self.deleteRows(at: indexPaths, with: .fade)
 	}
 
 	public func ds_deleteSections(_ sections: [Int]) {
-		self.deleteSections(IndexSet(integers: sections), with: .fade)
+		self.deleteSections(IndexSet(ds_integers: sections), with: .fade)
 	}
 
-	public func ds_insertItemsAtIndexPaths(_ indexPaths: [IndexPath]) {
+	public func ds_insertItems(at indexPaths: [IndexPath]) {
 		self.insertRows(at: indexPaths, with: .fade)
 	}
 
 	public func ds_insertSections(_ sections: [Int]) {
-		self.insertSections(IndexSet(integers: sections), with: .fade)
+		self.insertSections(IndexSet(ds_integers: sections), with: .fade)
 	}
 
-	public func ds_moveItemAtIndexPath(_ oldIndexPath: IndexPath, toIndexPath newIndexPath: IndexPath) {
+	public func ds_moveItem(at oldIndexPath: IndexPath, to newIndexPath: IndexPath) {
 		self.moveRow(at: oldIndexPath, to: newIndexPath)
 	}
 
@@ -45,12 +45,12 @@ extension UITableView: DataChangeTarget {
 		self.reloadData()
 	}
 
-	public func ds_reloadItemsAtIndexPaths(_ indexPaths: [IndexPath]) {
+	public func ds_reloadItems(at indexPaths: [IndexPath]) {
 		self.reloadRows(at: indexPaths, with: .fade)
 	}
 
 	public func ds_reloadSections(_ sections: [Int]) {
-		self.reloadSections(IndexSet(integers: sections), with: .fade)
+		self.reloadSections(IndexSet(ds_integers: sections), with: .fade)
 	}
 
 }

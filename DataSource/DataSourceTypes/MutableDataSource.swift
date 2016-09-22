@@ -48,17 +48,17 @@ public final class MutableDataSource<T>: DataSource {
 		return self.supplementaryItems[kind]
 	}
 
-	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+	public func item(at indexPath: IndexPath) -> Any {
 		return self._items.value[indexPath.item]
 	}
 
-	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
+	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
 
 	/// Inserts a given item at a given index
 	/// and emits `DataChangeInsertItems`.
-	public func insertItem(_ item: T, atIndex index: Int) {
+	public func insertItem(_ item: T, at index: Int) {
 		self._items.value.insert(item, at: index)
 		let change = DataChangeInsertItems(z(index))
 		self.observer.send(value: change)
@@ -66,7 +66,7 @@ public final class MutableDataSource<T>: DataSource {
 
 	/// Deletes an item at a given index
 	/// and emits `DataChangeDeleteItems`.
-	public func deleteItemAtIndex(_ index: Int) {
+	public func deleteItem(at index: Int) {
 		self._items.value.remove(at: index)
 		let change = DataChangeDeleteItems(z(index))
 		self.observer.send(value: change)
@@ -74,7 +74,7 @@ public final class MutableDataSource<T>: DataSource {
 
 	/// Replaces an item at a given index with another item
 	/// and emits `DataChangeReloadItems`.
-	public func replaceItemAtIndex(_ index: Int, withItem item: T) {
+	public func replaceItem(at index: Int, with item: T) {
 		self._items.value[index] = item
 		let change = DataChangeReloadItems(z(index))
 		self.observer.send(value: change)
@@ -82,7 +82,7 @@ public final class MutableDataSource<T>: DataSource {
 
 	/// Moves an item at a given index to another index
 	/// and emits `DataChangeMoveItem`.
-	public func moveItemAtIndex(index oldIndex: Int, toIndex newIndex: Int) {
+	public func moveItem(at oldIndex: Int, to newIndex: Int) {
 		let item = self._items.value.remove(at: oldIndex)
 		self._items.value.insert(item, at: newIndex)
 		let change = DataChangeMoveItem(from: z(oldIndex), to: z(newIndex))
@@ -91,9 +91,9 @@ public final class MutableDataSource<T>: DataSource {
 
 	/// Replaces all items with a given array of items
 	/// and emits `DataChangeReloadSections`.
-	public func replaceItemsWithItems(_ items: [T]) {
+	public func replaceItems(with items: [T]) {
 		self._items.value = items
-		let change = DataChangeReloadSections(sections: [0])
+		let change = DataChangeReloadSections([0])
 		self.observer.send(value: change)
 	}
 

@@ -29,7 +29,7 @@ public protocol DataSource {
 
 	func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any?
 
-	func itemAtIndexPath(_ indexPath: IndexPath) -> Any
+	func item(at indexPath: IndexPath) -> Any
 
 	/// Asks the dataSource for the original dataSource that contains the item at the given indexPath,
 	/// and the indexPath of that item in that dataSource.
@@ -39,6 +39,6 @@ public protocol DataSource {
 	/// and this method is called on it recursively.
 	///
 	/// Otherwise, this method simply returns the receiving dataSource itself and the given indexPath unchanged.
-	func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath)
+	func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath)
 
 }

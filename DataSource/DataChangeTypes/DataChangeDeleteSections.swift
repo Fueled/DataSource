@@ -12,16 +12,16 @@ public struct DataChangeDeleteSections: DataChange {
 
 	public let sections: [Int]
 
-	public init(sections: [Int]) {
+	public init(_ sections: [Int]) {
 		self.sections = sections
 	}
 
-	public func apply(_ target: DataChangeTarget) {
+	public func apply(to target: DataChangeTarget) {
 		target.ds_deleteSections(sections)
 	}
 
-	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeDeleteSections {
-		return DataChangeDeleteSections(sections: sections.map(transform))
+	public func mapSections(_ transform: (Int) -> Int) -> DataChangeDeleteSections {
+		return DataChangeDeleteSections(sections.map(transform))
 	}
 
 }

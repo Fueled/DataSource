@@ -16,15 +16,15 @@ public struct DataChangeBatch: DataChange {
 		self.changes = changes
 	}
 
-	public func apply(_ target: DataChangeTarget) {
+	public func apply(to target: DataChangeTarget) {
 		target.ds_performBatchChanges {
 			for change in self.changes {
-				change.apply(target)
+				change.apply(to: target)
 			}
 		}
 	}
 
-	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeBatch {
+	public func mapSections(_ transform: (Int) -> Int) -> DataChangeBatch {
 		let mapped = self.changes.map { $0.mapSections(transform) }
 		return DataChangeBatch(mapped)
 	}

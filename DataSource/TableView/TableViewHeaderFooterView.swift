@@ -16,15 +16,9 @@ import ReactiveSwift
 ///   to use your cell subclass with `TableViewDataSourceWithHeaderFooterViews`.
 ///   Instead you can implement `DataSourceItemReceiver`
 ///   protocol directly in any `UITableViewHeaderFooterView` subclass.
-open class TableViewHeaderFooterView: UITableViewHeaderFooterView, DataSourceItemReceiver, Disposing {
+open class TableViewHeaderFooterView: UITableViewHeaderFooterView, DataSourceItemReceiver {
 
 	public final let viewModel = MutableProperty<Any?>(nil)
-
-	public final let disposable = CompositeDisposable()
-
-	deinit {
-		disposable.dispose()
-	}
 
 	open func ds_setItem(_ item: Any) {
 		self.viewModel.value = item

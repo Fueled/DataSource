@@ -65,16 +65,16 @@ public final class CompositeDataSource: DataSource {
 		return self.innerDataSources[index].supplementaryItemOfKind(kind, inSection: innerSection)
 	}
 
-	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+	public func item(at indexPath: IndexPath) -> Any {
 		let (index, innerSection) = mapInside(self.innerDataSources, (indexPath as NSIndexPath).section)
 		let innerPath = indexPath.ds_setSection(innerSection)
-		return self.innerDataSources[index].itemAtIndexPath(innerPath)
+		return self.innerDataSources[index].item(at: innerPath)
 	}
 
-	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
+	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
 		let (index, innerSection) = mapInside(self.innerDataSources, (indexPath as NSIndexPath).section)
 		let innerPath = indexPath.ds_setSection(innerSection)
-		return self.innerDataSources[index].leafDataSourceAtIndexPath(innerPath)
+		return self.innerDataSources[index].leafDataSource(at: innerPath)
 	}
 
 }

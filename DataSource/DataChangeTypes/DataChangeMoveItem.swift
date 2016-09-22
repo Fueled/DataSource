@@ -18,13 +18,12 @@ public struct DataChangeMoveItem: DataChange {
 		self.toIndexPath = to
 	}
 
-	public func apply(_ target: DataChangeTarget) {
-		target.ds_moveItemAtIndexPath(fromIndexPath, toIndexPath: toIndexPath)
+	public func apply(to target: DataChangeTarget) {
+		target.ds_moveItem(at: fromIndexPath, to: toIndexPath)
 	}
 
-	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeMoveItem {
-		let f = mapSection(transform)
-		return DataChangeMoveItem(from: f(fromIndexPath), to: f(toIndexPath))
+	public func mapSections(_ transform: (Int) -> Int) -> DataChangeMoveItem {
+		return DataChangeMoveItem(from: fromIndexPath.ds_mapSection(transform), to: toIndexPath.ds_mapSection(transform))
 	}
 
 }

@@ -61,12 +61,12 @@ public final class FetchedResultsDataSource: DataSource {
 		return sectionInfo.name
 	}
 
-	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+	public func item(at indexPath: IndexPath) -> Any {
 		let sectionInfo = self.infoForSection((indexPath as NSIndexPath).section)
 		return sectionInfo.objects![(indexPath as NSIndexPath).item]
 	}
 
-	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
+	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
 
@@ -95,9 +95,9 @@ public final class FetchedResultsDataSource: DataSource {
 		{
 			switch type {
 			case .insert:
-				self.currentBatch.append(DataChangeInsertSections(sections: [sectionIndex]))
+				self.currentBatch.append(DataChangeInsertSections([sectionIndex]))
 			case .delete:
-				self.currentBatch.append(DataChangeDeleteSections(sections: [sectionIndex]))
+				self.currentBatch.append(DataChangeDeleteSections([sectionIndex]))
 			default:
 				break
 			}

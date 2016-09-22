@@ -49,11 +49,11 @@ public final class  KVODataSource: NSObject, DataSource {
 		return self.supplementaryItems[kind]
 	}
 
-	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+	public func item(at indexPath: IndexPath) -> Any {
 		return self.items[(indexPath as NSIndexPath).item]
 	}
 
-	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
+	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
 
@@ -85,7 +85,7 @@ public final class  KVODataSource: NSObject, DataSource {
 		case .replacement:
 			self.observer.send(value: DataChangeReloadItems(indexPaths))
 		case .setting:
-			self.observer.send(value: DataChangeReloadSections(sections: [0]))
+			self.observer.send(value: DataChangeReloadSections([0]))
 		}
 	}
 

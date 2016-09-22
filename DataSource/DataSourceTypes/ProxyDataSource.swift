@@ -75,14 +75,14 @@ public final class ProxyDataSource: DataSource {
 		return inner.supplementaryItemOfKind(kind, inSection: section)
 	}
 
-	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+	public func item(at indexPath: IndexPath) -> Any {
 		let inner = self.innerDataSource.value
-		return inner.itemAtIndexPath(indexPath)
+		return inner.item(at: indexPath)
 	}
 
-	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
+	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
 		let inner = self.innerDataSource.value
-		return inner.leafDataSourceAtIndexPath(indexPath)
+		return inner.leafDataSource(at: indexPath)
 	}
 
 }
@@ -94,11 +94,11 @@ private func changeDataSources(_ old: DataSource, _ new: DataSource, _ animateCh
 	var batch: [DataChange] = []
 	let oldSections = old.numberOfSections
 	if oldSections > 0 {
-		batch.append(DataChangeDeleteSections(sections: Array(0 ..< oldSections)))
+		batch.append(DataChangeDeleteSections(Array(0 ..< oldSections)))
 	}
 	let newSections = new.numberOfSections
 	if newSections > 0 {
-		batch.append(DataChangeInsertSections(sections: Array(0 ..< newSections)))
+		batch.append(DataChangeInsertSections(Array(0 ..< newSections)))
 	}
 	return DataChangeBatch(batch)
 }

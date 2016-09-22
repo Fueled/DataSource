@@ -12,16 +12,16 @@ public struct DataChangeReloadSections: DataChange {
 
 	public let sections: [Int]
 
-	public init(sections: [Int]) {
+	public init(_ sections: [Int]) {
 		self.sections = sections
 	}
 
-	public func apply(_ target: DataChangeTarget) {
+	public func apply(to target: DataChangeTarget) {
 		target.ds_reloadSections(sections)
 	}
 
-	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeReloadSections {
-		return DataChangeReloadSections(sections: sections.map(transform))
+	public func mapSections(_ transform: (Int) -> Int) -> DataChangeReloadSections {
+		return DataChangeReloadSections(sections.map(transform))
 	}
 
 }

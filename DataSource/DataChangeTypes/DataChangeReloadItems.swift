@@ -20,12 +20,12 @@ public struct DataChangeReloadItems: DataChange {
 		self.init([indexPath])
 	}
 
-	public func apply(_ target: DataChangeTarget) {
-		target.ds_reloadItemsAtIndexPaths(indexPaths)
+	public func apply(to target: DataChangeTarget) {
+		target.ds_reloadItems(at: indexPaths)
 	}
 
-	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeReloadItems {
-		return DataChangeReloadItems(indexPaths.map(mapSection(transform)))
+	public func mapSections(_ transform: (Int) -> Int) -> DataChangeReloadItems {
+		return DataChangeReloadItems(indexPaths.map { $0.ds_mapSection(transform) })
 	}
 
 }

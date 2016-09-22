@@ -29,19 +29,19 @@ public final class EmptyDataSource: DataSource {
 	public let numberOfSections = 0
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		fatalError("Trying to access EmptyDataSource.numberOfItemsInSection")
+		fatalError("Trying to access EmptyDataSource.numberOfItemsInSection(_:)")
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		fatalError("Trying to access EmptyDataSource.supplementaryItemOfKind")
+		fatalError("Trying to access EmptyDataSource.supplementaryItemOfKind(_:inSection:)")
 	}
 
-	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
-		fatalError("Trying to access EmptyDataSource.itemAtIndexPath")
+	public func item(at indexPath: IndexPath) -> Any {
+		fatalError("Trying to access EmptyDataSource.item(at:)")
 	}
 
-	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
-		fatalError("Trying to access EmptyDataSource.leafDataSourceAtIndexPath")
+	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
+		fatalError("Trying to access EmptyDataSource.leafDataSource(at:)")
 	}
 
 }

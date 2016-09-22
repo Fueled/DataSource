@@ -14,17 +14,17 @@ public extension IndexPath {
 		return IndexPath(item: self.item, section: section)
 	}
 
-}
+	public func ds_mapSection(_ transform: (Int) -> Int) -> IndexPath {
+		return IndexPath(item: self.item, section: transform(self.section))
+	}
 
-func mapSection(_ transform: @escaping (Int) -> Int) -> (IndexPath) -> IndexPath {
-	return { $0.ds_setSection(transform($0.section)) }
 }
 
 public extension IndexSet {
 
-	public init<S: Sequence>(integers: S) where S.Iterator.Element == Int {
+	public init<S: Sequence>(ds_integers: S) where S.Iterator.Element == Int {
 		var res = IndexSet()
-		for i in integers {
+		for i in ds_integers {
 			res.insert(i)
 		}
 		self.init(res)

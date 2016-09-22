@@ -15,23 +15,23 @@ extension UICollectionView: DataChangeTarget {
 		self.performBatchUpdates(batchChanges, completion: nil)
 	}
 
-	public func ds_deleteItemsAtIndexPaths(_ indexPaths: [IndexPath]) {
+	public func ds_deleteItems(at indexPaths: [IndexPath]) {
 		self.deleteItems(at: indexPaths)
 	}
 
 	public func ds_deleteSections(_ sections: [Int]) {
-		self.deleteSections(IndexSet(integers: sections))
+		self.deleteSections(IndexSet(ds_integers: sections))
 	}
 
-	public func ds_insertItemsAtIndexPaths(_ indexPaths: [IndexPath]) {
+	public func ds_insertItems(at indexPaths: [IndexPath]) {
 		self.insertItems(at: indexPaths)
 	}
 
 	public func ds_insertSections(_ sections: [Int]) {
-		self.insertSections(IndexSet(integers: sections))
+		self.insertSections(IndexSet(ds_integers: sections))
 	}
 
-	public func ds_moveItemAtIndexPath(_ oldIndexPath: IndexPath, toIndexPath newIndexPath: IndexPath) {
+	public func ds_moveItem(at oldIndexPath: IndexPath, to newIndexPath: IndexPath) {
 		self.moveItem(at: oldIndexPath, to: newIndexPath)
 	}
 
@@ -43,12 +43,12 @@ extension UICollectionView: DataChangeTarget {
 		self.reloadData()
 	}
 
-	public func ds_reloadItemsAtIndexPaths(_ indexPaths: [IndexPath]) {
+	public func ds_reloadItems(at indexPaths: [IndexPath]) {
 		self.reloadItems(at: indexPaths)
 	}
 
 	public func ds_reloadSections(_ sections: [Int]) {
-		self.reloadSections(IndexSet(integers: sections))
+		self.reloadSections(IndexSet(ds_integers: sections))
 	}
 
 }
