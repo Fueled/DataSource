@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 /// `DataSource` implementation that returns data from
@@ -20,22 +20,22 @@ import Result
 public final class MappedDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Observer<DataChange, NoError>
-	private let disposable: Disposable?
+	fileprivate let observer: Observer<DataChange, NoError>
+	fileprivate let disposable: Disposable?
 
 	public let innerDataSource: DataSource
 
 	/// Function that is applied to items of the inner dataSource
 	/// before they are returned as items of the mappedDataSource.
-	private let transform: Any -> Any
+	fileprivate let transform: (Any) -> Any
 
 	/// Function that is applied to supplementary items of the inner dataSource
 	/// before they are returned as supplementary items of the mappedDataSource.
 	///
 	/// The first parameter is the kind of the supplementary item.
-	private let supplementaryTransform: (String, Any?) -> Any?
+	fileprivate let supplementaryTransform: (String, Any?) -> Any?
 
-	public init(_ inner: DataSource, supplementaryTransform: ((String, Any?) -> Any?) = { $1 }, transform: Any -> Any) {
+	public init(_ inner: DataSource, supplementaryTransform: @escaping ((String, Any?) -> Any?) = { $1 }, transform: @escaping (Any) -> Any) {
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.innerDataSource = inner
 		self.transform = transform
@@ -53,24 +53,24 @@ public final class MappedDataSource: DataSource {
 		return inner.numberOfSections
 	}
 
-	public func numberOfItemsInSection(section: Int) -> Int {
+	public func numberOfItemsInSection(_ section: Int) -> Int {
 		let inner = self.innerDataSource
 		return inner.numberOfItemsInSection(section)
 	}
 
-	public func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any? {
+	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
 		let inner = self.innerDataSource
 		let supplementaryItem = inner.supplementaryItemOfKind(kind, inSection: section)
 		return self.supplementaryTransform(kind, supplementaryItem)
 	}
 
-	public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
+	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
 		let inner = self.innerDataSource
 		let item = inner.itemAtIndexPath(indexPath)
 		return self.transform(item)
 	}
 
-	public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
+	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
 		let inner = self.innerDataSource
 		return inner.leafDataSourceAtIndexPath(indexPath)
 	}

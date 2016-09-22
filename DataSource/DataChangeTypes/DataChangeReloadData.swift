@@ -12,11 +12,11 @@ public struct DataChangeReloadData: DataChange {
 
 	public init() {}
 
-	public func apply(target: DataChangeTarget) {
+	public func apply(_ target: DataChangeTarget) {
 		target.ds_reloadData()
 	}
 
-	public func mapSections(map: Int -> Int) -> DataChangeReloadData {
+	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeReloadData {
 		return self
 	}
 

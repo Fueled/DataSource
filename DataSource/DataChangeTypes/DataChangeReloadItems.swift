@@ -10,22 +10,22 @@ import Foundation
 
 public struct DataChangeReloadItems: DataChange {
 
-	public let indexPaths: [NSIndexPath]
+	public let indexPaths: [IndexPath]
 
-	public init(_ indexPaths: [NSIndexPath]) {
+	public init(_ indexPaths: [IndexPath]) {
 		self.indexPaths = indexPaths
 	}
 
-	public init (_ indexPath: NSIndexPath) {
+	public init (_ indexPath: IndexPath) {
 		self.init([indexPath])
 	}
 
-	public func apply(target: DataChangeTarget) {
+	public func apply(_ target: DataChangeTarget) {
 		target.ds_reloadItemsAtIndexPaths(indexPaths)
 	}
 
-	public func mapSections(map: Int -> Int) -> DataChangeReloadItems {
-		return DataChangeReloadItems(indexPaths.map(mapSection(map)))
+	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeReloadItems {
+		return DataChangeReloadItems(indexPaths.map(mapSection(transform)))
 	}
 
 }

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ReactiveCocoa
+import ReactiveSwift
 
 /// `UICollectionViewCell` subclass that implements `DataSourceItemReceiver` protocol
 /// by putting received dataSource items into a `MutableProperty` called `cellModel`.
@@ -16,7 +16,7 @@ import ReactiveCocoa
 ///   to use your cell subclass with `CollectionViewDataSource`.
 ///   Instead you can implement `DataSourceItemReceiver`
 ///   protocol directly in any `UICollectionViewCell` subclass.
-public class CollectionViewCell: UICollectionViewCell, DataSourceItemReceiver, Disposing {
+open class CollectionViewCell: UICollectionViewCell, DataSourceItemReceiver, Disposing {
 
 	public final let cellModel = MutableProperty<Any?>(nil)
 
@@ -26,7 +26,7 @@ public class CollectionViewCell: UICollectionViewCell, DataSourceItemReceiver, D
 		disposable.dispose()
 	}
 
-	public func ds_setItem(item: Any) {
+	open func ds_setItem(_ item: Any) {
 		self.cellModel.value = item
 	}
 

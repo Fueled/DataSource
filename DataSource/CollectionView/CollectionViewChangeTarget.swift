@@ -11,31 +11,31 @@ import UIKit
 
 extension UICollectionView: DataChangeTarget {
 
-	public func ds_performBatchChanges(batchChanges: () -> ()) {
+	public func ds_performBatchChanges(_ batchChanges: @escaping () -> ()) {
 		self.performBatchUpdates(batchChanges, completion: nil)
 	}
 
-	public func ds_deleteItemsAtIndexPaths(indexPaths: [NSIndexPath]) {
-		self.deleteItemsAtIndexPaths(indexPaths)
+	public func ds_deleteItemsAtIndexPaths(_ indexPaths: [IndexPath]) {
+		self.deleteItems(at: indexPaths)
 	}
 
-	public func ds_deleteSections(sections: NSIndexSet) {
-		self.deleteSections(sections)
+	public func ds_deleteSections(_ sections: [Int]) {
+		self.deleteSections(IndexSet(integers: sections))
 	}
 
-	public func ds_insertItemsAtIndexPaths(indexPaths: [NSIndexPath]) {
-		self.insertItemsAtIndexPaths(indexPaths)
+	public func ds_insertItemsAtIndexPaths(_ indexPaths: [IndexPath]) {
+		self.insertItems(at: indexPaths)
 	}
 
-	public func ds_insertSections(sections: NSIndexSet) {
-		self.insertSections(sections)
+	public func ds_insertSections(_ sections: [Int]) {
+		self.insertSections(IndexSet(integers: sections))
 	}
 
-	public func ds_moveItemAtIndexPath(oldIndexPath: NSIndexPath, toIndexPath newIndexPath: NSIndexPath) {
-		self.moveItemAtIndexPath(oldIndexPath, toIndexPath: newIndexPath)
+	public func ds_moveItemAtIndexPath(_ oldIndexPath: IndexPath, toIndexPath newIndexPath: IndexPath) {
+		self.moveItem(at: oldIndexPath, to: newIndexPath)
 	}
 
-	public func ds_moveSection(oldSection: Int, toSection newSection: Int) {
+	public func ds_moveSection(_ oldSection: Int, toSection newSection: Int) {
 		self.moveSection(oldSection, toSection: newSection)
 	}
 
@@ -43,12 +43,12 @@ extension UICollectionView: DataChangeTarget {
 		self.reloadData()
 	}
 
-	public func ds_reloadItemsAtIndexPaths(indexPaths: [NSIndexPath]) {
-		self.reloadItemsAtIndexPaths(indexPaths)
+	public func ds_reloadItemsAtIndexPaths(_ indexPaths: [IndexPath]) {
+		self.reloadItems(at: indexPaths)
 	}
 
-	public func ds_reloadSections(sections: NSIndexSet) {
-		self.reloadSections(sections)
+	public func ds_reloadSections(_ sections: [Int]) {
+		self.reloadSections(IndexSet(integers: sections))
 	}
 
 }

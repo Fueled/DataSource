@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 /// `DataSource` implementation that has one section of items of type T.
@@ -19,8 +19,8 @@ import Result
 public final class AutoDiffDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Observer<DataChange, NoError>
-	private let disposable: Disposable
+	fileprivate let observer: Observer<DataChange, NoError>
+	fileprivate let disposable: Disposable
 
 	/// Mutable array of items in the only section of the autoDiffDataSource.
 	///
@@ -45,19 +45,19 @@ public final class AutoDiffDataSource<T>: DataSource {
 	public init(_ items: [T] = [],
 		supplementaryItems: [String: Any] = [:],
 		findMoves: Bool = true,
-		compare: (T, T) -> Bool)
+		compare: @escaping (T, T) -> Bool)
 	{
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.items = MutableProperty(items)
 		self.supplementaryItems = supplementaryItems
 		self.compare = compare
-		func autoDiff(old: [T], new: [T]) -> DataChange {
+		func autoDiff(_ old: [T], new: [T]) -> DataChange {
 			let result = AutoDiff.compare(old: old, new: new, findMoves: findMoves, compare: compare)
 			return DataChangeBatch(result.toItemChanges())
 		}
 		self.disposable = self.items.producer
 			.combinePrevious(items)
-			.skip(1)
+			.skip(first: 1)
 			.map(autoDiff)
 			.start(self.observer)
 	}
@@ -69,19 +69,19 @@ public final class AutoDiffDataSource<T>: DataSource {
 
 	public let numberOfSections = 1
 
-	public func numberOfItemsInSection(section: Int) -> Int {
+	public func numberOfItemsInSection(_ section: Int) -> Int {
 		return self.items.value.count
 	}
 
-	public func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any? {
+	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
 		return self.supplementaryItems[kind]
 	}
 
-	public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
+	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
 		return self.items.value[indexPath.item]
 	}
 
-	public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
+	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
 

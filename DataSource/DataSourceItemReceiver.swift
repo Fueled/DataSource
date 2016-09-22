@@ -6,7 +6,7 @@
 //  Copyright © 2015 Fueled. All rights reserved.
 //
 
-import ReactiveCocoa
+import ReactiveSwift
 
 /// Implement this protocol in your `UITableViewCell` or `UICollectionView` subclass
 /// to make it receive corresponding items of the dataSource associated
@@ -15,7 +15,7 @@ import ReactiveCocoa
 ///   For Objective-C classes see `DataSourceObjectItemReceiver`.
 public protocol DataSourceItemReceiver {
 
-	func ds_setItem(item: Any)
+	func ds_setItem(_ item: Any)
 
 }
 
@@ -27,15 +27,15 @@ public protocol DataSourceItemReceiver {
 ///   your class in Objective-C.
 @objc public protocol DataSourceObjectItemReceiver {
 
-	@objc func ds_setItem(item: AnyObject)
+	@objc func ds_setItem(_ item: AnyObject)
 
 }
 
-func configureReceiver(receiver: AnyObject, withItem item: Any) {
+func configureReceiver(_ receiver: AnyObject, withItem item: Any) {
 	if let receiver = receiver as? DataSourceItemReceiver {
 		receiver.ds_setItem(item)
 	} else if let receiver = receiver as? DataSourceObjectItemReceiver,
-		item = item as? AnyObject
+		let item = item as? AnyObject
 	{
 		receiver.ds_setItem(item)
 	}

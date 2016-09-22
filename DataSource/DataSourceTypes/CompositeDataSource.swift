@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 /// `DataSource` implementation that is composed of an array
@@ -23,21 +23,21 @@ import Result
 public final class CompositeDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Signal<DataChange, NoError>.Observer
-	private let disposable = CompositeDisposable()
+	fileprivate let observer: Signal<DataChange, NoError>.Observer
+	fileprivate let disposable = CompositeDisposable()
 
 	public let innerDataSources: [DataSource]
 
 	public init(_ inner: [DataSource]) {
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.innerDataSources = inner
-		for (index, dataSource) in inner.enumerate() {
-			self.disposable += dataSource.changes.observeNext {
+		for (index, dataSource) in inner.enumerated() {
+			self.disposable += dataSource.changes.observeValues {
 				[weak self] change in
 				if let this = self {
 					let map = mapOutside(this.innerDataSources, index)
 					let mapped = change.mapSections(map)
-					this.observer.sendNext(mapped)
+					this.observer.send(value: mapped)
 				}
 			}
 		}
@@ -55,31 +55,31 @@ public final class CompositeDataSource: DataSource {
 		}
 	}
 
-	public func numberOfItemsInSection(section: Int) -> Int {
+	public func numberOfItemsInSection(_ section: Int) -> Int {
 		let (index, innerSection) = mapInside(self.innerDataSources, section)
 		return self.innerDataSources[index].numberOfItemsInSection(innerSection)
 	}
 
-	public func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any? {
+	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
 		let (index, innerSection) = mapInside(self.innerDataSources, section)
 		return self.innerDataSources[index].supplementaryItemOfKind(kind, inSection: innerSection)
 	}
 
-	public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
-		let (index, innerSection) = mapInside(self.innerDataSources, indexPath.section)
+	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+		let (index, innerSection) = mapInside(self.innerDataSources, (indexPath as NSIndexPath).section)
 		let innerPath = indexPath.ds_setSection(innerSection)
 		return self.innerDataSources[index].itemAtIndexPath(innerPath)
 	}
 
-	public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
-		let (index, innerSection) = mapInside(self.innerDataSources, indexPath.section)
+	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
+		let (index, innerSection) = mapInside(self.innerDataSources, (indexPath as NSIndexPath).section)
 		let innerPath = indexPath.ds_setSection(innerSection)
 		return self.innerDataSources[index].leafDataSourceAtIndexPath(innerPath)
 	}
 
 }
 
-func mapInside(inner: [DataSource], _ outerSection: Int) -> (Int, Int) {
+func mapInside(_ inner: [DataSource], _ outerSection: Int) -> (Int, Int) {
 	var innerSection = outerSection
 	var index = 0
 	while innerSection >= inner[index].numberOfSections {
@@ -89,7 +89,7 @@ func mapInside(inner: [DataSource], _ outerSection: Int) -> (Int, Int) {
 	return (index, innerSection)
 }
 
-func mapOutside(inner: [DataSource], _ index: Int) -> Int -> Int {
+func mapOutside(_ inner: [DataSource], _ index: Int) -> (Int) -> Int {
 	return { innerSection in
 		var outerSection = innerSection
 		for i in 0 ..< index {

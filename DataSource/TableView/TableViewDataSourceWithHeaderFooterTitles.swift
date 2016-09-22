@@ -16,14 +16,14 @@ import UIKit
 ///
 /// DataSource supplementary items of `UICollectionElementKindSectionFooter` kind
 /// are used as section footer titles, provided they are of `String` type.
-public class TableViewDataSourceWithHeaderFooterTitles: TableViewDataSource {
+open class TableViewDataSourceWithHeaderFooterTitles: TableViewDataSource {
 
-	public func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+	open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 		let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionHeader, inSection: section)
 		return item as? String
 	}
 
-	public func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+	open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
 		let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionFooter, inSection: section)
 		return item as? String
 	}

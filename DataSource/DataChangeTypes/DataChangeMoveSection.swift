@@ -18,12 +18,12 @@ public struct DataChangeMoveSection: DataChange {
 		self.toSection = to
 	}
 
-	public func apply(target: DataChangeTarget) {
+	public func apply(_ target: DataChangeTarget) {
 		target.ds_moveSection(fromSection, toSection: toSection)
 	}
 
-	public func mapSections(map: Int -> Int) -> DataChangeMoveSection {
-		return DataChangeMoveSection(from: map(fromSection), to: map(toSection))
+	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeMoveSection {
+		return DataChangeMoveSection(from: transform(fromSection), to: transform(toSection))
 	}
 
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import ReactiveCocoa
+import ReactiveSwift
 
 /// An object that implements `UICollectionViewDataSource` protocol
 /// by returning the data from an associated dataSource.
@@ -28,13 +28,13 @@ import ReactiveCocoa
 ///
 /// A collectionViewDataSource observes changes of the associated dataSource
 /// and applies those changes to the associated collectionView.
-public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
+open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
 	@IBOutlet public final var collectionView: UICollectionView?
 
 	public final let dataSource = ProxyDataSource()
 
-	public final var reuseIdentifierForItem: (NSIndexPath, Any) -> String = {
+	public final var reuseIdentifierForItem: (IndexPath, Any) -> String = {
 		_ in "DefaultCell"
 	}
 
@@ -42,11 +42,11 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		_ in "DefaultSupplementaryView"
 	}
 
-	private let disposable = CompositeDisposable()
+	fileprivate let disposable = CompositeDisposable()
 
 	public override init() {
 		super.init()
-		self.disposable += self.dataSource.changes.observeNext {
+		self.disposable += self.dataSource.changes.observeValues {
 			[weak self] change in
 			if let collectionView = self?.collectionView {
 				change.apply(collectionView)
@@ -58,48 +58,48 @@ public class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		self.disposable.dispose()
 	}
 
-	public func configureCell(cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+	open func configureCell(_ cell: UICollectionViewCell, forItemAtIndexPath indexPath: IndexPath) {
 		let item = self.dataSource.itemAtIndexPath(indexPath)
 		configureReceiver(cell, withItem: item)
 	}
 
-	public func configureCellForItemAtIndexPath(indexPath: NSIndexPath) {
-		if let cell = self.collectionView?.cellForItemAtIndexPath(indexPath) {
+	open func configureCellForItemAtIndexPath(_ indexPath: IndexPath) {
+		if let cell = self.collectionView?.cellForItem(at: indexPath) {
 			self.configureCell(cell, forItemAtIndexPath: indexPath)
 		}
 	}
 
-	public func configureVisibleCells() {
-		if let indexPaths = self.collectionView?.indexPathsForVisibleItems() {
+	open func configureVisibleCells() {
+		if let indexPaths = self.collectionView?.indexPathsForVisibleItems {
 			for indexPath in indexPaths {
 				self.configureCellForItemAtIndexPath(indexPath)
 			}
 		}
 	}
 
-	public func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+	open func numberOfSections(in collectionView: UICollectionView) -> Int {
 		return self.dataSource.numberOfSections
 	}
 
-	public func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+	open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.dataSource.numberOfItemsInSection(section)
 	}
 
-	public func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
-		let section = indexPath.section
+	open func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+		let section = (indexPath as NSIndexPath).section
 		guard let item = self.dataSource.supplementaryItemOfKind(kind, inSection: section) else {
 			fatalError("Expected item for collection view supplementary item of kind \(kind) in section \(section), but found nil")
 		}
 		let reuseIdentifier = self.reuseIdentifierForSupplementaryItem(kind, section, item)
-		let view = collectionView.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: reuseIdentifier, forIndexPath: indexPath)
+		let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseIdentifier, for: indexPath)
 		configureReceiver(view, withItem: item)
 		return view
 	}
 
-	public func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+	open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 		let item: Any = self.dataSource.itemAtIndexPath(indexPath)
 		let reuseIdentifier = self.reuseIdentifierForItem(indexPath, item)
-		let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
+		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
 		self.configureCell(cell, forItemAtIndexPath: indexPath)
 		return cell
 	}

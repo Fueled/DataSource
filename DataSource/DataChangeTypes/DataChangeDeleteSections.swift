@@ -10,26 +10,18 @@ import Foundation
 
 public struct DataChangeDeleteSections: DataChange {
 
-	public let sections: NSIndexSet
+	public let sections: [Int]
 
-	public init(_ sections: NSIndexSet) {
+	public init(sections: [Int]) {
 		self.sections = sections
 	}
 
-	public init(_ sections: Range<Int>) {
-		self.init(NSIndexSet(ds_range: sections))
-	}
-
-	public init (_ section: Int) {
-		self.init(NSIndexSet(index: section))
-	}
-
-	public func apply(target: DataChangeTarget) {
+	public func apply(_ target: DataChangeTarget) {
 		target.ds_deleteSections(sections)
 	}
 
-	public func mapSections(map: Int -> Int) -> DataChangeDeleteSections {
-		return DataChangeDeleteSections(sections.ds_map(map))
+	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeDeleteSections {
+		return DataChangeDeleteSections(sections: sections.map(transform))
 	}
 
 }

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 /// `DataSource` implementation that returns data from
@@ -22,9 +22,9 @@ import Result
 public final class ProxyDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Observer<DataChange, NoError>
-	private let disposable = CompositeDisposable()
-	private var lastDisposable: Disposable?
+	fileprivate let observer: Observer<DataChange, NoError>
+	fileprivate let disposable = CompositeDisposable()
+	fileprivate var lastDisposable: Disposable?
 
 	public let innerDataSource: MutableProperty<DataSource>
 
@@ -43,12 +43,12 @@ public final class ProxyDataSource: DataSource {
 		self.lastDisposable = inner.changes.observe(self.observer)
 		self.disposable += self.innerDataSource.producer
 			.combinePrevious(inner)
-			.skip(1)
-			.startWithNext {
+			.skip(first: 1)
+			.startWithValues {
 				[weak self] old, new in
 				if let this = self {
 					this.lastDisposable?.dispose()
-					this.observer.sendNext(changeDataSources(old, new, this.animatesChanges.value))
+					this.observer.send(value: changeDataSources(old, new, this.animatesChanges.value))
 					this.lastDisposable = new.changes.observe(this.observer)
 				}
 		}
@@ -65,40 +65,40 @@ public final class ProxyDataSource: DataSource {
 		return inner.numberOfSections
 	}
 
-	public func numberOfItemsInSection(section: Int) -> Int {
+	public func numberOfItemsInSection(_ section: Int) -> Int {
 		let inner = self.innerDataSource.value
 		return inner.numberOfItemsInSection(section)
 	}
 
-	public func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any? {
+	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
 		let inner = self.innerDataSource.value
 		return inner.supplementaryItemOfKind(kind, inSection: section)
 	}
 
-	public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
+	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
 		let inner = self.innerDataSource.value
 		return inner.itemAtIndexPath(indexPath)
 	}
 
-	public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
+	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
 		let inner = self.innerDataSource.value
 		return inner.leafDataSourceAtIndexPath(indexPath)
 	}
 
 }
 
-private func changeDataSources(old: DataSource, _ new: DataSource, _ animateChanges: Bool) -> DataChange {
+private func changeDataSources(_ old: DataSource, _ new: DataSource, _ animateChanges: Bool) -> DataChange {
 	if !animateChanges {
 		return DataChangeReloadData()
 	}
 	var batch: [DataChange] = []
 	let oldSections = old.numberOfSections
 	if oldSections > 0 {
-		batch.append(DataChangeDeleteSections(0 ..< oldSections))
+		batch.append(DataChangeDeleteSections(sections: Array(0 ..< oldSections)))
 	}
 	let newSections = new.numberOfSections
 	if newSections > 0 {
-		batch.append(DataChangeInsertSections(0 ..< newSections))
+		batch.append(DataChangeInsertSections(sections: Array(0 ..< newSections)))
 	}
 	return DataChangeBatch(batch)
 }

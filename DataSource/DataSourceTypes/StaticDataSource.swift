@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 /// `DataSource` implementation that has an immutable array of section.
@@ -19,7 +19,7 @@ import Result
 public final class StaticDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Signal<DataChange, NoError>.Observer
+	fileprivate let observer: Signal<DataChange, NoError>.Observer
 
 	public let sections: [DataSourceSection<T>]
 
@@ -45,19 +45,19 @@ public final class StaticDataSource<T>: DataSource {
 		return self.sections.count
 	}
 
-	public func numberOfItemsInSection(section: Int) -> Int {
+	public func numberOfItemsInSection(_ section: Int) -> Int {
 		return self.sections[section].items.count
 	}
 
-	public func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any? {
+	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
 		return self.sections[section].supplementaryItems[kind]
 	}
 
-	public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
-		return self.sections[indexPath.section].items[indexPath.item]
+	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+		return self.sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).item]
 	}
 
-	public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
+	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
 

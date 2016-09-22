@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 /// `DataSource` implementation that has zero sections.
@@ -16,7 +16,7 @@ import Result
 public final class EmptyDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Observer<DataChange, NoError>
+	fileprivate let observer: Observer<DataChange, NoError>
 
 	public init() {
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
@@ -28,19 +28,19 @@ public final class EmptyDataSource: DataSource {
 
 	public let numberOfSections = 0
 
-	public func numberOfItemsInSection(section: Int) -> Int {
+	public func numberOfItemsInSection(_ section: Int) -> Int {
 		fatalError("Trying to access EmptyDataSource.numberOfItemsInSection")
 	}
 
-	public func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any? {
+	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
 		fatalError("Trying to access EmptyDataSource.supplementaryItemOfKind")
 	}
 
-	public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
+	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
 		fatalError("Trying to access EmptyDataSource.itemAtIndexPath")
 	}
 
-	public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
+	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
 		fatalError("Trying to access EmptyDataSource.leafDataSourceAtIndexPath")
 	}
 

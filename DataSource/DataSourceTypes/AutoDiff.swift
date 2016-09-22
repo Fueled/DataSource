@@ -20,10 +20,10 @@ public struct AutoDiff {
 		public func toSectionChanges() -> [DataChange] {
 			var changes: [DataChange] = []
 			if !deleted.isEmpty {
-				changes.append(DataChangeDeleteSections(NSIndexSet(ds_sequence: deleted)))
+				changes.append(DataChangeDeleteSections(sections: deleted))
 			}
 			if !inserted.isEmpty {
-				changes.append(DataChangeInsertSections(NSIndexSet(ds_sequence: inserted)))
+				changes.append(DataChangeInsertSections(sections: inserted))
 			}
 			for (from, to) in moved {
 				changes.append(DataChangeMoveSection(from: from, to: to))
@@ -31,41 +31,39 @@ public struct AutoDiff {
 			return changes
 		}
 
-		public func toItemChanges(oldSection oldSection: Int, newSection: Int) -> [DataChange] {
+		public func toItemChanges(oldSection: Int, newSection: Int) -> [DataChange] {
 			var changes: [DataChange] = []
 			if !deleted.isEmpty {
 				let indexPaths = deleted.map {
-					NSIndexPath(forItem: $0, inSection: oldSection)
+					IndexPath(item: $0, section: oldSection)
 				}
 				changes.append(DataChangeDeleteItems(indexPaths))
 			}
 			if !inserted.isEmpty {
 				let indexPaths = inserted.map {
-					NSIndexPath(forItem: $0, inSection: newSection)
+					IndexPath(item: $0, section: newSection)
 				}
 				changes.append(DataChangeInsertItems(indexPaths))
 			}
 			for (from, to) in moved {
-				let fromPath = NSIndexPath(forItem: from, inSection: oldSection)
-				let toPath = NSIndexPath(forItem: to, inSection: newSection)
+				let fromPath = IndexPath(item: from, section: oldSection)
+				let toPath = IndexPath(item: to, section: newSection)
 				changes.append(DataChangeMoveItem(from: fromPath, to: toPath))
 			}
 			return changes
 		}
 
-		public func toItemChanges(section: Int = 0) -> [DataChange] {
+		public func toItemChanges(_ section: Int = 0) -> [DataChange] {
 			return toItemChanges(oldSection: section, newSection: section)
 		}
 
 	}
 
 	// http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
-	public static func compare<T>(old old: [T], new: [T], findMoves: Bool, compare: (T, T) -> Bool) -> Result {
-		var moves = Array(count: old.count, repeatedValue:
-			Array(count: new.count, repeatedValue: LCSMove.Unknown))
-		var lengths = Array(count: old.count, repeatedValue:
-			Array(count: new.count, repeatedValue: 0))
-		func getLength(iOld: Int, _ iNew: Int) -> Int {
+	public static func compare<T>(old: [T], new: [T], findMoves: Bool, compare: (T, T) -> Bool) -> Result {
+		var moves = Array(repeating: Array(repeating: LCSMove.unknown, count: new.count), count: old.count)
+		var lengths = Array(repeating: Array(repeating: 0, count: new.count), count: old.count)
+		func getLength(_ iOld: Int, _ iNew: Int) -> Int {
 			return (iOld >= 0 && iNew >= 0) ? lengths[iOld][iNew] : 0
 		}
 		// fill the table
@@ -74,16 +72,16 @@ public struct AutoDiff {
 				var curMove: LCSMove
 				var curLength: Int
 				if compare(old[iOld], new[iNew]) {
-					curMove = .Match
+					curMove = .match
 					curLength = getLength(iOld - 1, iNew - 1) + 1
 				} else {
 					let prevOldLength = getLength(iOld - 1, iNew)
 					let prevNewLength = getLength(iOld, iNew - 1)
 					if prevOldLength > prevNewLength {
-						curMove = .FromPrevOld
+						curMove = .fromPrevOld
 						curLength = prevOldLength
 					} else {
-						curMove = .FromPrevNew
+						curMove = .fromPrevNew
 						curLength = prevNewLength
 					}
 				}
@@ -97,10 +95,10 @@ public struct AutoDiff {
 		var iNew = new.count - 1
 		while iOld >= 0 && iNew >= 0 {
 			switch moves[iOld][iNew] {
-			case .FromPrevOld:
+			case .fromPrevOld:
 				result.deleted.append(iOld)
 				iOld -= 1
-			case .FromPrevNew:
+			case .fromPrevNew:
 				result.inserted.append(iNew)
 				iNew -= 1
 			default:
@@ -126,7 +124,7 @@ public struct AutoDiff {
 		for iNew in result.inserted {
 			let newItem = new[iNew]
 			if let (j, iOld) = findFirst(result.deleted, { compare(old[$0], newItem) }) {
-				result.deleted.removeAtIndex(j)
+				result.deleted.remove(at: j)
 				result.moved.append((iOld, iNew))
 			} else {
 				inserted2.append(iNew)
@@ -136,18 +134,18 @@ public struct AutoDiff {
 		return result
 	}
 
-	private enum LCSMove {
-		case Unknown
-		case FromPrevOld
-		case FromPrevNew
-		case Match
+	fileprivate enum LCSMove {
+		case unknown
+		case fromPrevOld
+		case fromPrevNew
+		case match
 	}
 
-	private static func findFirst<S: SequenceType>
-		(source: S, _ predicate: S.Generator.Element -> Bool)
-		-> (Int, S.Generator.Element)?
+	fileprivate static func findFirst<S: Sequence>
+		(_ source: S, _ predicate: (S.Iterator.Element) -> Bool)
+		-> (Int, S.Iterator.Element)?
 	{
-		for (idx, s) in source.enumerate() {
+		for (idx, s) in source.enumerated() {
 			if predicate(s) {
 				return (idx, s)
 			}

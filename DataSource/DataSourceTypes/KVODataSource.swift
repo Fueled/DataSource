@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 /// `DataSource` implementation that has a single section and
@@ -19,7 +19,7 @@ import Result
 public final class  KVODataSource: NSObject, DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Observer<DataChange, NoError>
+	fileprivate let observer: Observer<DataChange, NoError>
 
 	public let target: NSObject
 	public let keyPath: String
@@ -41,52 +41,51 @@ public final class  KVODataSource: NSObject, DataSource {
 
 	public let numberOfSections = 1
 
-	public func numberOfItemsInSection(section: Int) -> Int {
+	public func numberOfItemsInSection(_ section: Int) -> Int {
 		return self.items.count
 	}
 
-	public func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any? {
+	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
 		return self.supplementaryItems[kind]
 	}
 
-	public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
-		return self.items[indexPath.item]
+	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+		return self.items[(indexPath as NSIndexPath).item]
 	}
 
-	public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
+	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
 
-	private var items: NSArray {
-		return self.target.valueForKeyPath(self.keyPath) as! NSArray
+	fileprivate var items: NSArray {
+		return self.target.value(forKeyPath: self.keyPath) as! NSArray
 	}
 
-	public override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+	public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
 		if let target = object as? NSObject,
 			let change = change,
-			let type = change[NSKeyValueChangeKindKey] as? NSKeyValueChange,
-			let indices = change[NSKeyValueChangeIndexesKey] as? NSIndexSet
-			where keyPath == self.keyPath && target == self.target
+			let type = change[NSKeyValueChangeKey.kindKey] as? NSKeyValueChange,
+			let indices = change[NSKeyValueChangeKey.indexesKey] as? IndexSet,
+			keyPath == self.keyPath && target == self.target
 		{
 			self.observeChangeOfType(type, atIndices: indices)
 		}
 	}
 
-	private func observeChangeOfType(type: NSKeyValueChange, atIndices indices: NSIndexSet) {
-		var indexPaths: [NSIndexPath] = []
-		indices.enumerateIndexesUsingBlock {
-			index, _ in
-			indexPaths.append(NSIndexPath(forItem: index, inSection: 0))
+	fileprivate func observeChangeOfType(_ type: NSKeyValueChange, atIndices indices: IndexSet) {
+		var indexPaths: [IndexPath] = []
+		for index in indices {
+			indexPaths.append(IndexPath(item: index, section: 0))
 		}
 		switch type {
-		case .Insertion:
-			self.observer.sendNext(DataChangeInsertItems(indexPaths))
-		case .Removal:
-			self.observer.sendNext(DataChangeDeleteItems(indexPaths))
-		case .Replacement:
-			self.observer.sendNext(DataChangeReloadItems(indexPaths))
-		case .Setting:
-			self.observer.sendNext(DataChangeReloadSections(0))
+		case .insertion:
+			self.observer.send(value: DataChangeInsertItems(indexPaths))
+		case .removal:
+			self.observer.send(value: DataChangeDeleteItems(indexPaths))
+		case .replacement:
+			self.observer.send(value: DataChangeReloadItems(indexPaths))
+		case .setting:
+			self.observer.send(value: DataChangeReloadSections(sections: [0]))
 		}
 	}
 

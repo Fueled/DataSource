@@ -7,9 +7,10 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 import CoreData
+import UIKit
 
 /// `DataSource` implementation whose items are Core Data managed objects fetched by an `NSFetchedResultsController`.
 ///
@@ -20,12 +21,12 @@ import CoreData
 public final class FetchedResultsDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Observer<DataChange, NoError>
+	fileprivate let observer: Observer<DataChange, NoError>
 
-	private let frc: NSFetchedResultsController
-	private let frcDelegate: Delegate
+	fileprivate let frc: NSFetchedResultsController<NSFetchRequestResult>
+	fileprivate let frcDelegate: Delegate
 
-	public init(fetchRequest: NSFetchRequest, managedObjectContext: NSManagedObjectContext, sectionNameKeyPath: String? = nil, cacheName: String? = nil) throws {
+	public init(fetchRequest: NSFetchRequest<NSFetchRequestResult>, managedObjectContext: NSManagedObjectContext, sectionNameKeyPath: String? = nil, cacheName: String? = nil) throws {
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: sectionNameKeyPath, cacheName: cacheName)
 		self.frcDelegate = Delegate(observer: self.observer)
@@ -39,7 +40,7 @@ public final class FetchedResultsDataSource: DataSource {
 		self.observer.sendCompleted()
 	}
 
-	private func infoForSection(section: Int) -> NSFetchedResultsSectionInfo {
+	fileprivate func infoForSection(_ section: Int) -> NSFetchedResultsSectionInfo {
 		return self.frc.sections![section]
 	}
 
@@ -47,12 +48,12 @@ public final class FetchedResultsDataSource: DataSource {
 		return self.frc.sections?.count ?? 0
 	}
 
-	public func numberOfItemsInSection(section: Int) -> Int {
+	public func numberOfItemsInSection(_ section: Int) -> Int {
 		let sectionInfo = self.infoForSection(section)
 		return sectionInfo.numberOfObjects
 	}
 
-	public func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any? {
+	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
 		if kind != UICollectionElementKindSectionHeader {
 			return nil
 		}
@@ -60,16 +61,16 @@ public final class FetchedResultsDataSource: DataSource {
 		return sectionInfo.name
 	}
 
-	public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
-		let sectionInfo = self.infoForSection(indexPath.section)
-		return sectionInfo.objects![indexPath.item]
+	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
+		let sectionInfo = self.infoForSection((indexPath as NSIndexPath).section)
+		return sectionInfo.objects![(indexPath as NSIndexPath).item]
 	}
 
-	public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
+	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
 
-	@objc private final class Delegate: NSObject, NSFetchedResultsControllerDelegate {
+	@objc fileprivate final class Delegate: NSObject, NSFetchedResultsControllerDelegate {
 
 		let observer: Observer<DataChange, NoError>
 		var currentBatch: [DataChange] = []
@@ -78,44 +79,44 @@ public final class FetchedResultsDataSource: DataSource {
 			self.observer = observer
 		}
 
-		@objc func controllerWillChangeContent(controller: NSFetchedResultsController) {
+		@objc func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 			self.currentBatch = []
 		}
 
-		@objc func controllerDidChangeContent(controller: NSFetchedResultsController) {
-			self.observer.sendNext(DataChangeBatch(self.currentBatch))
+		@objc func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+			self.observer.send(value: DataChangeBatch(self.currentBatch))
 			self.currentBatch = []
 		}
 
-		@objc func controller(controller: NSFetchedResultsController,
-			didChangeSection sectionInfo: NSFetchedResultsSectionInfo,
-			atIndex sectionIndex: Int,
-			forChangeType type: NSFetchedResultsChangeType)
+		@objc func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+			didChange sectionInfo: NSFetchedResultsSectionInfo,
+			atSectionIndex sectionIndex: Int,
+			for type: NSFetchedResultsChangeType)
 		{
 			switch type {
-			case .Insert:
-				self.currentBatch.append(DataChangeInsertSections(sectionIndex))
-			case .Delete:
-				self.currentBatch.append(DataChangeDeleteSections(sectionIndex))
+			case .insert:
+				self.currentBatch.append(DataChangeInsertSections(sections: [sectionIndex]))
+			case .delete:
+				self.currentBatch.append(DataChangeDeleteSections(sections: [sectionIndex]))
 			default:
 				break
 			}
 		}
 
-		@objc func controller(controller: NSFetchedResultsController,
-			didChangeObject anObject: AnyObject,
-			atIndexPath indexPath: NSIndexPath?,
-			forChangeType type: NSFetchedResultsChangeType,
-			newIndexPath: NSIndexPath?)
+		@objc func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+			didChange anObject: Any,
+			at indexPath: IndexPath?,
+			for type: NSFetchedResultsChangeType,
+			newIndexPath: IndexPath?)
 		{
 			switch type {
-			case .Insert:
+			case .insert:
 				self.currentBatch.append(DataChangeInsertItems(newIndexPath!))
-			case .Delete:
+			case .delete:
 				self.currentBatch.append(DataChangeDeleteItems(indexPath!))
-			case .Move:
+			case .move:
 				self.currentBatch.append(DataChangeMoveItem(from: indexPath!, to: newIndexPath!))
-			case .Update:
+			case .update:
 				self.currentBatch.append(DataChangeReloadItems(indexPath!))
 			}
 		}

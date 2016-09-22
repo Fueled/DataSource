@@ -8,39 +8,26 @@
 
 import Foundation
 
-public extension NSIndexPath {
+public extension IndexPath {
 
-	public func ds_setSection(section: Int) -> NSIndexPath {
-		return NSIndexPath(forItem: self.item, inSection: section)
+	public func ds_setSection(_ section: Int) -> IndexPath {
+		return IndexPath(item: self.item, section: section)
 	}
 
 }
 
-func mapSection(transform: Int -> Int) -> NSIndexPath -> NSIndexPath {
+func mapSection(_ transform: @escaping (Int) -> Int) -> (IndexPath) -> IndexPath {
 	return { $0.ds_setSection(transform($0.section)) }
 }
 
-public extension NSIndexSet {
+public extension IndexSet {
 
-	public convenience init(ds_range: Range<Int>) {
-		self.init(indexesInRange: NSRange(location: ds_range.startIndex, length: ds_range.endIndex - ds_range.startIndex))
-	}
-
-	public convenience init<S: SequenceType where S.Generator.Element == Int>(ds_sequence: S) {
-		let res = NSMutableIndexSet()
-		for i in ds_sequence {
-			res.addIndex(i)
+	public init<S: Sequence>(integers: S) where S.Iterator.Element == Int {
+		var res = IndexSet()
+		for i in integers {
+			res.insert(i)
 		}
-		self.init(indexSet: res)
+		self.init(res)
 	}
-
-	public func ds_map(transform: Int -> Int) -> NSIndexSet {
-		let res = NSMutableIndexSet()
-		self.enumerateIndexesUsingBlock {
-			index, _ in
-			res.addIndex(transform(index))
-		}
-		return res
-	}
-
+	
 }

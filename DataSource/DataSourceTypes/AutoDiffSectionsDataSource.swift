@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 /// `DataSource` implementation that has an arbitrary
@@ -32,8 +32,8 @@ import Result
 public final class AutoDiffSectionsDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Signal<DataChange, NoError>.Observer
-	private let disposable: Disposable
+	fileprivate let observer: Signal<DataChange, NoError>.Observer
+	fileprivate let disposable: Disposable
 
 	/// Mutable array of dataSourceSections.
 	///
@@ -63,14 +63,14 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 	///   - compareItems: Function that is used to compare a pair of items for equality.
 	public init(sections: [DataSourceSection<T>] = [],
 		findItemMoves: Bool = true,
-		compareSections: (DataSourceSection<T>, DataSourceSection<T>) -> Bool,
-		compareItems: (T, T) -> Bool)
+		compareSections: @escaping (DataSourceSection<T>, DataSourceSection<T>) -> Bool,
+		compareItems: @escaping (T, T) -> Bool)
 	{
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.sections = MutableProperty(sections)
 		self.compareSections = compareSections
 		self.compareItems = compareItems
-		func autoDiff(oldSections: [DataSourceSection<T>],
+		func autoDiff(_ oldSections: [DataSourceSection<T>],
 			newSections: [DataSourceSection<T>]) -> DataChange
 		{
 			let sectionsResult = AutoDiff.compare(
@@ -93,7 +93,7 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 		}
 		self.disposable = self.sections.producer
 			.combinePrevious(sections)
-			.skip(1)
+			.skip(first: 1)
 			.map(autoDiff)
 			.start(self.observer)
 	}
@@ -107,19 +107,19 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 		return self.sections.value.count
 	}
 
-	public func numberOfItemsInSection(section: Int) -> Int {
+	public func numberOfItemsInSection(_ section: Int) -> Int {
 		return self.sections.value[section].items.count
 	}
 
-	public func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any? {
+	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
 		return self.sections.value[section].supplementaryItems[kind]
 	}
 
-	public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
+	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
 		return self.sections.value[indexPath.section].items[indexPath.item]
 	}
 
-	public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
+	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
 

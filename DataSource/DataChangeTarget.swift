@@ -16,24 +16,24 @@ import Foundation
 /// `UITableView` and `UICollectionView` are implementing this protocol.
 public protocol DataChangeTarget {
 
-	func ds_performBatchChanges(batchChanges: ()->())
+	func ds_performBatchChanges(_ batchChanges: @escaping ()->())
 
-	func ds_deleteItemsAtIndexPaths(indexPaths: [NSIndexPath])
+	func ds_deleteItemsAtIndexPaths(_ indexPaths: [IndexPath])
 
-	func ds_deleteSections(sections: NSIndexSet)
+	func ds_deleteSections(_ sections: [Int])
 
-	func ds_insertItemsAtIndexPaths(indexPaths: [NSIndexPath])
+	func ds_insertItemsAtIndexPaths(_ indexPaths: [IndexPath])
 
-	func ds_insertSections(sections: NSIndexSet)
+	func ds_insertSections(_ sections: [Int])
 
-	func ds_moveItemAtIndexPath(oldIndexPath: NSIndexPath, toIndexPath newIndexPath: NSIndexPath)
+	func ds_moveItemAtIndexPath(_ oldIndexPath: IndexPath, toIndexPath newIndexPath: IndexPath)
 
-	func ds_moveSection(oldSection: Int, toSection newSection: Int)
+	func ds_moveSection(_ oldSection: Int, toSection newSection: Int)
 
 	func ds_reloadData()
 
-	func ds_reloadItemsAtIndexPaths(indexPaths: [NSIndexPath])
+	func ds_reloadItemsAtIndexPaths(_ indexPaths: [IndexPath])
 
-	func ds_reloadSections(sections: NSIndexSet)
+	func ds_reloadSections(_ sections: [Int])
 
 }

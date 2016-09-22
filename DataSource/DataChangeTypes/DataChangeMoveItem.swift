@@ -10,20 +10,20 @@ import Foundation
 
 public struct DataChangeMoveItem: DataChange {
 
-	public let fromIndexPath: NSIndexPath
-	public let toIndexPath: NSIndexPath
+	public let fromIndexPath: IndexPath
+	public let toIndexPath: IndexPath
 
-	public init(from: NSIndexPath, to: NSIndexPath) {
+	public init(from: IndexPath, to: IndexPath) {
 		self.fromIndexPath = from
 		self.toIndexPath = to
 	}
 
-	public func apply(target: DataChangeTarget) {
+	public func apply(_ target: DataChangeTarget) {
 		target.ds_moveItemAtIndexPath(fromIndexPath, toIndexPath: toIndexPath)
 	}
 
-	public func mapSections(map: Int -> Int) -> DataChangeMoveItem {
-		let f = mapSection(map)
+	public func mapSections(_ transform: @escaping (Int) -> Int) -> DataChangeMoveItem {
+		let f = mapSection(transform)
 		return DataChangeMoveItem(from: f(fromIndexPath), to: f(toIndexPath))
 	}
 

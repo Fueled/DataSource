@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 /// A provider of items grouped into sections.
@@ -25,11 +25,11 @@ public protocol DataSource {
 
 	var numberOfSections: Int { get }
 
-	func numberOfItemsInSection(section: Int) -> Int
+	func numberOfItemsInSection(_ section: Int) -> Int
 
-	func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any?
+	func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any?
 
-	func itemAtIndexPath(indexPath: NSIndexPath) -> Any
+	func itemAtIndexPath(_ indexPath: IndexPath) -> Any
 
 	/// Asks the dataSource for the original dataSource that contains the item at the given indexPath,
 	/// and the indexPath of that item in that dataSource.
@@ -39,6 +39,6 @@ public protocol DataSource {
 	/// and this method is called on it recursively.
 	///
 	/// Otherwise, this method simply returns the receiving dataSource itself and the given indexPath unchanged.
-	func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath)
+	func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath)
 
 }

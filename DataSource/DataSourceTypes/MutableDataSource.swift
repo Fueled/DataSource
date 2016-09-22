@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 import Result
 
 /// `DataSource` implementation that has one section of items of type T.
@@ -18,12 +18,12 @@ import Result
 public final class MutableDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	private let observer: Observer<DataChange, NoError>
+	fileprivate let observer: Observer<DataChange, NoError>
 
-	private let _items: MutableProperty<[T]>
+	fileprivate let _items: MutableProperty<[T]>
 
-	public var items: AnyProperty<[T]> {
-		return AnyProperty(_items)
+	public var items: Property<[T]> {
+		return Property(_items)
 	}
 
 	public let supplementaryItems: [String: Any]
@@ -40,65 +40,65 @@ public final class MutableDataSource<T>: DataSource {
 
 	public let numberOfSections = 1
 
-	public func numberOfItemsInSection(section: Int) -> Int {
+	public func numberOfItemsInSection(_ section: Int) -> Int {
 		return self._items.value.count
 	}
 
-	public func supplementaryItemOfKind(kind: String, inSection section: Int) -> Any? {
+	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
 		return self.supplementaryItems[kind]
 	}
 
-	public func itemAtIndexPath(indexPath: NSIndexPath) -> Any {
+	public func itemAtIndexPath(_ indexPath: IndexPath) -> Any {
 		return self._items.value[indexPath.item]
 	}
 
-	public func leafDataSourceAtIndexPath(indexPath: NSIndexPath) -> (DataSource, NSIndexPath) {
+	public func leafDataSourceAtIndexPath(_ indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
 
 	/// Inserts a given item at a given index
 	/// and emits `DataChangeInsertItems`.
-	public func insertItem(item: T, atIndex index: Int) {
-		self._items.value.insert(item, atIndex: index)
+	public func insertItem(_ item: T, atIndex index: Int) {
+		self._items.value.insert(item, at: index)
 		let change = DataChangeInsertItems(z(index))
-		self.observer.sendNext(change)
+		self.observer.send(value: change)
 	}
 
 	/// Deletes an item at a given index
 	/// and emits `DataChangeDeleteItems`.
-	public func deleteItemAtIndex(index: Int) {
-		self._items.value.removeAtIndex(index)
+	public func deleteItemAtIndex(_ index: Int) {
+		self._items.value.remove(at: index)
 		let change = DataChangeDeleteItems(z(index))
-		self.observer.sendNext(change)
+		self.observer.send(value: change)
 	}
 
 	/// Replaces an item at a given index with another item
 	/// and emits `DataChangeReloadItems`.
-	public func replaceItemAtIndex(index: Int, withItem item: T) {
+	public func replaceItemAtIndex(_ index: Int, withItem item: T) {
 		self._items.value[index] = item
 		let change = DataChangeReloadItems(z(index))
-		self.observer.sendNext(change)
+		self.observer.send(value: change)
 	}
 
 	/// Moves an item at a given index to another index
 	/// and emits `DataChangeMoveItem`.
 	public func moveItemAtIndex(index oldIndex: Int, toIndex newIndex: Int) {
-		let item = self._items.value.removeAtIndex(oldIndex)
-		self._items.value.insert(item, atIndex: newIndex)
+		let item = self._items.value.remove(at: oldIndex)
+		self._items.value.insert(item, at: newIndex)
 		let change = DataChangeMoveItem(from: z(oldIndex), to: z(newIndex))
-		self.observer.sendNext(change)
+		self.observer.send(value: change)
 	}
 
 	/// Replaces all items with a given array of items
 	/// and emits `DataChangeReloadSections`.
-	public func replaceItemsWithItems(items: [T]) {
+	public func replaceItemsWithItems(_ items: [T]) {
 		self._items.value = items
-		let change = DataChangeReloadSections(0)
-		self.observer.sendNext(change)
+		let change = DataChangeReloadSections(sections: [0])
+		self.observer.send(value: change)
 	}
 
 }
 
-private func z(index: Int) -> NSIndexPath {
-	return NSIndexPath(forItem: index, inSection: 0)
+private func z(_ index: Int) -> IndexPath {
+	return IndexPath(item: index, section: 0)
 }

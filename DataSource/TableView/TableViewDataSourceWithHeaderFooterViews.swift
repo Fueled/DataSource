@@ -22,7 +22,7 @@ import UIKit
 ///
 /// DataSource supplementary items of `UICollectionElementKindSectionFooter` kind
 /// are used as section footer titles.
-public class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITableViewDelegate {
+open class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITableViewDelegate {
 
 	public final var reuseIdentifierForHeaderItem: (Int, Any) -> String = {
 		_ in "DefaultHeaderView"
@@ -31,22 +31,22 @@ public class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITa
 		_ in "DefaultFooterView"
 	}
 
-	public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+	open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		guard let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionHeader, inSection: section) else {
 			fatalError("Expected item for table view header in section \(section), but found nil")
 		}
 		let reuseIdentifier = self.reuseIdentifierForHeaderItem(section, item)
-		let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(reuseIdentifier)!
+		let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseIdentifier)!
 		configureReceiver(view, withItem: item)
 		return view
 	}
 
-	public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+	open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
 		guard let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionFooter, inSection: section) else {
 			fatalError("Expected item for table view footer in section \(section), but found nil")
 		}
 		let reuseIdentifier = self.reuseIdentifierForFooterItem(section, item)
-		let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier(reuseIdentifier)!
+		let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseIdentifier)!
 		configureReceiver(view, withItem: item)
 		return view
 	}

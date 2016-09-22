@@ -11,9 +11,9 @@
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "30446CE5-B74F-4120-99FE-4BA20BB26C4B",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "E084C86B03F81D63323C9E7510697EA528A758C7" : "DataSource\/Carthage\/Checkouts\/ReactiveCocoa\/Carthage\/Checkouts\/xcconfigs\/",
+    "E084C86B03F81D63323C9E7510697EA528A758C7" : "DataSource\/Carthage\/Checkouts\/ReactiveSwift\/Carthage\/Checkouts\/xcconfigs\/",
     "490E57B35E951D5E5221A47EAB9C248E2FEBC174" : "DataSource\/",
-    "51B210D0D41486D3ADD6940D57E4480BBD4DE4C5" : "DataSource\/Carthage\/Checkouts\/ReactiveCocoa\/",
+    "51B210D0D41486D3ADD6940D57E4480BBD4DE4C5" : "DataSource\/Carthage\/Checkouts\/ReactiveSwift\/",
     "956D2B21DD155C49504BB67697A67F7C5351A353" : "DataSource\/Carthage\/Checkouts\/Result\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "DataSource",

@@ -11,33 +11,33 @@ import UIKit
 
 extension UITableView: DataChangeTarget {
 
-	public func ds_performBatchChanges(batchChanges: ()->()) {
+	public func ds_performBatchChanges(_ batchChanges: @escaping ()->()) {
 		self.beginUpdates()
 		batchChanges()
 		self.endUpdates()
 	}
 
-	public func ds_deleteItemsAtIndexPaths(indexPaths: [NSIndexPath]) {
-		self.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+	public func ds_deleteItemsAtIndexPaths(_ indexPaths: [IndexPath]) {
+		self.deleteRows(at: indexPaths, with: .fade)
 	}
 
-	public func ds_deleteSections(sections: NSIndexSet) {
-		self.deleteSections(sections, withRowAnimation: .Fade)
+	public func ds_deleteSections(_ sections: [Int]) {
+		self.deleteSections(IndexSet(integers: sections), with: .fade)
 	}
 
-	public func ds_insertItemsAtIndexPaths(indexPaths: [NSIndexPath]) {
-		self.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+	public func ds_insertItemsAtIndexPaths(_ indexPaths: [IndexPath]) {
+		self.insertRows(at: indexPaths, with: .fade)
 	}
 
-	public func ds_insertSections(sections: NSIndexSet) {
-		self.insertSections(sections, withRowAnimation: .Fade)
+	public func ds_insertSections(_ sections: [Int]) {
+		self.insertSections(IndexSet(integers: sections), with: .fade)
 	}
 
-	public func ds_moveItemAtIndexPath(oldIndexPath: NSIndexPath, toIndexPath newIndexPath: NSIndexPath) {
-		self.moveRowAtIndexPath(oldIndexPath, toIndexPath: newIndexPath)
+	public func ds_moveItemAtIndexPath(_ oldIndexPath: IndexPath, toIndexPath newIndexPath: IndexPath) {
+		self.moveRow(at: oldIndexPath, to: newIndexPath)
 	}
 
-	public func ds_moveSection(oldSection: Int, toSection newSection: Int) {
+	public func ds_moveSection(_ oldSection: Int, toSection newSection: Int) {
 		self.moveSection(oldSection, toSection: newSection)
 	}
 
@@ -45,12 +45,12 @@ extension UITableView: DataChangeTarget {
 		self.reloadData()
 	}
 
-	public func ds_reloadItemsAtIndexPaths(indexPaths: [NSIndexPath]) {
-		self.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Fade)
+	public func ds_reloadItemsAtIndexPaths(_ indexPaths: [IndexPath]) {
+		self.reloadRows(at: indexPaths, with: .fade)
 	}
 
-	public func ds_reloadSections(sections: NSIndexSet) {
-		self.reloadSections(sections, withRowAnimation: .Fade)
+	public func ds_reloadSections(_ sections: [Int]) {
+		self.reloadSections(IndexSet(integers: sections), with: .fade)
 	}
 
 }

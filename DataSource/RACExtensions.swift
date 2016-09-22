@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveCocoa
+import ReactiveSwift
 
 public protocol Disposing: AnyObject {
 
@@ -15,9 +15,9 @@ public protocol Disposing: AnyObject {
 
 }
 
-public extension SignalProducerType {
+public extension SignalProducerProtocol {
 
-	public func start<O: Disposing>(target: O, _ method: O -> Value -> ()) -> Disposable {
+	public func start<O: Disposing>(_ target: O, _ method: @escaping (O) -> (Value) -> ()) -> Disposable {
 		let disposable = self.startWithResult {
 			[weak target] value in
 			if let value = try? value.dematerialize(), let target = target {

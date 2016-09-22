@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import ReactiveCocoa
+import ReactiveSwift
 
 /// An object that implements `UITableViewDataSource` protocol
 /// by returning the data from an associated dataSource.
@@ -25,21 +25,21 @@ import ReactiveCocoa
 ///
 /// A tableViewDataSource observes changes of the associated dataSource
 /// and applies those changes to the associated tableView.
-public class TableViewDataSource: NSObject, UITableViewDataSource {
+open class TableViewDataSource: NSObject, UITableViewDataSource {
 
 	@IBOutlet public final var tableView: UITableView?
 
 	public final let dataSource = ProxyDataSource()
 
-	public final var reuseIdentifierForItem: (NSIndexPath, Any) -> String = {
+	public final var reuseIdentifierForItem: (IndexPath, Any) -> String = {
 		_ in "DefaultCell"
 	}
 
-	private let disposable = CompositeDisposable()
+	fileprivate let disposable = CompositeDisposable()
 
 	public override init() {
 		super.init()
-		self.disposable += self.dataSource.changes.observeNext {
+		self.disposable += self.dataSource.changes.observeValues {
 			[weak self] change in
 			if let tableView = self?.tableView {
 				change.apply(tableView)
@@ -51,18 +51,18 @@ public class TableViewDataSource: NSObject, UITableViewDataSource {
 		self.disposable.dispose()
 	}
 
-	public func configureCell(cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+	open func configureCell(_ cell: UITableViewCell, forRowAtIndexPath indexPath: IndexPath) {
 		let item = self.dataSource.itemAtIndexPath(indexPath)
 		configureReceiver(cell, withItem: item)
 	}
 
-	public func configureCellForRowAtIndexPath(indexPath: NSIndexPath) {
-		if let cell = self.tableView?.cellForRowAtIndexPath(indexPath) {
+	open func configureCellForRowAtIndexPath(_ indexPath: IndexPath) {
+		if let cell = self.tableView?.cellForRow(at: indexPath) {
 			self.configureCell(cell, forRowAtIndexPath: indexPath)
 		}
 	}
 
-	public func configureVisibleCells() {
+	open func configureVisibleCells() {
 		if let indexPaths = self.tableView?.indexPathsForVisibleRows {
 			for indexPath in indexPaths {
 				self.configureCellForRowAtIndexPath(indexPath)
@@ -70,18 +70,18 @@ public class TableViewDataSource: NSObject, UITableViewDataSource {
 		}
 	}
 
-	public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+	open func numberOfSections(in tableView: UITableView) -> Int {
 		return self.dataSource.numberOfSections
 	}
 
-	public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return self.dataSource.numberOfItemsInSection(section)
 	}
 
-	public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+	open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let item: Any = self.dataSource.itemAtIndexPath(indexPath)
 		let reuseIdentifier = self.reuseIdentifierForItem(indexPath, item)
-		let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier, forIndexPath: indexPath)
+		let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath)
 		self.configureCell(cell, forRowAtIndexPath: indexPath)
 		return cell
 	}
