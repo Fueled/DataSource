@@ -74,8 +74,8 @@ public final class MutableCompositeDataSource: DataSource {
 
 	/// Inserts a given inner dataSource at a given index
 	/// and emits `DataChangeInsertSections` for its sections.
-	public func insertDataSource(_ dataSource: DataSource, atIndex index: Int) {
-		let sections = self.sectionsOfDataSource(dataSource, atIndex: index)
+	public func insert(_ dataSource: DataSource, at index: Int) {
+		let sections = self.sections(of: dataSource, at: index)
 		self._innerDataSources.value.insert(dataSource, at: index)
 		if sections.count > 0 {
 			let change = DataChangeInsertSections(sections)
@@ -85,8 +85,8 @@ public final class MutableCompositeDataSource: DataSource {
 
 	/// Deletes an inner dataSource at a given index
 	/// and emits `DataChangeDeleteSections` for its sections.
-	public func deleteDataSourceAtIndex(_ index: Int) {
-		let sections = self.sectionsOfDataSourceAtIndex(index)
+	public func delete(at index: Int) {
+		let sections = self.sectionsOfDataSource(at: index)
 		self._innerDataSources.value.remove(at: index)
 		if sections.count > 0 {
 			let change = DataChangeDeleteSections(sections)
@@ -97,13 +97,13 @@ public final class MutableCompositeDataSource: DataSource {
 	/// Replaces an inner dataSource at a given index with another inner dataSource
 	/// and emits a batch of `DataChangeDeleteSections` and `DataChangeInsertSections`
 	/// for their sections.
-	public func replaceDataSourceAtIndex(_ index: Int, withDataSource dataSource: DataSource) {
+	public func replaceDataSource(at index: Int, with dataSource: DataSource) {
 		var batch: [DataChange] = []
-		let oldSections = self.sectionsOfDataSourceAtIndex(index)
+		let oldSections = self.sectionsOfDataSource(at: index)
 		if oldSections.count > 0 {
 			batch.append(DataChangeDeleteSections(oldSections))
 		}
-		let newSections = self.sectionsOfDataSource(dataSource, atIndex: index)
+		let newSections = self.sections(of: dataSource, at: index)
 		if newSections.count > 0 {
 			batch.append(DataChangeInsertSections(newSections))
 		}
@@ -116,7 +116,7 @@ public final class MutableCompositeDataSource: DataSource {
 
 	/// Moves an inner dataSource at a given index to another index
 	/// and emits a batch of `DataChangeMoveSection` for its sections.
-	public func moveDataSourceAtIndex(index oldIndex: Int, toIndex newIndex: Int) {
+	public func moveData(at oldIndex: Int, to newIndex: Int) {
 		let oldLocation = mapOutside(self._innerDataSources.value, oldIndex)(0)
 		let dataSource = self._innerDataSources.value.remove(at: oldIndex)
 		self._innerDataSources.value.insert(dataSource, at: newIndex)
@@ -131,15 +131,15 @@ public final class MutableCompositeDataSource: DataSource {
 		}
 	}
 
-	fileprivate func sectionsOfDataSource(_ dataSource: DataSource, atIndex index: Int) -> [Int] {
+	fileprivate func sections(of dataSource: DataSource, at index: Int) -> [Int] {
 		let location = mapOutside(self._innerDataSources.value, index)(0)
 		let length = dataSource.numberOfSections
 		return Array(location ..< location + length)
 	}
 
-	fileprivate func sectionsOfDataSourceAtIndex(_ index: Int) -> [Int] {
+	fileprivate func sectionsOfDataSource(at index: Int) -> [Int] {
 		let dataSource = self._innerDataSources.value[index]
-		return self.sectionsOfDataSource(dataSource, atIndex: index)
+		return self.sections(of: dataSource, at: index)
 	}
 
 }
