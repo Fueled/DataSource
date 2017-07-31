@@ -21,7 +21,7 @@ import Result
 public final class MutableCompositeDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Observer<DataChange, NoError>
+	fileprivate let observer: Signal<DataChange, NoError>.Observer
 	fileprivate let disposable = CompositeDisposable()
 
 	fileprivate let _innerDataSources: MutableProperty<[DataSource]>
@@ -34,7 +34,7 @@ public final class MutableCompositeDataSource: DataSource {
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self._innerDataSources = MutableProperty(inner)
 		self.disposable += self._innerDataSources.producer
-			.flatMap(.latest, transform: changesOfInnerDataSources)
+			.flatMap(.latest, changesOfInnerDataSources)
 			.start(self.observer)
 	}
 

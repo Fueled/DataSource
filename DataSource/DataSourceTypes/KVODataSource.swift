@@ -19,7 +19,7 @@ import Result
 public final class  KVODataSource: NSObject, DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Observer<DataChange, NoError>
+	fileprivate let observer: Signal<DataChange, NoError>.Observer
 
 	public let target: NSObject
 	public let keyPath: String

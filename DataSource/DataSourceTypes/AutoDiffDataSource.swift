@@ -19,7 +19,7 @@ import Result
 public final class AutoDiffDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Observer<DataChange, NoError>
+	fileprivate let observer: Signal<DataChange, NoError>.Observer
 	fileprivate let disposable: Disposable
 
 	/// Mutable array of items in the only section of the autoDiffDataSource.

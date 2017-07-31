@@ -16,7 +16,7 @@ import Result
 public final class EmptyDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Observer<DataChange, NoError>
+	fileprivate let observer: Signal<DataChange, NoError>.Observer
 
 	public init() {
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
