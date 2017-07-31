@@ -20,7 +20,7 @@ import Result
 public final class MappedDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Observer<DataChange, NoError>
+	fileprivate let observer: Signal<DataChange, NoError>.Observer
 	fileprivate let disposable: Disposable?
 
 	public let innerDataSource: DataSource

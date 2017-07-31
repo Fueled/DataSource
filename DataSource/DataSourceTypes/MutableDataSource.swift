@@ -18,7 +18,7 @@ import Result
 public final class MutableDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Observer<DataChange, NoError>
+	fileprivate let observer: Signal<DataChange, NoError>.Observer
 
 	fileprivate let _items: MutableProperty<[T]>
 

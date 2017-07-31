@@ -21,7 +21,7 @@ import UIKit
 public final class FetchedResultsDataSource: DataSource {
 
 	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Observer<DataChange, NoError>
+	fileprivate let observer: Signal<DataChange, NoError>.Observer
 
 	fileprivate let frc: NSFetchedResultsController<NSFetchRequestResult>
 	fileprivate let frcDelegate: Delegate
@@ -72,10 +72,10 @@ public final class FetchedResultsDataSource: DataSource {
 
 	@objc fileprivate final class Delegate: NSObject, NSFetchedResultsControllerDelegate {
 
-		let observer: Observer<DataChange, NoError>
+		let observer: Signal<DataChange, NoError>.Observer
 		var currentBatch: [DataChange] = []
 
-		init(observer: Observer<DataChange, NoError>) {
+		init(observer: Signal<DataChange, NoError>.Observer) {
 			self.observer = observer
 		}
 
