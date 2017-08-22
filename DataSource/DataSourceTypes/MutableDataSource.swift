@@ -59,16 +59,28 @@ public final class MutableDataSource<T>: DataSource {
 	/// Inserts a given item at a given index
 	/// and emits `DataChangeInsertItems`.
 	public func insertItem(_ item: T, at index: Int) {
-		self._items.value.insert(item, at: index)
-		let change = DataChangeInsertItems(z(index))
+		self.insertItems([item], at: index)
+	}
+
+	/// Inserts items at a given index
+	/// and emits `DataChangeInsertItems`.
+	public func insertItems(_ items: [T], at index: Int) {
+		self._items.value.insert(contentsOf: items, at: index)
+		let change = DataChangeInsertItems(items.indices.map { z(index + $0) })
 		self.observer.send(value: change)
 	}
 
 	/// Deletes an item at a given index
 	/// and emits `DataChangeDeleteItems`.
 	public func deleteItem(at index: Int) {
-		self._items.value.remove(at: index)
-		let change = DataChangeDeleteItems(z(index))
+		self.deleteItems(in: Range(index...index))
+	}
+
+	/// Deletes items in a given range
+	/// and emits `DataChangeDeleteItems`.
+	public func deleteItems(in range: Range<Int>) {
+		self._items.value.removeSubrange(range)
+		let change = DataChangeDeleteItems(CountableRange(range).map { z($0) })
 		self.observer.send(value: change)
 	}
 
