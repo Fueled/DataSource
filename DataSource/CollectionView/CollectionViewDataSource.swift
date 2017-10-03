@@ -35,11 +35,11 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 	public final let dataSource = ProxyDataSource()
 
 	public final var reuseIdentifierForItem: (IndexPath, Any) -> String = {
-		_ in "DefaultCell"
+		_, _ in "DefaultCell"
 	}
 
 	public final var reuseIdentifierForSupplementaryItem: (String, Int, Any) -> String = {
-		_ in "DefaultSupplementaryView"
+		_, _, _ in "DefaultSupplementaryView"
 	}
 
 	fileprivate let disposable = CompositeDisposable()
