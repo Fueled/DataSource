@@ -25,10 +25,10 @@ import UIKit
 open class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITableViewDelegate {
 
 	public final var reuseIdentifierForHeaderItem: (Int, Any) -> String = {
-		_ in "DefaultHeaderView"
+		_, _ in "DefaultHeaderView"
 	}
 	public final var reuseIdentifierForFooterItem: (Int, Any) -> String = {
-		_ in "DefaultFooterView"
+		_, _ in "DefaultFooterView"
 	}
 
 	open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

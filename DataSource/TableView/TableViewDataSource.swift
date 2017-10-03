@@ -32,7 +32,7 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 	public final let dataSource = ProxyDataSource()
 
 	public final var reuseIdentifierForItem: (IndexPath, Any) -> String = {
-		_ in "DefaultCell"
+		_, _ in "DefaultCell"
 	}
 
 	fileprivate let disposable = CompositeDisposable()
