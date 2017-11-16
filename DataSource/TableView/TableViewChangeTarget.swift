@@ -25,7 +25,7 @@ extension UITableView: DataChangeTarget {
 		self.deleteSections(IndexSet(ds_integers: sections), with: .fade)
 	}
 
-	public func ds_insertItems(at indexPaths: [IndexPath]) {
+	@objc open func ds_insertItems(at indexPaths: [IndexPath]) {
 		self.insertRows(at: indexPaths, with: .fade)
 	}
 
