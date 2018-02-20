@@ -9,48 +9,54 @@
 import Foundation
 import UIKit
 
-extension UITableView: DataChangeTarget {
-
+public class TableViewChangeTarget: DataChangeTarget {
+	
+	private let tableView: UITableView
+	
+	init(tableView: UITableView) {
+		self.tableView = tableView
+	}
+	
 	public func ds_performBatchChanges(_ batchChanges: @escaping ()->()) {
-		self.beginUpdates()
+		self.tableView.beginUpdates()
 		batchChanges()
-		self.endUpdates()
+		self.tableView.endUpdates()
 	}
-
+	
 	public func ds_deleteItems(at indexPaths: [IndexPath]) {
-		self.deleteRows(at: indexPaths, with: .fade)
+		self.tableView.deleteRows(at: indexPaths, with: .fade)
 	}
-
+	
 	public func ds_deleteSections(_ sections: [Int]) {
-		self.deleteSections(IndexSet(ds_integers: sections), with: .fade)
+		self.tableView.deleteSections(IndexSet(ds_integers: sections), with: .fade)
 	}
-
+	
 	public func ds_insertItems(at indexPaths: [IndexPath]) {
-		self.insertRows(at: indexPaths, with: .fade)
+		self.tableView.insertRows(at: indexPaths, with: .fade)
 	}
-
+	
 	public func ds_insertSections(_ sections: [Int]) {
-		self.insertSections(IndexSet(ds_integers: sections), with: .fade)
+		self.tableView.insertSections(IndexSet(ds_integers: sections), with: .fade)
 	}
-
+	
 	public func ds_moveItem(at oldIndexPath: IndexPath, to newIndexPath: IndexPath) {
-		self.moveRow(at: oldIndexPath, to: newIndexPath)
+		self.tableView.moveRow(at: oldIndexPath, to: newIndexPath)
 	}
-
+	
 	public func ds_moveSection(_ oldSection: Int, toSection newSection: Int) {
-		self.moveSection(oldSection, toSection: newSection)
+		self.tableView.moveSection(oldSection, toSection: newSection)
 	}
-
+	
 	public func ds_reloadData() {
-		self.reloadData()
+		self.tableView.reloadData()
 	}
-
+	
 	public func ds_reloadItems(at indexPaths: [IndexPath]) {
-		self.reloadRows(at: indexPaths, with: .fade)
+		self.tableView.reloadRows(at: indexPaths, with: .fade)
 	}
-
+	
 	public func ds_reloadSections(_ sections: [Int]) {
-		self.reloadSections(IndexSet(ds_integers: sections), with: .fade)
+		self.tableView.reloadSections(IndexSet(ds_integers: sections), with: .fade)
 	}
-
+	
 }

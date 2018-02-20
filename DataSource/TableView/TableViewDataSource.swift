@@ -34,6 +34,13 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 	public final var reuseIdentifierForItem: (IndexPath, Any) -> String = {
 		_, _ in "DefaultCell"
 	}
+	
+	public final lazy var dataChangeTarget: DataChangeTarget? = {
+		guard let tableView = self.tableView else {
+			return nil
+		}
+		return TableViewChangeTarget(tableView: tableView)
+	}()
 
 	fileprivate let disposable = CompositeDisposable()
 
@@ -41,8 +48,8 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 		super.init()
 		self.disposable += self.dataSource.changes.observeValues {
 			[weak self] change in
-			if let tableView = self?.tableView {
-				change.apply(to: tableView)
+			if let target = self?.dataChangeTarget {
+				change.apply(to: target)
 			}
 		}
 	}
