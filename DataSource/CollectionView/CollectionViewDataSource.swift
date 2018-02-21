@@ -42,12 +42,7 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		_, _, _ in "DefaultSupplementaryView"
 	}
 	
-	public final lazy var dataChangeTarget: DataChangeTarget? = {
-		guard let collectionView = self.collectionView else {
-			return nil
-		}
-		return CollectionViewChangeTarget(collectionView: collectionView)
-	}()
+	public final var dataChangeTarget: DataChangeTarget? = nil
 
 	fileprivate let disposable = CompositeDisposable()
 
@@ -55,8 +50,8 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		super.init()
 		self.disposable += self.dataSource.changes.observeValues {
 			[weak self] change in
-			if let target = self?.dataChangeTarget {
-				change.apply(to: target)
+			if let collectionView = self?.collectionView {
+				change.apply(to: self?.dataChangeTarget ?? collectionView)
 			}
 		}
 	}
