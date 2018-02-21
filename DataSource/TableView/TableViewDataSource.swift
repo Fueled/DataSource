@@ -43,8 +43,8 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 		super.init()
 		self.disposable += self.dataSource.changes.observeValues {
 			[weak self] change in
-			if let tableView = self?.tableView {
-				change.apply(to: self?.dataChangeTarget ?? tableView)
+			if let this = self, let dataChangeTarget = this.dataChangeTarget ?? this.tableView {
+				change.apply(to: dataChangeTarget)
 			}
 		}
 	}

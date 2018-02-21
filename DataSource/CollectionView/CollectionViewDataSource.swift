@@ -50,8 +50,8 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		super.init()
 		self.disposable += self.dataSource.changes.observeValues {
 			[weak self] change in
-			if let collectionView = self?.collectionView {
-				change.apply(to: self?.dataChangeTarget ?? collectionView)
+			if let this = self, let dataChangeTarget = this.dataChangeTarget ?? this.collectionView {
+				change.apply(to: dataChangeTarget)
 			}
 		}
 	}
