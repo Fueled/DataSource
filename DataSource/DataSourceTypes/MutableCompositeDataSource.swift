@@ -98,7 +98,7 @@ public final class MutableCompositeDataSource: DataSource {
 	/// Deletes an inner dataSource in the given range
 	/// and emits `DataChangeDeleteSections` for its corresponding sections.
 	public func delete(in range: Range<Int>) {
-		let sections = CountableRange(range).flatMap(self.sectionsOfDataSource)
+		let sections = range.flatMap(self.sectionsOfDataSource)
 		self._innerDataSources.value.removeSubrange(range)
 		if sections.count > 0 {
 			let change = DataChangeDeleteSections(sections)
