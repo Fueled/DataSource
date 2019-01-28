@@ -19,12 +19,12 @@ import UIKit
 open class TableViewDataSourceWithHeaderFooterTitles: TableViewDataSource {
 
 	open func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-		let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionHeader, inSection: section)
+		let item = self.dataSource.supplementaryItemOfKind(UICollectionView.elementKindSectionHeader, inSection: section)
 		return item as? String
 	}
 
 	open func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-		let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionFooter, inSection: section)
+		let item = self.dataSource.supplementaryItemOfKind(UICollectionView.elementKindSectionFooter, inSection: section)
 		return item as? String
 	}
 

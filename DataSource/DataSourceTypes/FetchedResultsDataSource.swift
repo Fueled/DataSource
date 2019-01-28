@@ -54,7 +54,7 @@ public final class FetchedResultsDataSource: DataSource {
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		if kind != UICollectionElementKindSectionHeader {
+		if kind != UICollectionView.elementKindSectionHeader {
 			return nil
 		}
 		let sectionInfo = self.infoForSection(section)
