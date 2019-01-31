@@ -35,7 +35,7 @@ extension CellDescriptor {
 extension CollectionViewDataSource {
 	func configure(_ collectionView: UICollectionView, using cellDescriptors: [CellDescriptor]) {
 		self.reuseIdentifierForItem = { indexPath, item in
-			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath,item) })?.reuseIdentifier else {
+			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath, item) })?.reuseIdentifier else {
 				fatalError()
 			}
 			return reuseIdentifier
@@ -58,7 +58,7 @@ extension CollectionViewDataSource {
 extension TableViewDataSource {
 	func configure(_ tableView: UITableView, using cellDescriptors: [CellDescriptor]) {
 		self.reuseIdentifierForItem = { indexPath, item in
-			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath,item) })?.reuseIdentifier else {
+			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath, item) })?.reuseIdentifier else {
 				fatalError()
 			}
 			return reuseIdentifier
