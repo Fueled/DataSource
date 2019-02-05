@@ -1,11 +1,11 @@
 import UIKit
 
-struct CellDescriptor {
-	let reuseIdentifier: String
-	let prototypeSource: PrototypeSource
-	let isMatching: (IndexPath, Any) -> Bool
+public struct CellDescriptor {
+	public let reuseIdentifier: String
+	public let prototypeSource: PrototypeSource
+	public let isMatching: (IndexPath, Any) -> Bool
 
-	init(
+	public init(
 		_ reuseIdentifier: String,
 		_ prototypeSource: PrototypeSource = .storyboard,
 		isMatching: @escaping (IndexPath, Any) -> Bool)
@@ -15,7 +15,7 @@ struct CellDescriptor {
 		self.isMatching = isMatching
 	}
 
-	init<Item>(
+	public init<Item>(
 		_ reuseIdentifier: String,
 		_ itemType: Item.Type,
 		_ prototypeSource: PrototypeSource = .storyboard)
@@ -25,7 +25,7 @@ struct CellDescriptor {
 }
 
 extension CellDescriptor {
-	enum PrototypeSource {
+	public enum PrototypeSource {
 		case storyboard
 		case nib(UINib)
 		case `class`(AnyObject.Type)
@@ -33,7 +33,7 @@ extension CellDescriptor {
 }
 
 extension CollectionViewDataSource {
-	func configure(_ collectionView: UICollectionView, using cellDescriptors: [CellDescriptor]) {
+	public func configure(_ collectionView: UICollectionView, using cellDescriptors: [CellDescriptor]) {
 		self.reuseIdentifierForItem = { indexPath, item in
 			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath, item) })?.reuseIdentifier else {
 				fatalError()
@@ -56,7 +56,7 @@ extension CollectionViewDataSource {
 }
 
 extension TableViewDataSource {
-	func configure(_ tableView: UITableView, using cellDescriptors: [CellDescriptor]) {
+	public func configure(_ tableView: UITableView, using cellDescriptors: [CellDescriptor]) {
 		self.reuseIdentifierForItem = { indexPath, item in
 			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath, item) })?.reuseIdentifier else {
 				fatalError()
@@ -76,4 +76,10 @@ extension TableViewDataSource {
 		tableView.dataSource = self
 		self.tableView = tableView
 	}
+}
+
+extension UIView {
+	
+	public static var reuseIdentifier: String { return String(describing: self).components(separatedBy: ".").last! }
+	public static var nib: UINib { return UINib(nibName: self.reuseIdentifier, bundle: nil) }
 }
