@@ -30,7 +30,7 @@ class TableViewDataSourceWithHeaderFooterTitlesTests: QuickSpecWithDataSets {
 			tableViewDataSource.configure(tableView, using: tableViewDescriptors)
 			tableViewDataSource.dataSource.innerDataSource <~ dataSource.producer.map { $0 as DataSource }
 		}
-		itBehavesLike("TableViewDataSource object") { ["tableViewDataSource": tableViewDataSource, "TestCellModels": self.dataSetWithTestCellModels, "tableView": tableView] }
+		itBehavesLike("TableViewDataSource object") { ["tableViewDataSource": tableViewDataSource, "TestCellModels": [self.dataSetWithTestCellModels], "tableView": tableView] }
 		it("has correct header") {
 			expect(tableViewDataSource.tableView(tableView, titleForHeaderInSection: 0)) == headerTitle
 		}

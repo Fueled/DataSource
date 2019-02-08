@@ -24,15 +24,18 @@ class TableViewDataSourceWithHeaderFooterViewsTests: QuickSpecWithDataSets {
 			tableViewDataSource = TableViewDataSourceWithHeaderFooterViews()
 			tableView = UITableView(frame: CGRect.zero)
 			let tableViewDescriptors = [CellDescriptor(TestTableViewCell.reuseIdentifier, TestCellModel.self, .class(TestTableViewCell.self))]
-			tableViewDataSource.configure(tableView, using: tableViewDescriptors)
+			tableViewDataSource.configure(tableView,
+										  using: tableViewDescriptors,
+										  headerDescriptor: HeaderFooterDescriptor(TestHeaderFooterView.reuseIdentifier, TestHeaderFooterViewModel.self, .class(TestHeaderFooterView.self)),
+										  footerDescriptor: HeaderFooterDescriptor(TestHeaderFooterView.reuseIdentifier, TestHeaderFooterViewModel.self, .class(TestHeaderFooterView.self)))
 			tableViewDataSource.dataSource.innerDataSource <~ dataSource.producer.map { $0 as DataSource }
 		}
-		itBehavesLike("TableViewDataSource object") { ["tableViewDataSource": tableViewDataSource, "TestCellModels": self.dataSetWithTestCellModels, "tableView": tableView] }
+		itBehavesLike("TableViewDataSource object") { ["tableViewDataSource": tableViewDataSource, "TestCellModels": [self.dataSetWithTestCellModels], "tableView": tableView] }
 		it("has header") {
-			_ = expect(tableViewDataSource.tableView(tableView, viewForHeaderInSection: 0))
+			 expect(tableViewDataSource.tableView(tableView, viewForHeaderInSection: 0)).notTo(beNil())
 		}
 		it("has footer") {
-			_ = expect(tableViewDataSource.tableView(tableView, viewForFooterInSection: 0))
+			expect(tableViewDataSource.tableView(tableView, viewForFooterInSection: 0)).notTo(beNil())
 		}
 	}
 }

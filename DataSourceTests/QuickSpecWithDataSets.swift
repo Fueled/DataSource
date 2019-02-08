@@ -17,6 +17,7 @@ class QuickSpecWithDataSets: QuickSpec {
 
 	let testDataSet = Array(1...7)
 	let testDataSet2 = Array(33...43)
+	let testDataSet3 = Array(50...55)
 
 	let newElement = Int.random(in: 100..<500)
 
@@ -41,10 +42,5 @@ class QuickSpecWithDataSets: QuickSpec {
 	let supplementaryItemOfKind = ["item1": Int.random(in: 500..<1000), "item2": Int.random(in: 1000..<1100)]
 
 	let dataSetWithTestCellModels = [TestCellModel(), TestCellModel(), TestCellModel()]
-	
-	func compareDataSourceToArray(array: [Int], dataSource: DataSource, section: Int) {
-		for (index, element) in array.enumerated() {
-			expect(dataSource.item(at: IndexPath(item: index, section: section)) as? Int) == element
-		}
-	}
+	let dataSetWithTestCellModels2 = [TestCellModel()]
 }

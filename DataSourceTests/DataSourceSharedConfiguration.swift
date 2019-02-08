@@ -18,29 +18,37 @@ class DataSourceSharedConfiguration: QuickConfiguration {
 		sharedExamples("DataSource protocol") { (sharedExampleContext: @escaping SharedExampleContext) in
 			describe("Datasource protocol") {
 				var dataSource: DataSource!
-				var initialData: [Int]!
-				var leafDataSource: DataSource?
+				var initialData: [[Int]]!
+				var leafDataSource: [DataSource]?
 				var supplementrayItems: [String: Int]!
 				beforeEach {
 					//Avoiding swift bug https://bugs.swift.org/browse/SR-3871
 					dataSource = (sharedExampleContext()["DataSource"] as AnyObject as? DataSource)
-					initialData = sharedExampleContext()["InitialData"] as? [Int]
-					leafDataSource = sharedExampleContext()["LeafDataSource"] as AnyObject as? DataSource
+					initialData = sharedExampleContext()["InitialData"] as? [[Int]]
+					leafDataSource = sharedExampleContext()["LeafDataSource"] as? [DataSource]
 					supplementrayItems = sharedExampleContext()["SupplementaryItems"] as? [String: Int] ?? [:]
 				}
-				it("has correct number of items in section") {
-					expect(dataSource.numberOfItemsInSection(0)) == initialData.count
+				it("has correct number of items in sections") {
+					for (index, _) in initialData.enumerated() {
+						expect(dataSource.numberOfItemsInSection(index)) == initialData[index].count
+					}
 				}
 				it("has correct number of section") {
-					expect(dataSource.numberOfSections) == 1
+					expect(dataSource.numberOfSections) == initialData.count
 				}
 				it("all items are the same as in input data") {
-					for (index, element) in initialData.enumerated() {
-						expect(dataSource.item(at: IndexPath(item: index, section: 0)) as? Int) == element
+					for (sectionIndex, element) in initialData.enumerated() {
+						for (itemIndex, element) in element.enumerated() {
+							expect(dataSource.item(at: IndexPath(item: itemIndex, section: sectionIndex)) as? Int) == element
+						}
 					}
 				}
 				it("leafDataSource equal to proper dataSource") {
-					expect(dataSource.leafDataSource(at: IndexPath(item: 0, section: 0)).0) === leafDataSource ?? dataSource
+					for (sectionIndex, element) in initialData.enumerated() {
+						for (itemIndex, _) in element.enumerated() {
+							expect(dataSource.leafDataSource(at: IndexPath(item: itemIndex, section: sectionIndex)).0) === leafDataSource?[sectionIndex] ?? dataSource
+						}
+					}
 				}
 				it("has correct supplementary item") {
 					for (itemKey, itemValue) in supplementrayItems {

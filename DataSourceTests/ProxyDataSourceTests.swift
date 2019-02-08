@@ -21,13 +21,13 @@ class ProxyDataSourceTests: QuickSpecWithDataSets {
 			staticDataSource = StaticDataSource(items: self.testDataSet)
 			dataSource = ProxyDataSource(staticDataSource)
 		}
-		itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": self.testDataSet, "LeafDataSource": staticDataSource] }
+		itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet], "LeafDataSource": [staticDataSource]] }
 		context("when change inner data source value") {
 			beforeEach {
 				staticDataSource = StaticDataSource(items: self.testDataSet2)
 				dataSource.innerDataSource.value = staticDataSource
 			}
-			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": self.testDataSet2, "LeafDataSource": staticDataSource] }
+			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet2], "LeafDataSource": [staticDataSource]] }
 		}
 	}
 }

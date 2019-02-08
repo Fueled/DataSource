@@ -16,27 +16,31 @@ import Nimble
 class TableViewDataSourceSharedConfiguration: QuickConfiguration {
 	override class func configure(_ configuration: Configuration) {
 		sharedExamples("TableViewDataSource object") { (sharedExampleContext: @escaping SharedExampleContext) in
-			describe("Datasource protocol") {
+			describe("TableView tests") {
 				var tableViewDataSource: TableViewDataSource!
-				var initialData: [TestCellModel]!
+				var initialData: [[TestCellModel]]!
 				var tableView: UITableView!
 				beforeEach {
 					tableViewDataSource = sharedExampleContext()["tableViewDataSource"] as? TableViewDataSource
-					initialData = sharedExampleContext()["TestCellModels"] as? [TestCellModel]
+					initialData = sharedExampleContext()["TestCellModels"] as? [[TestCellModel]]
 					tableView = sharedExampleContext()["tableView"] as? UITableView
 				}
 				it("configure visible cells") {
 					tableViewDataSource.configureVisibleCells()
 				}
-				it("has 1 section") {
-					expect(tableViewDataSource.numberOfSections(in: tableView)) == 1
+				it("has correct number of section") {
+					expect(tableViewDataSource.numberOfSections(in: tableView)) == initialData.count
 				}
-				it("has proper count of items") {
-					expect(tableViewDataSource.tableView(tableView, numberOfRowsInSection: 0)) == initialData.count
+				it("has correct number of items in sections") {
+					for (index, _) in initialData.enumerated() {
+						expect(tableViewDataSource.tableView(tableView, numberOfRowsInSection: index)) == initialData[index].count
+					}
 				}
 				it("cells has correct type") {
-					for (index, _) in initialData.enumerated() {
-						_ = expect(tableViewDataSource.tableView(tableView, cellForRowAt: IndexPath(item: index, section: 0)))
+					for (sectionIndex, element) in initialData.enumerated() {
+						for (itemIndex, _) in element.enumerated() {
+							expect(tableViewDataSource.tableView(tableView, cellForRowAt: IndexPath(item: itemIndex, section: sectionIndex))).notTo(beNil())
+						}
 					}
 				}
 			}

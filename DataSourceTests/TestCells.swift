@@ -1,5 +1,5 @@
 //
-//  TestCell.swift
+//  TestCells.swift
 //  DataSourceTests
 //
 //  Created by Aleksei Bobrov on 01/02/2019.

@@ -19,36 +19,36 @@ class MutableDataSourceTests: QuickSpecWithDataSets {
 		beforeEach {
 			dataSource = MutableDataSource(self.testDataSet)
 		}
-		itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": self.testDataSet] }
+		itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet]] }
 		context("when adding new value") {
 			beforeEach {
 				dataSource.insertItem(self.newElement, at: self.testDataSet.startIndex)
 			}
-			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": self.testDataSetWithNewElement] }
+			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSetWithNewElement]] }
 		}
 		context("when deleting a item") {
 			beforeEach {
 				dataSource.deleteItem(at: self.testDataSet.startIndex)
 			}
-			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": self.testDataSetWithoutFirstElement] }
+			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSetWithoutFirstElement]] }
 		}
 		context("when replacing a item") {
 			beforeEach {
 				dataSource.replaceItem(at: self.testDataSet.startIndex, with: self.newElement)
 			}
-			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": self.testDataSetWithReplacedFirstElement] }
+			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSetWithReplacedFirstElement]] }
 		}
 		context("when replacing items") {
 			beforeEach {
 				dataSource.replaceItems(with: self.testDataSet2)
 			}
-			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": self.testDataSet2] }
+			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet2]] }
 		}
 		context("when moving items") {
 			beforeEach {
 				dataSource.moveItem(at: self.testDataSet.startIndex, to: self.testDataSet.index(after: self.testDataSet.startIndex))
 			}
-			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": self.testDataSetWithReplacedFirstWithSecondElement] }
+			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSetWithReplacedFirstWithSecondElement]] }
 		}
 	}
 }
