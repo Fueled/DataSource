@@ -32,7 +32,7 @@ open class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITabl
 	}
 
 	open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		guard let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionHeader, inSection: section) else {
+		guard let item = self.dataSource.supplementaryItemOfKind(UICollectionView.elementKindSectionHeader, inSection: section) else {
 			return nil
 		}
 		let reuseIdentifier = self.reuseIdentifierForHeaderItem(section, item)
@@ -42,7 +42,7 @@ open class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITabl
 	}
 
 	open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-		guard let item = self.dataSource.supplementaryItemOfKind(UICollectionElementKindSectionFooter, inSection: section) else {
+		guard let item = self.dataSource.supplementaryItemOfKind(UICollectionView.elementKindSectionFooter, inSection: section) else {
 			return nil
 		}
 		let reuseIdentifier = self.reuseIdentifierForFooterItem(section, item)

@@ -80,7 +80,7 @@ public final class MutableDataSource<T>: DataSource {
 	/// and emits `DataChangeDeleteItems`.
 	public func deleteItems(in range: Range<Int>) {
 		self._items.value.removeSubrange(range)
-		let change = DataChangeDeleteItems(CountableRange(range).map(z))
+		let change = DataChangeDeleteItems(range.map(z))
 		self.observer.send(value: change)
 	}
 
