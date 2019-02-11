@@ -22,6 +22,6 @@ class MappedDataSourceTests: QuickSpecWithDataSets {
 			staticDataSource = StaticDataSource(sections: dataSourceSection)
 			dataSource = MappedDataSource(staticDataSource, supplementaryTransform: { ($1 as! Int) * 3 }, transform: { ($0 as! Int) * 2 })
 		}
-		itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet.map { $0 * 2 }], "LeafDataSource": [staticDataSource], "SupplementaryItems": self.supplementaryItemOfKind.map { $1 * 3 }] }
+		itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet.map { $0 * 2 }], "LeafDataSource": [staticDataSource], "SupplementaryItems": [self.supplementaryItemOfKind.map { $1 * 3 }]] }
 	}
 }

@@ -40,6 +40,7 @@ class QuickSpecWithDataSets: QuickSpec {
 	}
 
 	let supplementaryItemOfKind = ["item1": Int.random(in: 500..<1000), "item2": Int.random(in: 1000..<1100)]
+	let supplementaryItemOfKind2 = ["item1": Int.random(in: 5000..<10000), "item2": Int.random(in: 10000..<11000), "item3": Int.random(in: 55..<66)]
 
 	let dataSetWithTestCellModels = [TestCellModel(), TestCellModel(), TestCellModel()]
 	let dataSetWithTestCellModels2 = [TestCellModel()]

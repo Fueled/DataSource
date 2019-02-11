@@ -23,6 +23,6 @@ class CompositeDataSourceTests: QuickSpecWithDataSets {
 			staticDataSources = [firstStaticDataSource, secondStaticDataSource]
 			dataSource = CompositeDataSource(staticDataSources)
 		}
-		itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet, self.testDataSet2], "LeafDataSource": staticDataSources, "SupplementaryItems": self.supplementaryItemOfKind] }
+		itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet, self.testDataSet2], "LeafDataSource": staticDataSources, "SupplementaryItems": [self.supplementaryItemOfKind]] }
 	}
 }

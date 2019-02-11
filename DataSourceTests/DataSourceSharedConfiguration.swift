@@ -19,14 +19,14 @@ class DataSourceSharedConfiguration: QuickConfiguration {
 			describe("Datasource protocol") {
 				var dataSource: DataSource!
 				var initialData: [[Int]]!
-				var leafDataSource: [DataSource]?
-				var supplementrayItems: [String: Int]!
+				var leafDataSource: [DataSource]!
+				var supplementrayItems: [[String: Int]]!
 				beforeEach {
 					//Avoiding swift bug https://bugs.swift.org/browse/SR-3871
 					dataSource = (sharedExampleContext()["DataSource"] as AnyObject as? DataSource)
 					initialData = sharedExampleContext()["InitialData"] as? [[Int]]
-					leafDataSource = sharedExampleContext()["LeafDataSource"] as? [DataSource]
-					supplementrayItems = sharedExampleContext()["SupplementaryItems"] as? [String: Int] ?? [:]
+					leafDataSource = sharedExampleContext()["LeafDataSource"] as? [DataSource] ?? [dataSource]
+					supplementrayItems = sharedExampleContext()["SupplementaryItems"] as? [[String: Int]] ?? [[:]]
 				}
 				it("has correct number of items in sections") {
 					for (index, _) in initialData.enumerated() {
@@ -44,15 +44,15 @@ class DataSourceSharedConfiguration: QuickConfiguration {
 					}
 				}
 				it("leafDataSource equal to proper dataSource") {
-					for (sectionIndex, element) in initialData.enumerated() {
-						for (itemIndex, _) in element.enumerated() {
-							expect(dataSource.leafDataSource(at: IndexPath(item: itemIndex, section: sectionIndex)).0) === leafDataSource?[sectionIndex] ?? dataSource
-						}
+					for (index, element) in leafDataSource.enumerated() {
+						expect(dataSource.leafDataSource(at: IndexPath(item: 0, section: index)).0) === element
 					}
 				}
-				it("has correct supplementary item") {
-					for (itemKey, itemValue) in supplementrayItems {
-						expect(dataSource.supplementaryItemOfKind(itemKey, inSection: 0) as? Int) == itemValue
+				it("has correct supplementary items") {
+					for (sectionIndex, sectionSupplementaryItems) in supplementrayItems.enumerated() {
+						sectionSupplementaryItems.forEach {
+							expect(dataSource.supplementaryItemOfKind($0.key, inSection: sectionIndex) as? Int) == $0.value
+						}
 					}
 				}
 			}
