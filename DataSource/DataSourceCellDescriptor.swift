@@ -1,6 +1,6 @@
 import UIKit
 
-public struct CellDescriptor {
+public class CellDescriptor: NSObject {
 	public let reuseIdentifier: String
 	public let prototypeSource: PrototypeSource
 	public let isMatching: (IndexPath, Any) -> Bool
@@ -15,7 +15,7 @@ public struct CellDescriptor {
 		self.isMatching = isMatching
 	}
 
-	public init<Item>(
+	public convenience init<Item>(
 		_ reuseIdentifier: String,
 		_ itemType: Item.Type,
 		_ prototypeSource: PrototypeSource = .storyboard)
@@ -24,7 +24,7 @@ public struct CellDescriptor {
 	}
 }
 
-public struct HeaderFooterDescriptor {
+public class HeaderFooterDescriptor: NSObject {
 	public let reuseIdentifier: String
 	public let prototypeSource: PrototypeSource
 	public let isMatching: (IndexPath, Any) -> Bool
@@ -39,7 +39,7 @@ public struct HeaderFooterDescriptor {
 		self.isMatching = isMatching
 	}
 
-	public init<Item>(
+	public convenience init<Item>(
 		_ reuseIdentifier: String,
 		_ itemType: Item.Type,
 		_ prototypeSource: PrototypeSource = .storyboard)
@@ -55,7 +55,7 @@ public enum PrototypeSource {
 }
 
 extension CollectionViewDataSource {
-	public func configure(_ collectionView: UICollectionView, using cellDescriptors: [CellDescriptor]) {
+	@objc open func configure(_ collectionView: UICollectionView, using cellDescriptors: [CellDescriptor]) {
 		self.reuseIdentifierForItem = { indexPath, item in
 			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath, item) })?.reuseIdentifier else {
 				fatalError()
@@ -78,7 +78,7 @@ extension CollectionViewDataSource {
 }
 
 extension TableViewDataSource {
-	public func configure(_ tableView: UITableView, using cellDescriptors: [CellDescriptor]) {
+	@objc open func configure(_ tableView: UITableView, using cellDescriptors: [CellDescriptor]) {
 		self.reuseIdentifierForItem = { indexPath, item in
 			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath, item) })?.reuseIdentifier else {
 				fatalError()
@@ -102,7 +102,7 @@ extension TableViewDataSource {
 
 
 extension TableViewDataSourceWithHeaderFooterViews {
-	public func configure(_ tableView: UITableView, using cellDescriptors: [CellDescriptor], headerDescriptor: HeaderFooterDescriptor?, footerDescriptor: HeaderFooterDescriptor?) {
+	@objc open func configure(_ tableView: UITableView, using cellDescriptors: [CellDescriptor], headerDescriptor: HeaderFooterDescriptor?, footerDescriptor: HeaderFooterDescriptor?) {
 		self.reuseIdentifierForItem = { indexPath, item in
 			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath, item) })?.reuseIdentifier else {
 				fatalError()
@@ -151,8 +151,18 @@ extension TableViewDataSourceWithHeaderFooterViews {
 	}
 }
 
-extension UIView {
-	
+public protocol ReusableItem: AnyObject {
+	static var reuseIdentifier: String { get }
+}
+
+public protocol ReusableNib: AnyObject {
+	static var nib: UINib { get }
+}
+
+extension ReusableItem where Self: UIView {
 	public static var reuseIdentifier: String { return String(describing: self).components(separatedBy: ".").last! }
+}
+
+extension ReusableNib where Self: UIView, Self: ReusableItem {
 	public static var nib: UINib { return UINib(nibName: self.reuseIdentifier, bundle: nil) }
 }

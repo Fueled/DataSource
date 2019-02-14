@@ -13,10 +13,10 @@ import Result
 
 struct TestCellModel { }
 
-final class TestTableViewCell: TableViewCell { }
+final class TestTableViewCell: TableViewCell, ReusableItem  { }
 
-final class TestCollectionViewCell: CollectionViewCell { }
+final class TestCollectionViewCell: CollectionViewCell, ReusableItem { }
 
 struct TestHeaderFooterViewModel { }
 
-final class TestHeaderFooterView: TableViewHeaderFooterView { }
+final class TestHeaderFooterView: TableViewHeaderFooterView, ReusableItem { }
