@@ -12,6 +12,7 @@ import DataSource
 import ReactiveSwift
 import Quick
 import Nimble
+import CoreData
 
 class QuickSpecWithDataSets: QuickSpec {
 
@@ -44,4 +45,11 @@ class QuickSpecWithDataSets: QuickSpec {
 
 	let dataSetWithTestCellModels = [TestCellModel(), TestCellModel(), TestCellModel()]
 	let dataSetWithTestCellModels2 = [TestCellModel()]
+
+	var coreDataManager: CoreDataManager?
+
+	func initCoreDataManagerWithTestData(testData: [Int]) {
+		self.coreDataManager = CoreDataManager()
+		self.coreDataManager?.fillItemsWithDataSet(dataSet: testData)
+	}
 }

@@ -12,6 +12,7 @@ import DataSource
 import ReactiveSwift
 import Quick
 import Nimble
+import CoreData
 
 class DataSourceSharedConfiguration: QuickConfiguration {
 	override class func configure(_ configuration: Configuration) {
@@ -39,7 +40,15 @@ class DataSourceSharedConfiguration: QuickConfiguration {
 				it("all items are the same as in input data") {
 					for (sectionIndex, element) in initialData.enumerated() {
 						for (itemIndex, element) in element.enumerated() {
-							expect(dataSource.item(at: IndexPath(item: itemIndex, section: sectionIndex)) as? Int) == element
+							let dataSourceItem: Int
+							if let itemAsManagedObject = (dataSource.item(at: IndexPath(item: itemIndex, section: sectionIndex)) as? NSManagedObject) {
+								dataSourceItem = Int((itemAsManagedObject.value(forKey: "id") as! String))!
+							} else if let itemAsAnyObject = (dataSource.item(at: IndexPath(item: itemIndex, section: sectionIndex)) as? Int) {
+								dataSourceItem = itemAsAnyObject
+							} else {
+								fatalError("DataSource item should be of expected type")
+							}
+							expect(dataSourceItem) == element
 						}
 					}
 				}
