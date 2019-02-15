@@ -40,7 +40,7 @@ class QuickSpecWithDataSets: QuickSpec {
 	let dataSetWithTestCellModels = [TestCellModel(), TestCellModel(), TestCellModel()]
 	let dataSetWithTestCellModels2 = [TestCellModel()]
 
-	var coreDataManager: CoreDataManager?
+	var coreDataManager: CoreDataManager!
 
 	func initCoreDataManagerWithTestData(testData: [Int]) {
 		self.coreDataManager = CoreDataManager()
