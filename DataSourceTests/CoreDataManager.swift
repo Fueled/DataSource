@@ -22,7 +22,7 @@ final class CoreDataManager {
 		let description = NSPersistentStoreDescription()
 		description.type = NSInMemoryStoreType
 		self.persistentContainer.persistentStoreDescriptions = [description]
-		self.persistentContainer.loadPersistentStores(completionHandler: { (_, error) in
+		self.persistentContainer.loadPersistentStores(completionHandler: { _, error in
 			if let error = error as NSError? {
 				fatalError("An error occurred while loading persistent store \(error), \(error.userInfo)")
 			}

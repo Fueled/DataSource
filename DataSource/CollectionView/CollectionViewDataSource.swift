@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import UIKit
 import ReactiveSwift
+import UIKit
 
 /// An object that implements `UICollectionViewDataSource` protocol
 /// by returning the data from an associated dataSource.
@@ -29,7 +29,7 @@ import ReactiveSwift
 /// A collectionViewDataSource observes changes of the associated dataSource
 /// and applies those changes to the associated collectionView.
 open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
-
+	// swiftlint:disable private_outlet
 	@IBOutlet public final var collectionView: UICollectionView?
 
 	public final let dataSource = ProxyDataSource()
@@ -41,15 +41,14 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 	public final var reuseIdentifierForSupplementaryItem: (String, Int, Any) -> String = {
 		_, _, _ in "DefaultSupplementaryView"
 	}
-	
-	public final var dataChangeTarget: DataChangeTarget? = nil
+
+	public final var dataChangeTarget: DataChangeTarget?
 
 	fileprivate let disposable = CompositeDisposable()
 
-	public override init() {
+	override public init() {
 		super.init()
-		self.disposable += self.dataSource.changes.observeValues {
-			[weak self] change in
+		self.disposable += self.dataSource.changes.observeValues { [weak self] change in
 			if let this = self, let dataChangeTarget = this.dataChangeTarget ?? this.collectionView {
 				change.apply(to: dataChangeTarget)
 			}

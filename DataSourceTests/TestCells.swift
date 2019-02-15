@@ -6,10 +6,7 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
-import UIKit
 import DataSource
-import ReactiveSwift
-import Result
 
 struct TestCellModel { }
 

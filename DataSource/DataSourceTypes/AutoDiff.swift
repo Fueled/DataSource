@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+// swiftlint:disable convenience_type
 public struct AutoDiff {
 
 	public struct Result {
@@ -25,6 +25,7 @@ public struct AutoDiff {
 			if !inserted.isEmpty {
 				changes.append(DataChangeInsertSections(inserted))
 			}
+			// swiftlint:disable identifier_name
 			for (from, to) in moved {
 				changes.append(DataChangeMoveSection(from: from, to: to))
 			}
@@ -45,6 +46,7 @@ public struct AutoDiff {
 				}
 				changes.append(DataChangeInsertItems(indexPaths))
 			}
+			// swiftlint:disable identifier_name
 			for (from, to) in moved {
 				let fromPath = IndexPath(item: from, section: oldSection)
 				let toPath = IndexPath(item: to, section: newSection)
@@ -143,7 +145,7 @@ public struct AutoDiff {
 
 }
 
-fileprivate func findFirst<S: Sequence>
+private func findFirst<S: Sequence>
 	(_ source: S, _ predicate: (S.Iterator.Element) -> Bool)
 	-> (Int, S.Iterator.Element)?
 {

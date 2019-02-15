@@ -1,17 +1,14 @@
 //
-//  UITableViewDataSourceTests.swift
+//  TableViewDataSourceTests.swift
 //  DataSourceTests
 //
 //  Created by Aleksei Bobrov on 05/02/2019.
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
-import UIKit
-import XCTest
 import DataSource
-import ReactiveSwift
-import Quick
 import Nimble
+import Quick
 
 class TableViewDataSourceSharedConfiguration: QuickConfiguration {
 	override class func configure(_ configuration: Configuration) {
@@ -32,13 +29,13 @@ class TableViewDataSourceSharedConfiguration: QuickConfiguration {
 					expect(tableViewDataSource.numberOfSections(in: tableView)) == initialData.count
 				}
 				it("has correct number of items in sections") {
-					for (index, _) in initialData.enumerated() {
+					for index in initialData.indices {
 						expect(tableViewDataSource.tableView(tableView, numberOfRowsInSection: index)) == initialData[index].count
 					}
 				}
 				it("cells has correct type") {
 					for (sectionIndex, element) in initialData.enumerated() {
-						for (itemIndex, _) in element.enumerated() {
+						for itemIndex in element.indices {
 							expect(tableViewDataSource.tableView(tableView, cellForRowAt: IndexPath(item: itemIndex, section: sectionIndex))).notTo(beNil())
 						}
 					}

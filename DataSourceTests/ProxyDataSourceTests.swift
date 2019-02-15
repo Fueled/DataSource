@@ -1,17 +1,14 @@
 //
-//  ProxyDataSourceTestsNew.swift
+//  ProxyDataSourceTests.swift
 //  DataSourceTests
 //
 //  Created by Aleksei Bobrov on 04/02/2019.
 //  Copyright © 2019 Fueled. All rights reserved.
+//
 
-
-import UIKit
-import XCTest
 import DataSource
-import ReactiveSwift
-import Quick
 import Nimble
+import Quick
 
 class ProxyDataSourceTests: QuickSpecWithDataSets {
 	override func spec() {
@@ -33,7 +30,12 @@ class ProxyDataSourceTests: QuickSpecWithDataSets {
 				dataSource.animatesChanges.value = false
 				dataSource.innerDataSource.value = staticDataSource
 			}
-			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet2, self.testDataSet], "LeafDataSource": [staticDataSource], "SupplementaryItems": [self.supplementaryItemOfKind, self.supplementaryItemOfKind2]] }
+			itBehavesLike("DataSource protocol") {
+				["DataSource": dataSource,
+				 "InitialData": [self.testDataSet2, self.testDataSet],
+				 "LeafDataSource": [staticDataSource],
+				 "SupplementaryItems": [self.supplementaryItemOfKind, self.supplementaryItemOfKind2], ]
+			}
 		}
 	}
 }

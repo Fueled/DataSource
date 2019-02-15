@@ -6,12 +6,9 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
-import UIKit
-import XCTest
 import DataSource
-import ReactiveSwift
-import Quick
 import Nimble
+import Quick
 
 class AutoDiffSectionsDataSourceTests: QuickSpecWithDataSets {
 	override func spec() {
@@ -20,15 +17,19 @@ class AutoDiffSectionsDataSourceTests: QuickSpecWithDataSets {
 		var dataSourceSection2: DataSourceSection<Int>!
 		var dataSourceSections: [DataSourceSection<Int>]!
 		beforeEach {
-			dataSourceSection1 = DataSourceSection(items: self.testDataSet, supplementaryItems: ["sectionId":"1"])
-			dataSourceSection2 = DataSourceSection(items: self.testDataSet2, supplementaryItems: ["sectionId":"2"])
+			dataSourceSection1 = DataSourceSection(items: self.testDataSet, supplementaryItems: ["sectionId": "1"])
+			dataSourceSection2 = DataSourceSection(items: self.testDataSet2, supplementaryItems: ["sectionId": "2"])
 			dataSourceSections = [dataSourceSection1, dataSourceSection2]
-			dataSource = AutoDiffSectionsDataSource(sections: dataSourceSections,
-													findItemMoves: true,
-													compareSections: { 	let header0 = $0.supplementaryItems["sectionId"] as! String
-																		let header1 = $1.supplementaryItems["sectionId"] as! String
-																		return header0 == header1 },
-													compareItems: { $0 == $1 })
+			dataSource = AutoDiffSectionsDataSource(
+				sections: dataSourceSections,
+				findItemMoves: true,
+				compareSections:
+				{
+					let header0 = $0.supplementaryItems["sectionId"] as! String
+					let header1 = $1.supplementaryItems["sectionId"] as! String
+					return header0 == header1
+				},
+				compareItems: { $0 == $1 })
 		}
 		itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet, self.testDataSet2]] }
 		context("when changing dataSource sections") {

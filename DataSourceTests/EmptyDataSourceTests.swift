@@ -6,12 +6,9 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
-import UIKit
-import XCTest
 import DataSource
-import ReactiveSwift
-import Quick
 import Nimble
+import Quick
 
 class EmptyDataSourceTests: QuickSpecWithDataSets {
 	override func spec() {

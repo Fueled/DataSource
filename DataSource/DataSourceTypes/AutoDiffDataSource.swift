@@ -42,7 +42,8 @@ public final class AutoDiffDataSource<T>: DataSource {
 	///   - findMoves: Set `findMoves` to `false` to make the dataSource emit
 	///		a pair of deletion and insertion instead of item movement dataChanges.
 	///   - compare: Function that is used to compare a pair of items for equality.
-	public init(_ items: [T] = [],
+	public init(
+		_ items: [T] = [],
 		supplementaryItems: [String: Any] = [:],
 		findMoves: Bool = true,
 		compare: @escaping (T, T) -> Bool)

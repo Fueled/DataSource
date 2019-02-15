@@ -1,3 +1,11 @@
+//
+//  DataSourceCellDescriptor.swift
+//  DataSource
+//
+//  Created by Aleksei Bobrov on 05/02/2019.
+//  Copyright © 2019 Fueled. All rights reserved.
+//
+
 import UIKit
 
 public class CellDescriptor: NSObject {
@@ -58,7 +66,7 @@ extension CollectionViewDataSource {
 	@objc open func configure(_ collectionView: UICollectionView, using cellDescriptors: [CellDescriptor]) {
 		self.reuseIdentifierForItem = { indexPath, item in
 			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath, item) })?.reuseIdentifier else {
-				fatalError()
+				fatalError("Unable to determine reuse identifier")
 			}
 			return reuseIdentifier
 		}
@@ -81,7 +89,7 @@ extension TableViewDataSource {
 	@objc open func configure(_ tableView: UITableView, using cellDescriptors: [CellDescriptor]) {
 		self.reuseIdentifierForItem = { indexPath, item in
 			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath, item) })?.reuseIdentifier else {
-				fatalError()
+				fatalError("Unable to determine reuse identifier")
 			}
 			return reuseIdentifier
 		}
@@ -100,12 +108,11 @@ extension TableViewDataSource {
 	}
 }
 
-
 extension TableViewDataSourceWithHeaderFooterViews {
 	@objc open func configure(_ tableView: UITableView, using cellDescriptors: [CellDescriptor], headerDescriptor: HeaderFooterDescriptor?, footerDescriptor: HeaderFooterDescriptor?) {
 		self.reuseIdentifierForItem = { indexPath, item in
 			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath, item) })?.reuseIdentifier else {
-				fatalError()
+				fatalError("Unable to determine reuse identifier")
 			}
 			return reuseIdentifier
 		}

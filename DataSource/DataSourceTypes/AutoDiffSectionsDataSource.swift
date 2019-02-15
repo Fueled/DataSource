@@ -61,7 +61,8 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 	///     Section moves are never generated.
 	///   - compareSections: Function that is used to compare a pair of sections for identity.
 	///   - compareItems: Function that is used to compare a pair of items for equality.
-	public init(sections: [DataSourceSection<T>] = [],
+	public init(
+		sections: [DataSourceSection<T>] = [],
 		findItemMoves: Bool = true,
 		compareSections: @escaping (DataSourceSection<T>, DataSourceSection<T>) -> Bool,
 		compareItems: @escaping (T, T) -> Bool)
@@ -70,8 +71,7 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 		self.sections = MutableProperty(sections)
 		self.compareSections = compareSections
 		self.compareItems = compareItems
-		func autoDiff(_ oldSections: [DataSourceSection<T>],
-			newSections: [DataSourceSection<T>]) -> DataChange
+		func autoDiff(_ oldSections: [DataSourceSection<T>], newSections: [DataSourceSection<T>]) -> DataChange
 		{
 			let sectionsResult = AutoDiff.compare(
 				old: oldSections,

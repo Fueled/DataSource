@@ -6,13 +6,10 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
-import UIKit
-import XCTest
-import DataSource
-import ReactiveSwift
-import Quick
-import Nimble
 import CoreData
+import DataSource
+import Nimble
+import Quick
 
 class DataSourceSharedConfiguration: QuickConfiguration {
 	override class func configure(_ configuration: Configuration) {
@@ -30,7 +27,7 @@ class DataSourceSharedConfiguration: QuickConfiguration {
 					supplementrayItems = sharedExampleContext()["SupplementaryItems"] as? [[String: Int]] ?? [[:]]
 				}
 				it("has correct number of items in sections") {
-					for (index, _) in initialData.enumerated() {
+					for index in initialData.indices {
 						expect(dataSource.numberOfItemsInSection(index)) == initialData[index].count
 					}
 				}
