@@ -25,7 +25,7 @@ public final class  KVODataSource: NSObject, DataSource {
 	public let keyPath: String
 	public let supplementaryItems: [String: Any]
 
-	public init(target: NSObject, keyPath:String, supplementaryItems: [String: Any] = [:]) {
+	public init(target: NSObject, keyPath: String, supplementaryItems: [String: Any] = [:]) {
 		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.target = target
 		self.keyPath = keyPath
@@ -60,8 +60,8 @@ public final class  KVODataSource: NSObject, DataSource {
 	fileprivate var items: NSArray {
 		return self.target.value(forKeyPath: self.keyPath) as! NSArray
 	}
-
-	public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+	// swiftlint:disable block_based_kvo
+	override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
 		if let target = object as? NSObject,
 			let change = change,
 			let type = change[NSKeyValueChangeKey.kindKey] as? NSKeyValueChange,

@@ -1,0 +1,208 @@
+whitelist_rules:
+  - anyobject_protocol
+  - block_based_kvo
+  - class_delegate_protocol
+  - contains_over_first_not_nil
+  - convenience_type
+  - closing_brace
+  - closure_end_indentation
+  - closure_parameter_position
+  - closure_spacing
+  - colon
+  - comma
+  - compiler_protocol_init
+  - conditional_returns_on_newline
+  - control_statement
+  - custom_rules
+  - discarded_notification_center_observer
+  - discouraged_direct_init
+  - dynamic_inline
+  - empty_count
+  - empty_enum_arguments
+  - empty_string
+  - empty_parameters
+  - empty_parentheses_with_trailing_closure
+  - empty_xctest_method
+  - explicit_init
+  - fallthrough
+  - fatal_error_message
+  - file_header
+  - file_length
+  - first_where
+  - for_where
+  - function_body_length
+  - generic_type_name
+  - identifier_name
+  - implicit_getter
+  - is_disjoint
+  - joined_default_parameter
+  - leading_whitespace
+  - legacy_cggeometry_functions
+  - legacy_constant
+  - legacy_constructor
+  - legacy_nsgeometry_functions
+  - line_length
+  - literal_expression_end_indentation
+  - lower_acl_than_parent
+  - mark
+  - modifier_order
+  - multiline_arguments
+  - multiline_parameters
+  - multiple_closures_with_trailing_closure
+  - nimble_operator
+  - no_extension_access_modifier
+  - no_fallthrough_only
+  - notification_center_detachment
+  - object_literal
+  - operator_usage_whitespace
+  - overridden_super_call
+  - override_in_extension
+  - private_action
+  - private_outlet
+  - private_over_fileprivate
+  - private_unit_test
+  - prohibited_super_call
+  - protocol_property_accessors_order
+  - redundant_discardable_let
+  - redundant_optional_initialization
+  - redundant_set_access_control
+  - redundant_string_enum_value
+  - redundant_void_return
+  - return_arrow_whitespace
+  - shorthand_operator
+  - statement_position
+  - sorted_first_last
+  - sorted_imports
+  - superfluous_disable_command
+  - switch_case_alignment
+  - switch_case_on_newline
+  - syntactic_sugar
+  - todo
+  - trailing_comma
+  - trailing_newline
+  - trailing_semicolon
+  - trailing_whitespace
+  - type_body_length
+  - unneeded_break_in_switch
+  - unneeded_parentheses_in_closure_argument
+  - unused_enumerated
+  - unused_optional_binding
+  - unused_closure_parameter
+  - untyped_error_in_catch
+  - valid_ibinspectable
+  - vertical_parameter_alignment
+  - vertical_parameter_alignment_on_call
+  - vertical_whitespace
+  - void_return
+  - weak_delegate
+  - xctfail_message
+  - yoda_condition
+included:
+  - .
+excluded:
+  - Carthage
+  - Pods
+file_header:
+  required_pattern: |
+                    \/\/
+                    \/\/  .*?\.(?:swift|h|m)
+                    \/\/  (DataSource.*)
+                    \/\/
+                    \/\/  Created by .*? on \d{1,2}\/\d{1,2}\/\d{2,4}\.?
+                    \/\/  Copyright (?:©|\(c\)) \d{4} Fueled\. All rights reserved\.
+                    \/\/
+file_name:
+  suffix_pattern: "\\+.*"
+vertical_whitespace:
+  severity: error
+syntactic_sugar: error
+fatal_error_message: error
+override_in_extension: error
+no_extension_access_modifier: warning
+type_body_length:
+  warning: 300
+  error: 400
+line_length:
+  ignores_interpolated_strings: true
+  warning: 220
+  error: 99999 # Default is 200, so swiftlint would output an error if the file length is between 200 and 220
+file_length:
+  warning: 1000
+  error: 9999
+  ignore_comment_only_lines: true
+type_name:
+  min_length: 2
+trailing_semicolon: error
+function_body_length:
+  warning: 150
+  error: 300
+statement_position:
+  statement_mode: default
+  severity: error
+colon:
+  severity: error
+private_outlet:
+  severity: warning
+  allow_private_set: true
+trailing_comma:
+  mandatory_comma: true
+identifier_name:
+  min_length:
+    warning: 3
+  max_length:
+    warning: 70
+    error: 100
+  severity: error
+  excluded:
+    - x
+    - y
+    - z
+    - w
+    - i
+    - j
+    - k
+    - l
+    - id
+    - url
+    - r
+    - g
+    - b
+    - a
+    - t
+    - v
+    - on
+    - no
+    - qa
+return_arrow_whitespace: error
+opening_brace: error
+legacy_constructor: error
+legacy_constant: error
+leading_whitespace: error
+empty_count: warning
+shorthand_operator: warning
+reporter: "xcode"
+custom_rules:
+    protocol_conformance:
+        name: "Protocol Conformance"
+        message: "Protocol conformance should be declared in separate extensions in the same file"
+        regex: "(class|struct|extension)[[:space:]]+(?i:(?![^d]*delegate:))[^'\"()<>{},!?:]+:([^'\"<>(){},!?:]+,)+[^'\"<>(){},!?:]*\\{"
+        match_kinds:
+          - keyword
+        severity: warning
+    indentation_character:
+        name: "Indentation"
+        message: "Tabs should be used rather than spaces. This error may not be displayed exactly at the location of the violation but just above it."
+        regex: "[^\n]*\n+ +"
+        severity: error
+    opening_brace:
+        name: "Opening brace"
+        message: "Opening braces should be preceded by a single space and on the same line as the declaration, or optionally on a new line if the statement is multiline."
+        regex: "(?<=\\s)(?<!#)(?:(?:(?#Edge case keywords)let|var)[^=]+=(?:|[[:blank:]]{2,}|\\s+\n\\s*)\\{|(?:(?#Keywords that can be followed by a multiline contruct)switch|func|if|guard|while)\\s+(?:(?#Multiline construct)(?:[^\n]*\\}[[:blank:]]*\\)*)(?:[^{\n]+else)?(?=\\s*\\{)[[:blank:]]*+(?:\n\\s*| {2,})\\{|(?#Single construct)(?:.*\\}[[:blank:]]*\\)*)(?:[^{]+else)?(?=\\s*\\{)(?:\n| ){2,}\\{|[^{\n]*(?:[^\n{]+else)?(?=\\s*\\{)(?:\n\\s*| {2,})\\{)|(?:(?#Keywords that should always be strictly single line)deinit|case|do|for|enum|catch|init|subscript|get|set|willSet|didSet|repeat|struct|class|extension|catch|protocol)[^\n{]*(?<![[:blank:]])(?:\n\\s*| {2,})?\\{)"
+        match_kinds:
+          - keyword
+        severity: error
+    nested_self_usage:
+        name: "Nested .self usage"
+        message: ".self shouldn't be used more than once on a given statement"
+        regex: "(?<!\")self\\.(?:\\p{L}+\\.)*self"
+        severity: warning

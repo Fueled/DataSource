@@ -44,14 +44,13 @@ public final class ProxyDataSource: DataSource {
 		self.disposable += self.innerDataSource.producer
 			.combinePrevious(inner)
 			.skip(first: 1)
-			.startWithValues {
-				[weak self] old, new in
+			.startWithValues { [weak self] old, new in
 				if let this = self {
 					this.lastDisposable?.dispose()
 					this.observer.send(value: changeDataSources(old, new, this.animatesChanges.value))
 					this.lastDisposable = new.changes.observe(this.observer)
 				}
-		}
+			}
 	}
 
 	deinit {

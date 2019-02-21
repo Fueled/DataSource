@@ -6,10 +6,10 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
+import CoreData
 import Foundation
 import ReactiveSwift
 import Result
-import CoreData
 import UIKit
 
 /// `DataSource` implementation whose items are Core Data managed objects fetched by an `NSFetchedResultsController`.
@@ -24,6 +24,7 @@ public final class FetchedResultsDataSource: DataSource {
 	fileprivate let observer: Signal<DataChange, NoError>.Observer
 
 	fileprivate let frc: NSFetchedResultsController<NSFetchRequestResult>
+	// swiftlint:disable weak_delegate
 	fileprivate let frcDelegate: Delegate
 
 	public init(fetchRequest: NSFetchRequest<NSFetchRequestResult>, managedObjectContext: NSManagedObjectContext, sectionNameKeyPath: String? = nil, cacheName: String? = nil) throws {
@@ -88,7 +89,8 @@ public final class FetchedResultsDataSource: DataSource {
 			self.currentBatch = []
 		}
 
-		@objc func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+		@objc func controller(
+			_ controller: NSFetchedResultsController<NSFetchRequestResult>,
 			didChange sectionInfo: NSFetchedResultsSectionInfo,
 			atSectionIndex sectionIndex: Int,
 			for type: NSFetchedResultsChangeType)
@@ -103,7 +105,8 @@ public final class FetchedResultsDataSource: DataSource {
 			}
 		}
 
-		@objc func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+		@objc func controller(
+			_ controller: NSFetchedResultsController<NSFetchRequestResult>,
 			didChange anObject: Any,
 			at indexPath: IndexPath?,
 			for type: NSFetchedResultsChangeType,

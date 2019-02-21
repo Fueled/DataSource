@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import UIKit
 import ReactiveSwift
+import UIKit
 
 /// An object that implements `UITableViewDataSource` protocol
 /// by returning the data from an associated dataSource.
@@ -26,7 +26,7 @@ import ReactiveSwift
 /// A tableViewDataSource observes changes of the associated dataSource
 /// and applies those changes to the associated tableView.
 open class TableViewDataSource: NSObject, UITableViewDataSource {
-
+	// swiftlint:disable private_outlet
 	@IBOutlet public final var tableView: UITableView?
 
 	public final let dataSource = ProxyDataSource()
@@ -34,15 +34,14 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 	public final var reuseIdentifierForItem: (IndexPath, Any) -> String = {
 		_, _ in "DefaultCell"
 	}
-	
-	public final var dataChangeTarget: DataChangeTarget? = nil
+
+	public final var dataChangeTarget: DataChangeTarget?
 
 	fileprivate let disposable = CompositeDisposable()
 
-	public override init() {
+	override public init() {
 		super.init()
-		self.disposable += self.dataSource.changes.observeValues {
-			[weak self] change in
+		self.disposable += self.dataSource.changes.observeValues { [weak self] change in
 			if let this = self, let dataChangeTarget = this.dataChangeTarget ?? this.tableView {
 				change.apply(to: dataChangeTarget)
 			}

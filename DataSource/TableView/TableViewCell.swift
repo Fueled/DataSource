@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
-import UIKit
 import ReactiveSwift
+import UIKit
 
 /// `UITableViewCell` subclass that implements `DataSourceItemReceiver` protocol
 /// by putting received dataSource items into a `MutableProperty` called `cellModel`.

@@ -44,8 +44,7 @@ public final class MutableCompositeDataSource: DataSource {
 	}
 
 	public var numberOfSections: Int {
-		return self._innerDataSources.value.reduce(0) {
-			subtotal, dataSource in
+		return self._innerDataSources.value.reduce(0) { subtotal, dataSource in
 			return subtotal + dataSource.numberOfSections
 		}
 	}
@@ -83,7 +82,7 @@ public final class MutableCompositeDataSource: DataSource {
 	public func insert(_ dataSources: [DataSource], at index: Int) {
 		self._innerDataSources.value.insert(contentsOf: dataSources, at: index)
 		let sections = dataSources.enumerated().flatMap { self.sections(of: $1, at: index + $0) }
-		if sections.count > 0 {
+		if !sections.isEmpty {
 			let change = DataChangeInsertSections(sections)
 			self.observer.send(value: change)
 		}
@@ -100,7 +99,7 @@ public final class MutableCompositeDataSource: DataSource {
 	public func delete(in range: Range<Int>) {
 		let sections = range.flatMap(self.sectionsOfDataSource)
 		self._innerDataSources.value.removeSubrange(range)
-		if sections.count > 0 {
+		if !sections.isEmpty {
 			let change = DataChangeDeleteSections(sections)
 			self.observer.send(value: change)
 		}
@@ -112,11 +111,11 @@ public final class MutableCompositeDataSource: DataSource {
 	public func replaceDataSource(at index: Int, with dataSource: DataSource) {
 		var batch: [DataChange] = []
 		let oldSections = self.sectionsOfDataSource(at: index)
-		if oldSections.count > 0 {
+		if !oldSections.isEmpty {
 			batch.append(DataChangeDeleteSections(oldSections))
 		}
 		let newSections = self.sections(of: dataSource, at: index)
-		if newSections.count > 0 {
+		if !newSections.isEmpty {
 			batch.append(DataChangeInsertSections(newSections))
 		}
 		self._innerDataSources.value[index] = dataSource
@@ -157,14 +156,12 @@ public final class MutableCompositeDataSource: DataSource {
 }
 
 private func changesOfInnerDataSources(_ innerDataSources: [DataSource]) -> SignalProducer<DataChange, NoError> {
-	let arrayOfSignals = innerDataSources.enumerated().map {
-		index, dataSource in
+	let arrayOfSignals = innerDataSources.enumerated().map { index, dataSource in
 		return dataSource.changes.map {
 			$0.mapSections(mapOutside(innerDataSources, index))
 		}
 	}
-	return SignalProducer {
-		observer, disposable in
+	return SignalProducer { observer, disposable in
 		for signal in arrayOfSignals {
 			disposable += signal.observe(observer)
 		}
