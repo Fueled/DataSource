@@ -86,7 +86,9 @@ public final class  KVODataSource: NSObject, DataSource {
 			self.observer.send(value: DataChangeReloadItems(indexPaths))
 		case .setting:
 			self.observer.send(value: DataChangeReloadSections([0]))
-		}
+        @unknown default:
+            assertionFailure("Unknown change in KVODataSource")
+        }
 	}
 
 }

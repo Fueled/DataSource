@@ -118,7 +118,9 @@ public final class FetchedResultsDataSource: DataSource {
 				self.currentBatch.append(DataChangeMoveItem(from: indexPath!, to: newIndexPath!))
 			case .update:
 				self.currentBatch.append(DataChangeReloadItems(indexPath!))
-			}
+            @unknown default:
+                assertionFailure("Unknown change in FetchedResultsDataSource")
+            }
 		}
 
 	}
