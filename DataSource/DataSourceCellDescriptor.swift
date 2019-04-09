@@ -82,6 +82,7 @@ extension CollectionViewDataSource {
 		}
 		collectionView.dataSource = self
 		self.collectionView = collectionView
+		collectionView.performBatchUpdates(nil)
 	}
 }
 
