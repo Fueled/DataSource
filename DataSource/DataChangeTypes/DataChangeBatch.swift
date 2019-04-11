@@ -25,7 +25,7 @@ public struct DataChangeBatch: DataChange {
 	}
 
 	public func mapSections(_ transform: (Int) -> Int) -> DataChangeBatch {
-		let mapped = self.changes.map { $0.mapSections(transform) }
+		let mapped = changes.map { $0.mapSections(transform) }
 		return DataChangeBatch(mapped)
 	}
 

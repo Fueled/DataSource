@@ -11,11 +11,11 @@ import Foundation
 public extension IndexPath {
 
 	func ds_setSection(_ section: Int) -> IndexPath {
-		return IndexPath(item: self.item, section: section)
+		return IndexPath(item: item, section: section)
 	}
 
 	func ds_mapSection(_ transform: (Int) -> Int) -> IndexPath {
-		return IndexPath(item: self.item, section: transform(self.section))
+		return IndexPath(item: item, section: transform(section))
 	}
 
 }

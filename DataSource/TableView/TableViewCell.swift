@@ -21,7 +21,7 @@ open class TableViewCell: UITableViewCell, DataSourceItemReceiver {
 	public final let cellModel = Property<Any?>(initialValue: nil)
 
 	open func ds_setItem(_ item: Any) {
-		self.cellModel.value = item
+		cellModel.value = item
 	}
 
 }

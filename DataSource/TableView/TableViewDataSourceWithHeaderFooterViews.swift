@@ -36,7 +36,7 @@ open class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITabl
 		guard let item = dataSource.supplementaryItemOfKind(kind, inSection: section) else {
 			return nil
 		}
-		let reuseIdentifier = self.reuseIdentifierForHeaderItem(section, item)
+		let reuseIdentifier = reuseIdentifierForHeaderItem(section, item)
 		let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseIdentifier)!
 		configureReceiver(view, withItem: item)
 		return view
@@ -47,7 +47,7 @@ open class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITabl
 		guard let item = dataSource.supplementaryItemOfKind(kind, inSection: section) else {
 			return nil
 		}
-		let reuseIdentifier = self.reuseIdentifierForFooterItem(section, item)
+		let reuseIdentifier = reuseIdentifierForFooterItem(section, item)
 		let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: reuseIdentifier)!
 		configureReceiver(view, withItem: item)
 		return view

@@ -21,7 +21,7 @@ open class TableViewHeaderFooterView: UITableViewHeaderFooterView, DataSourceIte
 	public final let viewModel = Property<Any?>(initialValue: nil)
 
 	open func ds_setItem(_ item: Any) {
-		self.viewModel.value = item
+		viewModel.value = item
 	}
 
 }

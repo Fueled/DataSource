@@ -31,25 +31,25 @@ public final class  KVODataSource: NSObject, DataSource {
 		self.keyPath = keyPath
 		self.supplementaryItems = supplementaryItems
 		super.init()
-		self.target.addObserver(self, forKeyPath: self.keyPath, options: [], context: nil)
+		target.addObserver(self, forKeyPath: keyPath, options: [], context: nil)
 	}
 
 	deinit {
-		self.target.removeObserver(self, forKeyPath: self.keyPath, context: nil)
+		target.removeObserver(self, forKeyPath: keyPath, context: nil)
 	}
 
 	public let numberOfSections = 1
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		return self.items.count
+		return items.count
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		return self.supplementaryItems[kind]
+		return supplementaryItems[kind]
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		return self.items[(indexPath as NSIndexPath).item]
+		return items[indexPath.item]
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
@@ -57,7 +57,7 @@ public final class  KVODataSource: NSObject, DataSource {
 	}
 
 	private var items: NSArray {
-		return self.target.value(forKeyPath: self.keyPath) as! NSArray
+		return target.value(forKeyPath: keyPath) as! NSArray
 	}
 
 	public override func observeValue(
@@ -72,7 +72,7 @@ public final class  KVODataSource: NSObject, DataSource {
 			let indices = change[NSKeyValueChangeKey.indexesKey] as? IndexSet,
 			keyPath == self.keyPath && target == self.target
 		{
-			self.observeChangeOfType(type, atIndices: indices)
+			observeChangeOfType(type, atIndices: indices)
 		}
 	}
 

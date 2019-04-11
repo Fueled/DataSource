@@ -14,8 +14,8 @@ public struct DataChangeMoveItem: DataChange {
 	public let toIndexPath: IndexPath
 
 	public init(from: IndexPath, to: IndexPath) {
-		self.fromIndexPath = from
-		self.toIndexPath = to
+		fromIndexPath = from
+		toIndexPath = to
 	}
 
 	public func apply(to target: DataChangeTarget) {

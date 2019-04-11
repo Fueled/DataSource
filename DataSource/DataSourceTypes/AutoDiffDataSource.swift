@@ -52,24 +52,24 @@ public final class AutoDiffDataSource<T>: DataSource {
 			let result = AutoDiff.compare(old: old, new: new, findMoves: findMoves, compare: compare)
 			return DataChangeBatch(result.toItemChanges())
 		}
-		self.changes = self.items.values
+		changes = self.items.values
 			.withPrevious()
 			.map(autoDiff)
-			.multicast(disposeIn: self.pool)
+			.multicast(disposeIn: pool)
 	}
 
 	public let numberOfSections = 1
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		return self.items.value.count
+		return items.value.count
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		return self.supplementaryItems[kind]
+		return supplementaryItems[kind]
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		return self.items.value[indexPath.item]
+		return items.value[indexPath.item]
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {

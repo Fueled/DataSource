@@ -21,7 +21,7 @@ open class CollectionViewReusableView: UICollectionReusableView, DataSourceItemR
 	public final let viewModel = Property<Any?>(initialValue: nil)
 
 	open func ds_setItem(_ item: Any) {
-		self.viewModel.value = item
+		viewModel.value = item
 	}
 
 }

@@ -30,7 +30,7 @@ public final class CompositeDataSource: DataSource {
 	public let innerDataSources: [DataSource]
 
 	public init(_ inner: [DataSource]) {
-		self.innerDataSources = inner
+		innerDataSources = inner
 		for (index, dataSource) in inner.enumerated() {
 			dataSource.changes.addObserver {
 				[weak self] change in
@@ -43,32 +43,32 @@ public final class CompositeDataSource: DataSource {
 	}
 
 	public var numberOfSections: Int {
-		return self.innerDataSources.reduce(0) {
+		return innerDataSources.reduce(0) {
 			subtotal, dataSource in
 			return subtotal + dataSource.numberOfSections
 		}
 	}
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		let (index, innerSection) = mapInside(self.innerDataSources, section)
-		return self.innerDataSources[index].numberOfItemsInSection(innerSection)
+		let (index, innerSection) = mapInside(innerDataSources, section)
+		return innerDataSources[index].numberOfItemsInSection(innerSection)
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		let (index, innerSection) = mapInside(self.innerDataSources, section)
-		return self.innerDataSources[index].supplementaryItemOfKind(kind, inSection: innerSection)
+		let (index, innerSection) = mapInside(innerDataSources, section)
+		return innerDataSources[index].supplementaryItemOfKind(kind, inSection: innerSection)
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		let (index, innerSection) = mapInside(self.innerDataSources, (indexPath as NSIndexPath).section)
+		let (index, innerSection) = mapInside(innerDataSources, indexPath.section)
 		let innerPath = indexPath.ds_setSection(innerSection)
-		return self.innerDataSources[index].item(at: innerPath)
+		return innerDataSources[index].item(at: innerPath)
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
-		let (index, innerSection) = mapInside(self.innerDataSources, (indexPath as NSIndexPath).section)
+		let (index, innerSection) = mapInside(innerDataSources, indexPath.section)
 		let innerPath = indexPath.ds_setSection(innerSection)
-		return self.innerDataSources[index].leafDataSource(at: innerPath)
+		return innerDataSources[index].leafDataSource(at: innerPath)
 	}
 
 }

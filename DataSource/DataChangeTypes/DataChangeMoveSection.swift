@@ -14,8 +14,8 @@ public struct DataChangeMoveSection: DataChange {
 	public let toSection: Int
 
 	public init(from: Int, to: Int) {
-		self.fromSection = from
-		self.toSection = to
+		fromSection = from
+		toSection = to
 	}
 
 	public func apply(to target: DataChangeTarget) {

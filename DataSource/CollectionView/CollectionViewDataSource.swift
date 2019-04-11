@@ -48,57 +48,57 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
 	public override init() {
 		super.init()
-		self.dataSource.changes.addObserver {
+		dataSource.changes.addObserver {
 			[weak self] change in
-			if let this = self, let dataChangeTarget = this.dataChangeTarget ?? this.collectionView {
+			if let self = self, let dataChangeTarget = self.dataChangeTarget ?? self.collectionView {
 				change.apply(to: dataChangeTarget)
 			}
 		}.dispose(in: pool)
 	}
 
 	open func configureCell(_ cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		let item = self.dataSource.item(at: indexPath)
+		let item = dataSource.item(at: indexPath)
 		configureReceiver(cell, withItem: item)
 	}
 
 	open func configureCellForItem(at indexPath: IndexPath) {
-		if let cell = self.collectionView?.cellForItem(at: indexPath) {
-			self.configureCell(cell, forItemAt: indexPath)
+		if let cell = collectionView?.cellForItem(at: indexPath) {
+			configureCell(cell, forItemAt: indexPath)
 		}
 	}
 
 	open func configureVisibleCells() {
-		if let indexPaths = self.collectionView?.indexPathsForVisibleItems {
+		if let indexPaths = collectionView?.indexPathsForVisibleItems {
 			for indexPath in indexPaths {
-				self.configureCellForItem(at: indexPath)
+				configureCellForItem(at: indexPath)
 			}
 		}
 	}
 
 	open func numberOfSections(in collectionView: UICollectionView) -> Int {
-		return self.dataSource.numberOfSections
+		return dataSource.numberOfSections
 	}
 
 	open func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return self.dataSource.numberOfItemsInSection(section)
+		return dataSource.numberOfItemsInSection(section)
 	}
 
 	open func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-		let section = (indexPath as NSIndexPath).section
-		guard let item = self.dataSource.supplementaryItemOfKind(kind, inSection: section) else {
+		let section = indexPath.section
+		guard let item = dataSource.supplementaryItemOfKind(kind, inSection: section) else {
 			fatalError("Expected item for collection view supplementary item of kind \(kind) in section \(section), but found nil")
 		}
-		let reuseIdentifier = self.reuseIdentifierForSupplementaryItem(kind, section, item)
+		let reuseIdentifier = reuseIdentifierForSupplementaryItem(kind, section, item)
 		let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: reuseIdentifier, for: indexPath)
 		configureReceiver(view, withItem: item)
 		return view
 	}
 
 	open func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		let item: Any = self.dataSource.item(at: indexPath)
-		let reuseIdentifier = self.reuseIdentifierForItem(indexPath, item)
+		let item: Any = dataSource.item(at: indexPath)
+		let reuseIdentifier = reuseIdentifierForItem(indexPath, item)
 		let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-		self.configureCell(cell, forItemAt: indexPath)
+		configureCell(cell, forItemAt: indexPath)
 		return cell
 	}
 

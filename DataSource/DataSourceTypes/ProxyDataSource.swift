@@ -33,9 +33,9 @@ public final class ProxyDataSource: DataSource {
 	public let animatesChanges: Property<Bool>
 
 	public init(_ inner: DataSource = EmptyDataSource(), animateChanges: Bool = true) {
-		self.innerDataSource = Property(initialValue: inner)
-		self.animatesChanges = Property(initialValue: animateChanges)
-		self.changes = self.innerDataSource.values
+		innerDataSource = Property(initialValue: inner)
+		animatesChanges = Property(initialValue: animateChanges)
+		changes = innerDataSource.values
 			.map(Optional.some)
 			.startWith(nil)
 			.withPrevious()
@@ -55,27 +55,27 @@ public final class ProxyDataSource: DataSource {
 	}
 
 	public var numberOfSections: Int {
-		let inner = self.innerDataSource.value
+		let inner = innerDataSource.value
 		return inner.numberOfSections
 	}
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		let inner = self.innerDataSource.value
+		let inner = innerDataSource.value
 		return inner.numberOfItemsInSection(section)
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		let inner = self.innerDataSource.value
+		let inner = innerDataSource.value
 		return inner.supplementaryItemOfKind(kind, inSection: section)
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		let inner = self.innerDataSource.value
+		let inner = innerDataSource.value
 		return inner.item(at: indexPath)
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
-		let inner = self.innerDataSource.value
+		let inner = innerDataSource.value
 		return inner.leafDataSource(at: indexPath)
 	}
 

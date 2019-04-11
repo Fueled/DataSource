@@ -38,36 +38,36 @@ public final class MappedDataSource: DataSource {
 		supplementaryTransform: @escaping ((String, Any?) -> Any?) = { $1 },
 		transform: @escaping (Any) -> Any)
 	{
-		self.innerDataSource = inner
+		innerDataSource = inner
 		self.transform = transform
 		self.supplementaryTransform = supplementaryTransform
-		self.changes = inner.changes.multicast(disposeIn: pool)
+		changes = inner.changes.multicast(disposeIn: pool)
 	}
 
 	public var numberOfSections: Int {
-		let inner = self.innerDataSource
+		let inner = innerDataSource
 		return inner.numberOfSections
 	}
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		let inner = self.innerDataSource
+		let inner = innerDataSource
 		return inner.numberOfItemsInSection(section)
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		let inner = self.innerDataSource
+		let inner = innerDataSource
 		let supplementaryItem = inner.supplementaryItemOfKind(kind, inSection: section)
-		return self.supplementaryTransform(kind, supplementaryItem)
+		return supplementaryTransform(kind, supplementaryItem)
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		let inner = self.innerDataSource
+		let inner = innerDataSource
 		let item = inner.item(at: indexPath)
-		return self.transform(item)
+		return transform(item)
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
-		let inner = self.innerDataSource
+		let inner = innerDataSource
 		return inner.leafDataSource(at: indexPath)
 	}
 

@@ -30,22 +30,22 @@ public final class MutableDataSource<T>: DataSource {
 	public let supplementaryItems: [String: Any]
 
 	public init(_ items: [T] = [], supplementaryItems: [String: Any] = [:]) {
-		self._items = Property(initialValue: items)
+		_items = Property(initialValue: items)
 		self.supplementaryItems = supplementaryItems
 	}
 
 	public let numberOfSections = 1
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		return self._items.value.count
+		return _items.value.count
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		return self.supplementaryItems[kind]
+		return supplementaryItems[kind]
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		return self._items.value[indexPath.item]
+		return _items.value[indexPath.item]
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
@@ -55,13 +55,13 @@ public final class MutableDataSource<T>: DataSource {
 	/// Inserts a given item at a given index
 	/// and emits `DataChangeInsertItems`.
 	public func insertItem(_ item: T, at index: Int) {
-		self.insertItems([item], at: index)
+		insertItems([item], at: index)
 	}
 
 	/// Inserts items at a given index
 	/// and emits `DataChangeInsertItems`.
 	public func insertItems(_ items: [T], at index: Int) {
-		self._items.value.insert(contentsOf: items, at: index)
+		_items.value.insert(contentsOf: items, at: index)
 		let change = DataChangeInsertItems(items.indices.map { z(index + $0) })
 		changesPipe.send(change)
 	}
@@ -69,13 +69,13 @@ public final class MutableDataSource<T>: DataSource {
 	/// Deletes an item at a given index
 	/// and emits `DataChangeDeleteItems`.
 	public func deleteItem(at index: Int) {
-		self.deleteItems(in: Range(index...index))
+		deleteItems(in: Range(index...index))
 	}
 
 	/// Deletes items in a given range
 	/// and emits `DataChangeDeleteItems`.
 	public func deleteItems(in range: Range<Int>) {
-		self._items.value.removeSubrange(range)
+		_items.value.removeSubrange(range)
 		let change = DataChangeDeleteItems(range.map(z))
 		changesPipe.send(change)
 	}
@@ -83,7 +83,7 @@ public final class MutableDataSource<T>: DataSource {
 	/// Replaces an item at a given index with another item
 	/// and emits `DataChangeReloadItems`.
 	public func replaceItem(at index: Int, with item: T) {
-		self._items.value[index] = item
+		_items.value[index] = item
 		let change = DataChangeReloadItems(z(index))
 		changesPipe.send(change)
 	}
@@ -91,8 +91,8 @@ public final class MutableDataSource<T>: DataSource {
 	/// Moves an item at a given index to another index
 	/// and emits `DataChangeMoveItem`.
 	public func moveItem(at oldIndex: Int, to newIndex: Int) {
-		let item = self._items.value.remove(at: oldIndex)
-		self._items.value.insert(item, at: newIndex)
+		let item = _items.value.remove(at: oldIndex)
+		_items.value.insert(item, at: newIndex)
 		let change = DataChangeMoveItem(from: z(oldIndex), to: z(newIndex))
 		changesPipe.send(change)
 	}
@@ -100,7 +100,7 @@ public final class MutableDataSource<T>: DataSource {
 	/// Replaces all items with a given array of items
 	/// and emits `DataChangeReloadSections`.
 	public func replaceItems(with items: [T]) {
-		self._items.value = items
+		_items.value = items
 		let change = DataChangeReloadSections([0])
 		changesPipe.send(change)
 	}

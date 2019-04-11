@@ -30,32 +30,32 @@ public final class FetchedResultsDataSource: DataSource {
 		sectionNameKeyPath: String? = nil,
 		cacheName: String? = nil) throws
 	{
-		self.frc = NSFetchedResultsController(
+		frc = NSFetchedResultsController(
 			fetchRequest: fetchRequest,
 			managedObjectContext: managedObjectContext,
 			sectionNameKeyPath: sectionNameKeyPath,
 			cacheName: cacheName
 		)
-		self.frc.delegate = self.frcDelegate
-		self.changes = frcDelegate.changes
+		frc.delegate = frcDelegate
+		changes = frcDelegate.changes
 
-		try self.frc.performFetch()
+		try frc.performFetch()
 	}
 
 	deinit {
-		self.frc.delegate = nil
+		frc.delegate = nil
 	}
 
 	private func infoForSection(_ section: Int) -> NSFetchedResultsSectionInfo {
-		return self.frc.sections![section]
+		return frc.sections![section]
 	}
 
 	public var numberOfSections: Int {
-		return self.frc.sections?.count ?? 0
+		return frc.sections?.count ?? 0
 	}
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		let sectionInfo = self.infoForSection(section)
+		let sectionInfo = infoForSection(section)
 		return sectionInfo.numberOfObjects
 	}
 
@@ -63,13 +63,13 @@ public final class FetchedResultsDataSource: DataSource {
 		if kind != UICollectionView.elementKindSectionHeader {
 			return nil
 		}
-		let sectionInfo = self.infoForSection(section)
+		let sectionInfo = infoForSection(section)
 		return sectionInfo.name
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		let sectionInfo = self.infoForSection((indexPath as NSIndexPath).section)
-		return sectionInfo.objects![(indexPath as NSIndexPath).item]
+		let sectionInfo = infoForSection(indexPath.section)
+		return sectionInfo.objects![indexPath.item]
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
@@ -85,12 +85,12 @@ public final class FetchedResultsDataSource: DataSource {
 		var currentBatch: [DataChange] = []
 
 		@objc func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-			self.currentBatch = []
+			currentBatch = []
 		}
 
 		@objc func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-			changesPipe.send(DataChangeBatch(self.currentBatch))
-			self.currentBatch = []
+			changesPipe.send(DataChangeBatch(currentBatch))
+			currentBatch = []
 		}
 
 		@objc func controller(
@@ -101,9 +101,9 @@ public final class FetchedResultsDataSource: DataSource {
 		{
 			switch type {
 			case .insert:
-				self.currentBatch.append(DataChangeInsertSections([sectionIndex]))
+				currentBatch.append(DataChangeInsertSections([sectionIndex]))
 			case .delete:
-				self.currentBatch.append(DataChangeDeleteSections([sectionIndex]))
+				currentBatch.append(DataChangeDeleteSections([sectionIndex]))
 			default:
 				break
 			}
@@ -118,13 +118,13 @@ public final class FetchedResultsDataSource: DataSource {
 		{
 			switch type {
 			case .insert:
-				self.currentBatch.append(DataChangeInsertItems(newIndexPath!))
+				currentBatch.append(DataChangeInsertItems(newIndexPath!))
 			case .delete:
-				self.currentBatch.append(DataChangeDeleteItems(indexPath!))
+				currentBatch.append(DataChangeDeleteItems(indexPath!))
 			case .move:
-				self.currentBatch.append(DataChangeMoveItem(from: indexPath!, to: newIndexPath!))
+				currentBatch.append(DataChangeMoveItem(from: indexPath!, to: newIndexPath!))
 			case .update:
-				self.currentBatch.append(DataChangeReloadItems(indexPath!))
+				currentBatch.append(DataChangeReloadItems(indexPath!))
 			@unknown default:
 				assertionFailure("Unknown change in FetchedResultsDataSource")
 			}

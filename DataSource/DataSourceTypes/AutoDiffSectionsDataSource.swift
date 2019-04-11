@@ -96,19 +96,19 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 	}
 
 	public var numberOfSections: Int {
-		return self.sections.value.count
+		return sections.value.count
 	}
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		return self.sections.value[section].items.count
+		return sections.value[section].items.count
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		return self.sections.value[section].supplementaryItems[kind]
+		return sections.value[section].supplementaryItems[kind]
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		return self.sections.value[indexPath.section].items[indexPath.item]
+		return sections.value[indexPath.section].items[indexPath.item]
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {

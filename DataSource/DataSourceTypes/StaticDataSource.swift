@@ -35,19 +35,19 @@ public final class StaticDataSource<T>: DataSource {
 	}
 
 	public var numberOfSections: Int {
-		return self.sections.count
+		return sections.count
 	}
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		return self.sections[section].items.count
+		return sections[section].items.count
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		return self.sections[section].supplementaryItems[kind]
+		return sections[section].supplementaryItems[kind]
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		return self.sections[(indexPath as NSIndexPath).section].items[(indexPath as NSIndexPath).item]
+		return sections[indexPath.section].items[indexPath.item]
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
