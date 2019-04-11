@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import ReactiveSwift
+import Ry
 
 /// An object that implements `UICollectionViewDataSource` protocol
 /// by returning the data from an associated dataSource.
@@ -44,20 +44,16 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 	
 	public final var dataChangeTarget: DataChangeTarget? = nil
 
-	fileprivate let disposable = CompositeDisposable()
+	private let pool = DisposePool()
 
 	public override init() {
 		super.init()
-		self.disposable += self.dataSource.changes.observeValues {
+		self.dataSource.changes.addObserver {
 			[weak self] change in
 			if let this = self, let dataChangeTarget = this.dataChangeTarget ?? this.collectionView {
 				change.apply(to: dataChangeTarget)
 			}
-		}
-	}
-
-	deinit {
-		self.disposable.dispose()
+        }.dispose(in: pool)
 	}
 
 	open func configureCell(_ cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

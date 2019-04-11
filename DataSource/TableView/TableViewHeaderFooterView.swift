@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import ReactiveSwift
+import Ry
 
 /// `UITableViewHeaderFooterView` subclass that implements `DataSourceItemReceiver` protocol
-/// by putting received dataSource items into a `MutableProperty` called `viewModel`.
+/// by putting received dataSource items into a `Property` called `viewModel`.
 /// - note:
 ///   You are not required to subclass `TableViewHeaderFooterView` class in order
 ///   to use your cell subclass with `TableViewDataSourceWithHeaderFooterViews`.
@@ -18,7 +18,7 @@ import ReactiveSwift
 ///   protocol directly in any `UITableViewHeaderFooterView` subclass.
 open class TableViewHeaderFooterView: UITableViewHeaderFooterView, DataSourceItemReceiver {
 
-	public final let viewModel = MutableProperty<Any?>(nil)
+    public final let viewModel = Property<Any?>(initialValue: nil)
 
 	open func ds_setItem(_ item: Any) {
 		self.viewModel.value = item

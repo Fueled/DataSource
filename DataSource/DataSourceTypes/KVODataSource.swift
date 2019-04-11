@@ -7,8 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
-import Result
+import Ry
 
 /// `DataSource` implementation that has a single section and
 /// uses key-value coding (KVC) to returns objects from an ordered
@@ -18,15 +17,16 @@ import Result
 /// in the to-many relationship and emit them as its own dataChanges.
 public final class  KVODataSource: NSObject, DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
+    private let changesPipe = SignalPipe<DataChange>()
+    public var changes: Signal<DataChange> {
+        return changesPipe.signal
+    }
 
 	public let target: NSObject
 	public let keyPath: String
 	public let supplementaryItems: [String: Any]
 
 	public init(target: NSObject, keyPath:String, supplementaryItems: [String: Any] = [:]) {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.target = target
 		self.keyPath = keyPath
 		self.supplementaryItems = supplementaryItems
@@ -36,7 +36,6 @@ public final class  KVODataSource: NSObject, DataSource {
 
 	deinit {
 		self.target.removeObserver(self, forKeyPath: self.keyPath, context: nil)
-		self.observer.sendCompleted()
 	}
 
 	public let numberOfSections = 1
@@ -57,7 +56,7 @@ public final class  KVODataSource: NSObject, DataSource {
 		return (self, indexPath)
 	}
 
-	fileprivate var items: NSArray {
+	private var items: NSArray {
 		return self.target.value(forKeyPath: self.keyPath) as! NSArray
 	}
 
@@ -72,20 +71,20 @@ public final class  KVODataSource: NSObject, DataSource {
 		}
 	}
 
-	fileprivate func observeChangeOfType(_ type: NSKeyValueChange, atIndices indices: IndexSet) {
+	private func observeChangeOfType(_ type: NSKeyValueChange, atIndices indices: IndexSet) {
 		var indexPaths: [IndexPath] = []
 		for index in indices {
 			indexPaths.append(IndexPath(item: index, section: 0))
 		}
 		switch type {
 		case .insertion:
-			self.observer.send(value: DataChangeInsertItems(indexPaths))
+			changesPipe.send(DataChangeInsertItems(indexPaths))
 		case .removal:
-			self.observer.send(value: DataChangeDeleteItems(indexPaths))
+			changesPipe.send(DataChangeDeleteItems(indexPaths))
 		case .replacement:
-			self.observer.send(value: DataChangeReloadItems(indexPaths))
+			changesPipe.send(DataChangeReloadItems(indexPaths))
 		case .setting:
-			self.observer.send(value: DataChangeReloadSections([0]))
+			changesPipe.send(DataChangeReloadSections([0]))
         @unknown default:
             assertionFailure("Unknown change in KVODataSource")
         }

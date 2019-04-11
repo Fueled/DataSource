@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-import ReactiveSwift
+import Ry
 
 /// An object that implements `UITableViewDataSource` protocol
 /// by returning the data from an associated dataSource.
@@ -37,20 +37,16 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 	
 	public final var dataChangeTarget: DataChangeTarget? = nil
 
-	fileprivate let disposable = CompositeDisposable()
+	private let pool = DisposePool()
 
 	public override init() {
 		super.init()
-		self.disposable += self.dataSource.changes.observeValues {
+		self.dataSource.changes.addObserver {
 			[weak self] change in
 			if let this = self, let dataChangeTarget = this.dataChangeTarget ?? this.tableView {
 				change.apply(to: dataChangeTarget)
 			}
-		}
-	}
-
-	deinit {
-		self.disposable.dispose()
+        }.dispose(in: pool)
 	}
 
 	open func configureCell(_ cell: UITableViewCell, forRowAt indexPath: IndexPath) {

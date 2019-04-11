@@ -7,8 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
-import Result
+import Ry
 
 /// `DataSource` implementation that has an arbitrary
 /// number of sections of items of type T.
@@ -31,15 +30,14 @@ import Result
 /// sections' `supplementaryItems` dictionary under some user-defined key.
 public final class AutoDiffSectionsDataSource<T>: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
-	fileprivate let disposable: Disposable
+    private let pool = DisposePool()
+    public let changes: Signal<DataChange>
 
 	/// Mutable array of dataSourceSections.
 	///
 	/// Every modification of the array causes calculation
 	/// and emission of appropriate dataChanges.
-	public let sections: MutableProperty<[DataSourceSection<T>]>
+	public let sections: Property<[DataSourceSection<T>]>
 
 	/// Function that is used to compare a pair of sections for identity.
 	/// Returns `true` if the sections are identical, in which case the items
@@ -66,8 +64,7 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 		compareSections: @escaping (DataSourceSection<T>, DataSourceSection<T>) -> Bool,
 		compareItems: @escaping (T, T) -> Bool)
 	{
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
-		self.sections = MutableProperty(sections)
+        self.sections = Property(initialValue: sections)
 		self.compareSections = compareSections
 		self.compareItems = compareItems
 		func autoDiff(_ oldSections: [DataSourceSection<T>],
@@ -91,16 +88,10 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 			}
 			return DataChangeBatch(changes)
 		}
-		self.disposable = self.sections.producer
-			.combinePrevious(sections)
-			.skip(first: 1)
+		changes = self.sections.values
+			.withPrevious()
 			.map(autoDiff)
-			.start(self.observer)
-	}
-
-	deinit {
-		self.observer.sendCompleted()
-		self.disposable.dispose()
+			.multicast(disposeIn: pool)
 	}
 
 	public var numberOfSections: Int {

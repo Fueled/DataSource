@@ -5,9 +5,6 @@
       location = "container:DataSource.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:Carthage/Checkouts/ReactiveSwift/ReactiveSwift.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:Carthage/Checkouts/Result/Result.xcodeproj">
+      location = "group:Carthage/Checkouts/Ry/Ry.xcodeproj">
    </FileRef>
 </Workspace>

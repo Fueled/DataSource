@@ -134,7 +134,7 @@ public struct AutoDiff {
 		return result
 	}
 
-	fileprivate enum LCSMove {
+	private enum LCSMove {
 		case unknown
 		case fromPrevOld
 		case fromPrevNew
@@ -143,7 +143,7 @@ public struct AutoDiff {
 
 }
 
-fileprivate func findFirst<S: Sequence>
+private func findFirst<S: Sequence>
 	(_ source: S, _ predicate: (S.Iterator.Element) -> Bool)
 	-> (Int, S.Iterator.Element)?
 {

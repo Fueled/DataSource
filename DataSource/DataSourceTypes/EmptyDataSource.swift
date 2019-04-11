@@ -7,24 +7,16 @@
 //
 
 import Foundation
-import ReactiveSwift
-import Result
+import Ry
 
 /// `DataSource` implementation that has zero sections.
 ///
 /// Never emits any dataChanges.
 public final class EmptyDataSource: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
-
-	public init() {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
-	}
-
-	deinit {
-		self.observer.sendCompleted()
-	}
+	public let changes = Signal<DataChange>.never
+	
+	public init() {}
 
 	public let numberOfSections = 0
 

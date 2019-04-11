@@ -7,8 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
-import Result
+import Ry
 
 /// `DataSource` implementation that has one section of items of type T.
 ///
@@ -18,15 +17,14 @@ import Result
 /// insert and move individual items.
 public final class AutoDiffDataSource<T>: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
-	fileprivate let disposable: Disposable
+    private let pool = DisposePool()
+    public let changes: Signal<DataChange>
 
 	/// Mutable array of items in the only section of the autoDiffDataSource.
 	///
 	/// Every modification of the array causes calculation
 	/// and emission of appropriate dataChanges.
-	public let items: MutableProperty<[T]>
+	public let items: Property<[T]>
 
 	public let supplementaryItems: [String: Any]
 
@@ -47,24 +45,17 @@ public final class AutoDiffDataSource<T>: DataSource {
 		findMoves: Bool = true,
 		compare: @escaping (T, T) -> Bool)
 	{
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
-		self.items = MutableProperty(items)
+        self.items = Property(initialValue: items)
 		self.supplementaryItems = supplementaryItems
 		self.compare = compare
 		func autoDiff(_ old: [T], new: [T]) -> DataChange {
 			let result = AutoDiff.compare(old: old, new: new, findMoves: findMoves, compare: compare)
 			return DataChangeBatch(result.toItemChanges())
 		}
-		self.disposable = self.items.producer
-			.combinePrevious(items)
-			.skip(first: 1)
+		self.changes = self.items.values
+			.withPrevious()
 			.map(autoDiff)
-			.start(self.observer)
-	}
-
-	deinit {
-		self.observer.sendCompleted()
-		self.disposable.dispose()
+            .multicast(disposeIn: self.pool)
 	}
 
 	public let numberOfSections = 1

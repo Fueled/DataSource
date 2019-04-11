@@ -7,8 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
-import Result
+import Ry
 
 /// `DataSource` implementation that is composed of a mutable array
 /// of other dataSources (called inner dataSources).
@@ -20,27 +19,24 @@ import Result
 /// a corresponding dataChange.
 public final class MutableCompositeDataSource: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
-	fileprivate let disposable = CompositeDisposable()
+    private let pool = DisposePool()
+    private let changesPipe = SignalPipe<DataChange>()
+    public var changes: Signal<DataChange> {
+        return changesPipe.signal
+    }
 
-	fileprivate let _innerDataSources: MutableProperty<[DataSource]>
+	private let _innerDataSources: Property<[DataSource]>
 
-	public var innerDataSources: Property<[DataSource]> {
-		return Property(_innerDataSources)
+	public var innerDataSources: ReadOnlyProperty<[DataSource]> {
+        return _innerDataSources.readOnly
 	}
 
 	public init(_ inner: [DataSource] = []) {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
-		self._innerDataSources = MutableProperty(inner)
-		self.disposable += self._innerDataSources.producer
-			.flatMap(.latest, changesOfInnerDataSources)
-			.start(self.observer)
-	}
-
-	deinit {
-		self.observer.sendCompleted()
-		self.disposable.dispose()
+        self._innerDataSources = Property(initialValue: inner)
+		self._innerDataSources.values
+			.switchMap(changesOfInnerDataSources)
+			.addObserver(changesPipe.send)
+            .dispose(in: pool)
 	}
 
 	public var numberOfSections: Int {
@@ -85,7 +81,7 @@ public final class MutableCompositeDataSource: DataSource {
 		let sections = dataSources.enumerated().flatMap { self.sections(of: $1, at: index + $0) }
 		if sections.count > 0 {
 			let change = DataChangeInsertSections(sections)
-			self.observer.send(value: change)
+			changesPipe.send(change)
 		}
 	}
 
@@ -102,7 +98,7 @@ public final class MutableCompositeDataSource: DataSource {
 		self._innerDataSources.value.removeSubrange(range)
 		if sections.count > 0 {
 			let change = DataChangeDeleteSections(sections)
-			self.observer.send(value: change)
+			changesPipe.send(change)
 		}
 	}
 
@@ -122,7 +118,7 @@ public final class MutableCompositeDataSource: DataSource {
 		self._innerDataSources.value[index] = dataSource
 		if !batch.isEmpty {
 			let change = DataChangeBatch(batch)
-			self.observer.send(value: change)
+			changesPipe.send(change)
 		}
 	}
 
@@ -139,34 +135,27 @@ public final class MutableCompositeDataSource: DataSource {
 		}
 		if !batch.isEmpty {
 			let change = DataChangeBatch(batch)
-			self.observer.send(value: change)
+			changesPipe.send(change)
 		}
 	}
 
-	fileprivate func sections(of dataSource: DataSource, at index: Int) -> [Int] {
+	private func sections(of dataSource: DataSource, at index: Int) -> [Int] {
 		let location = mapOutside(self._innerDataSources.value, index)(0)
 		let length = dataSource.numberOfSections
 		return Array(location ..< location + length)
 	}
 
-	fileprivate func sectionsOfDataSource(at index: Int) -> [Int] {
+	private func sectionsOfDataSource(at index: Int) -> [Int] {
 		let dataSource = self._innerDataSources.value[index]
 		return self.sections(of: dataSource, at: index)
 	}
 
 }
 
-private func changesOfInnerDataSources(_ innerDataSources: [DataSource]) -> SignalProducer<DataChange, NoError> {
-	let arrayOfSignals = innerDataSources.enumerated().map {
-		index, dataSource in
-		return dataSource.changes.map {
-			$0.mapSections(mapOutside(innerDataSources, index))
-		}
-	}
-	return SignalProducer {
-		observer, disposable in
-		for signal in arrayOfSignals {
-			disposable += signal.observe(observer)
-		}
-	}
+private func changesOfInnerDataSources(_ innerDataSources: [DataSource]) -> Signal<DataChange> {
+	return .merge(innerDataSources.enumerated().map { index, dataSource in
+        dataSource.changes.map {
+            $0.mapSections(mapOutside(innerDataSources, index))
+        }
+    })
 }

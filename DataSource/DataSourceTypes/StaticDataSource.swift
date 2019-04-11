@@ -7,8 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
-import Result
+import Ry
 
 /// `DataSource` implementation that has an immutable array of section.
 /// 
@@ -18,18 +17,12 @@ import Result
 /// Never emits any dataChanges.
 public final class StaticDataSource<T>: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
+    public let changes = Signal<DataChange>.never
 
 	public let sections: [DataSourceSection<T>]
 
 	public init(sections: [DataSourceSection<T>]) {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.sections = sections
-	}
-
-	deinit {
-		self.observer.sendCompleted()
 	}
 
 	/// Convenience initialize that creates a staticDataSource

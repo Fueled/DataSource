@@ -6,7 +6,7 @@
 //  Copyright © 2015 Fueled. All rights reserved.
 //
 
-import ReactiveSwift
+import Foundation
 
 /// Implement this protocol in your `UITableViewCell` or `UICollectionView` subclass
 /// to make it receive corresponding items of the dataSource associated

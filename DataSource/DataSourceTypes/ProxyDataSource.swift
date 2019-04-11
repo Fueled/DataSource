@@ -7,8 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
-import Result
+import Ry
 
 /// `DataSource` implementation that returns data from
 /// another dataSource (called inner dataSource).
@@ -21,12 +20,9 @@ import Result
 /// and emits them as its own changes.
 public final class ProxyDataSource: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
-	fileprivate let disposable = CompositeDisposable()
-	fileprivate var lastDisposable: Disposable?
-
-	public let innerDataSource: MutableProperty<DataSource>
+    private let pool = DisposePool()
+    public let changes: Signal<DataChange>
+	public let innerDataSource: Property<DataSource>
 
 	/// When `true`, switching innerDataSource produces
 	/// a dataChange consisting of deletions of all the
@@ -34,30 +30,28 @@ public final class ProxyDataSource: DataSource {
 	/// the sections of the new innerDataSource.
 	///
 	/// when `false`, switching innerDataSource produces `DataChangeReloadData`.
-	public let animatesChanges: MutableProperty<Bool>
+	public let animatesChanges: Property<Bool>
 
 	public init(_ inner: DataSource = EmptyDataSource(), animateChanges: Bool = true) {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
-		self.innerDataSource = MutableProperty(inner)
-		self.animatesChanges = MutableProperty(animateChanges)
-		self.lastDisposable = inner.changes.observe(self.observer)
-		self.disposable += self.innerDataSource.producer
-			.combinePrevious(inner)
-			.skip(first: 1)
-			.startWithValues {
-				[weak self] old, new in
-				if let this = self {
-					this.lastDisposable?.dispose()
-					this.observer.send(value: changeDataSources(old, new, this.animatesChanges.value))
-					this.lastDisposable = new.changes.observe(this.observer)
-				}
-		}
-	}
-
-	deinit {
-		self.observer.sendCompleted()
-		self.disposable.dispose()
-		self.lastDisposable?.dispose()
+        self.innerDataSource = Property(initialValue: inner)
+        self.animatesChanges = Property(initialValue: animateChanges)
+		self.changes = self.innerDataSource.values
+            .map(Optional.some)
+            .startWith(nil)
+			.withPrevious()
+            .switchMap {
+                [animatesChanges = animatesChanges.getter] old, new -> Signal<DataChange> in
+                guard let new = new else {
+                    fatalError()
+                }
+                var result = new.changes
+                if let old = old {
+                    let change = changeDataSources(old, new, animatesChanges())
+                    result = result.startWith(change)
+                }
+                return result
+            }
+            .multicast(disposeIn: pool)
 	}
 
 	public var numberOfSections: Int {

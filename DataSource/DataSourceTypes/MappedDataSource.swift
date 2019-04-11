@@ -7,8 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
-import Result
+import Ry
 
 /// `DataSource` implementation that returns data from
 /// another dataSource (called inner dataSource) after transforming
@@ -19,33 +18,26 @@ import Result
 /// and emits them as its own changes.
 public final class MappedDataSource: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
-	fileprivate let disposable: Disposable?
+    private let pool = DisposePool()
+    public let changes: Signal<DataChange>
 
 	public let innerDataSource: DataSource
 
 	/// Function that is applied to items of the inner dataSource
 	/// before they are returned as items of the mappedDataSource.
-	fileprivate let transform: (Any) -> Any
+	private let transform: (Any) -> Any
 
 	/// Function that is applied to supplementary items of the inner dataSource
 	/// before they are returned as supplementary items of the mappedDataSource.
 	///
 	/// The first parameter is the kind of the supplementary item.
-	fileprivate let supplementaryTransform: (String, Any?) -> Any?
+	private let supplementaryTransform: (String, Any?) -> Any?
 
 	public init(_ inner: DataSource, supplementaryTransform: @escaping ((String, Any?) -> Any?) = { $1 }, transform: @escaping (Any) -> Any) {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.innerDataSource = inner
 		self.transform = transform
 		self.supplementaryTransform = supplementaryTransform
-		self.disposable = inner.changes.observe(self.observer)
-	}
-
-	deinit {
-		self.observer.sendCompleted()
-		self.disposable?.dispose()
+        self.changes = inner.changes.multicast(disposeIn: pool)
 	}
 
 	public var numberOfSections: Int {

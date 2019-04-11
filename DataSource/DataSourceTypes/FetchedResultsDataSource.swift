@@ -7,8 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
-import Result
+import Ry
 import CoreData
 import UIKit
 
@@ -20,27 +19,24 @@ import UIKit
 /// in fetched objects and emit them as its own dataChanges.
 public final class FetchedResultsDataSource: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
+    public let changes: Signal<DataChange>
 
-	fileprivate let frc: NSFetchedResultsController<NSFetchRequestResult>
-	fileprivate let frcDelegate: Delegate
+	private let frc: NSFetchedResultsController<NSFetchRequestResult>
+	private let frcDelegate = Delegate()
 
 	public init(fetchRequest: NSFetchRequest<NSFetchRequestResult>, managedObjectContext: NSManagedObjectContext, sectionNameKeyPath: String? = nil, cacheName: String? = nil) throws {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
 		self.frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: sectionNameKeyPath, cacheName: cacheName)
-		self.frcDelegate = Delegate(observer: self.observer)
 		self.frc.delegate = self.frcDelegate
+        self.changes = frcDelegate.changes
 
 		try self.frc.performFetch()
 	}
 
 	deinit {
 		self.frc.delegate = nil
-		self.observer.sendCompleted()
 	}
 
-	fileprivate func infoForSection(_ section: Int) -> NSFetchedResultsSectionInfo {
+	private func infoForSection(_ section: Int) -> NSFetchedResultsSectionInfo {
 		return self.frc.sections![section]
 	}
 
@@ -70,21 +66,20 @@ public final class FetchedResultsDataSource: DataSource {
 		return (self, indexPath)
 	}
 
-	@objc fileprivate final class Delegate: NSObject, NSFetchedResultsControllerDelegate {
+	@objc private final class Delegate: NSObject, NSFetchedResultsControllerDelegate {
 
-		let observer: Signal<DataChange, NoError>.Observer
+        private let changesPipe = SignalPipe<DataChange>()
+        var changes: Signal<DataChange> {
+            return changesPipe.signal
+        }
 		var currentBatch: [DataChange] = []
-
-		init(observer: Signal<DataChange, NoError>.Observer) {
-			self.observer = observer
-		}
 
 		@objc func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
 			self.currentBatch = []
 		}
 
 		@objc func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-			self.observer.send(value: DataChangeBatch(self.currentBatch))
+			changesPipe.send(DataChangeBatch(self.currentBatch))
 			self.currentBatch = []
 		}
 
