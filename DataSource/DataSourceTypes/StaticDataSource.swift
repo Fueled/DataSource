@@ -10,14 +10,14 @@ import Foundation
 import Ry
 
 /// `DataSource` implementation that has an immutable array of section.
-/// 
+///
 /// Each section contains an array of items ot type T and
 /// (optionally) a dictionary of supplementary items.
 ///
 /// Never emits any dataChanges.
 public final class StaticDataSource<T>: DataSource {
 
-    public let changes = Signal<DataChange>.never
+	public let changes = Signal<DataChange>.never
 
 	public let sections: [DataSourceSection<T>]
 

@@ -17,10 +17,10 @@ import Ry
 /// in the to-many relationship and emit them as its own dataChanges.
 public final class  KVODataSource: NSObject, DataSource {
 
-    private let changesPipe = SignalPipe<DataChange>()
-    public var changes: Signal<DataChange> {
-        return changesPipe.signal
-    }
+	private let changesPipe = SignalPipe<DataChange>()
+	public var changes: Signal<DataChange> {
+		return changesPipe.signal
+	}
 
 	public let target: NSObject
 	public let keyPath: String
@@ -60,7 +60,12 @@ public final class  KVODataSource: NSObject, DataSource {
 		return self.target.value(forKeyPath: self.keyPath) as! NSArray
 	}
 
-	public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+	public override func observeValue(
+		forKeyPath keyPath: String?,
+		of object: Any?,
+		change: [NSKeyValueChangeKey : Any]?,
+		context: UnsafeMutableRawPointer?)
+	{
 		if let target = object as? NSObject,
 			let change = change,
 			let type = change[NSKeyValueChangeKey.kindKey] as? NSKeyValueChange,
@@ -85,9 +90,9 @@ public final class  KVODataSource: NSObject, DataSource {
 			changesPipe.send(DataChangeReloadItems(indexPaths))
 		case .setting:
 			changesPipe.send(DataChangeReloadSections([0]))
-        @unknown default:
-            assertionFailure("Unknown change in KVODataSource")
-        }
+		@unknown default:
+			assertionFailure("Unknown change in KVODataSource")
+		}
 	}
 
 }

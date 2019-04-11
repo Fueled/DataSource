@@ -18,8 +18,8 @@ import Ry
 /// and emits them as its own changes.
 public final class MappedDataSource: DataSource {
 
-    private let pool = DisposePool()
-    public let changes: Signal<DataChange>
+	private let pool = DisposePool()
+	public let changes: Signal<DataChange>
 
 	public let innerDataSource: DataSource
 
@@ -33,11 +33,15 @@ public final class MappedDataSource: DataSource {
 	/// The first parameter is the kind of the supplementary item.
 	private let supplementaryTransform: (String, Any?) -> Any?
 
-	public init(_ inner: DataSource, supplementaryTransform: @escaping ((String, Any?) -> Any?) = { $1 }, transform: @escaping (Any) -> Any) {
+	public init(
+		_ inner: DataSource,
+		supplementaryTransform: @escaping ((String, Any?) -> Any?) = { $1 },
+		transform: @escaping (Any) -> Any)
+	{
 		self.innerDataSource = inner
 		self.transform = transform
 		self.supplementaryTransform = supplementaryTransform
-        self.changes = inner.changes.multicast(disposeIn: pool)
+		self.changes = inner.changes.multicast(disposeIn: pool)
 	}
 
 	public var numberOfSections: Int {

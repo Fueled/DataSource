@@ -20,8 +20,8 @@ import Ry
 /// and emits them as its own changes.
 public final class ProxyDataSource: DataSource {
 
-    private let pool = DisposePool()
-    public let changes: Signal<DataChange>
+	private let pool = DisposePool()
+	public let changes: Signal<DataChange>
 	public let innerDataSource: Property<DataSource>
 
 	/// When `true`, switching innerDataSource produces
@@ -33,25 +33,25 @@ public final class ProxyDataSource: DataSource {
 	public let animatesChanges: Property<Bool>
 
 	public init(_ inner: DataSource = EmptyDataSource(), animateChanges: Bool = true) {
-        self.innerDataSource = Property(initialValue: inner)
-        self.animatesChanges = Property(initialValue: animateChanges)
+		self.innerDataSource = Property(initialValue: inner)
+		self.animatesChanges = Property(initialValue: animateChanges)
 		self.changes = self.innerDataSource.values
-            .map(Optional.some)
-            .startWith(nil)
+			.map(Optional.some)
+			.startWith(nil)
 			.withPrevious()
-            .switchMap {
-                [animatesChanges = animatesChanges.getter] old, new -> Signal<DataChange> in
-                guard let new = new else {
-                    fatalError()
-                }
-                var result = new.changes
-                if let old = old {
-                    let change = changeDataSources(old, new, animatesChanges())
-                    result = result.startWith(change)
-                }
-                return result
-            }
-            .multicast(disposeIn: pool)
+			.switchMap {
+				[animatesChanges = animatesChanges.getter] old, new -> Signal<DataChange> in
+				guard let new = new else {
+					fatalError()
+				}
+				var result = new.changes
+				if let old = old {
+					let change = changeDataSources(old, new, animatesChanges())
+					result = result.startWith(change)
+				}
+				return result
+			}
+			.multicast(disposeIn: pool)
 	}
 
 	public var numberOfSections: Int {

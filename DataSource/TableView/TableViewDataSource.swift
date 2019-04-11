@@ -34,7 +34,7 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 	public final var reuseIdentifierForItem: (IndexPath, Any) -> String = {
 		_, _ in "DefaultCell"
 	}
-	
+
 	public final var dataChangeTarget: DataChangeTarget? = nil
 
 	private let pool = DisposePool()
@@ -46,7 +46,7 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 			if let this = self, let dataChangeTarget = this.dataChangeTarget ?? this.tableView {
 				change.apply(to: dataChangeTarget)
 			}
-        }.dispose(in: pool)
+		}.dispose(in: pool)
 	}
 
 	open func configureCell(_ cell: UITableViewCell, forRowAt indexPath: IndexPath) {

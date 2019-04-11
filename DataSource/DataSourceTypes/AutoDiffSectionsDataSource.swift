@@ -30,8 +30,8 @@ import Ry
 /// sections' `supplementaryItems` dictionary under some user-defined key.
 public final class AutoDiffSectionsDataSource<T>: DataSource {
 
-    private let pool = DisposePool()
-    public let changes: Signal<DataChange>
+	private let pool = DisposePool()
+	public let changes: Signal<DataChange>
 
 	/// Mutable array of dataSourceSections.
 	///
@@ -59,22 +59,22 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 	///     Section moves are never generated.
 	///   - compareSections: Function that is used to compare a pair of sections for identity.
 	///   - compareItems: Function that is used to compare a pair of items for equality.
-	public init(sections: [DataSourceSection<T>] = [],
+	public init(
+		sections: [DataSourceSection<T>] = [],
 		findItemMoves: Bool = true,
 		compareSections: @escaping (DataSourceSection<T>, DataSourceSection<T>) -> Bool,
 		compareItems: @escaping (T, T) -> Bool)
 	{
-        self.sections = Property(initialValue: sections)
+		self.sections = Property(initialValue: sections)
 		self.compareSections = compareSections
 		self.compareItems = compareItems
-		func autoDiff(_ oldSections: [DataSourceSection<T>],
-			newSections: [DataSourceSection<T>]) -> DataChange
-		{
+		func autoDiff(_ oldSections: [DataSourceSection<T>], newSections: [DataSourceSection<T>]) -> DataChange {
 			let sectionsResult = AutoDiff.compare(
 				old: oldSections,
 				new: newSections,
 				findMoves: false,
-				compare: compareSections)
+				compare: compareSections
+			)
 			var changes = sectionsResult.toSectionChanges()
 			for (oldIndex, newIndex) in sectionsResult.matches {
 				let oldItems = oldSections[oldIndex].items
@@ -83,7 +83,8 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 					old: oldItems,
 					new: newItems,
 					findMoves: findItemMoves,
-					compare: compareItems)
+					compare: compareItems
+				)
 				changes += itemsResult.toItemChanges(oldSection: oldIndex, newSection: newIndex)
 			}
 			return DataChangeBatch(changes)

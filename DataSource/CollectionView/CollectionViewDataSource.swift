@@ -41,7 +41,7 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 	public final var reuseIdentifierForSupplementaryItem: (String, Int, Any) -> String = {
 		_, _, _ in "DefaultSupplementaryView"
 	}
-	
+
 	public final var dataChangeTarget: DataChangeTarget? = nil
 
 	private let pool = DisposePool()
@@ -53,7 +53,7 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 			if let this = self, let dataChangeTarget = this.dataChangeTarget ?? this.collectionView {
 				change.apply(to: dataChangeTarget)
 			}
-        }.dispose(in: pool)
+		}.dispose(in: pool)
 	}
 
 	open func configureCell(_ cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {

@@ -18,7 +18,7 @@ import Ry
 ///   protocol directly in any `UICollectionReusableView` subclass.
 open class CollectionViewReusableView: UICollectionReusableView, DataSourceItemReceiver {
 
-    public final let viewModel = Property<Any?>(initialValue: nil)
+	public final let viewModel = Property<Any?>(initialValue: nil)
 
 	open func ds_setItem(_ item: Any) {
 		self.viewModel.value = item

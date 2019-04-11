@@ -15,7 +15,7 @@ import Ry
 public final class EmptyDataSource: DataSource {
 
 	public let changes = Signal<DataChange>.never
-	
+
 	public init() {}
 
 	public let numberOfSections = 0

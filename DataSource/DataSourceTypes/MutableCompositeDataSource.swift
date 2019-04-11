@@ -19,24 +19,24 @@ import Ry
 /// a corresponding dataChange.
 public final class MutableCompositeDataSource: DataSource {
 
-    private let pool = DisposePool()
-    private let changesPipe = SignalPipe<DataChange>()
-    public var changes: Signal<DataChange> {
-        return changesPipe.signal
-    }
+	private let pool = DisposePool()
+	private let changesPipe = SignalPipe<DataChange>()
+	public var changes: Signal<DataChange> {
+		return changesPipe.signal
+	}
 
 	private let _innerDataSources: Property<[DataSource]>
 
 	public var innerDataSources: ReadOnlyProperty<[DataSource]> {
-        return _innerDataSources.readOnly
+		return _innerDataSources.readOnly
 	}
 
 	public init(_ inner: [DataSource] = []) {
-        self._innerDataSources = Property(initialValue: inner)
+		self._innerDataSources = Property(initialValue: inner)
 		self._innerDataSources.values
 			.switchMap(changesOfInnerDataSources)
 			.addObserver(changesPipe.send)
-            .dispose(in: pool)
+			.dispose(in: pool)
 	}
 
 	public var numberOfSections: Int {
@@ -154,8 +154,8 @@ public final class MutableCompositeDataSource: DataSource {
 
 private func changesOfInnerDataSources(_ innerDataSources: [DataSource]) -> Signal<DataChange> {
 	return .merge(innerDataSources.enumerated().map { index, dataSource in
-        dataSource.changes.map {
-            $0.mapSections(mapOutside(innerDataSources, index))
-        }
-    })
+		dataSource.changes.map {
+			$0.mapSections(mapOutside(innerDataSources, index))
+		}
+	})
 }

@@ -17,8 +17,8 @@ import Ry
 /// insert and move individual items.
 public final class AutoDiffDataSource<T>: DataSource {
 
-    private let pool = DisposePool()
-    public let changes: Signal<DataChange>
+	private let pool = DisposePool()
+	public let changes: Signal<DataChange>
 
 	/// Mutable array of items in the only section of the autoDiffDataSource.
 	///
@@ -41,11 +41,11 @@ public final class AutoDiffDataSource<T>: DataSource {
 	///		a pair of deletion and insertion instead of item movement dataChanges.
 	///   - compare: Function that is used to compare a pair of items for equality.
 	public init(_ items: [T] = [],
-		supplementaryItems: [String: Any] = [:],
-		findMoves: Bool = true,
-		compare: @escaping (T, T) -> Bool)
+				supplementaryItems: [String: Any] = [:],
+				findMoves: Bool = true,
+				compare: @escaping (T, T) -> Bool)
 	{
-        self.items = Property(initialValue: items)
+		self.items = Property(initialValue: items)
 		self.supplementaryItems = supplementaryItems
 		self.compare = compare
 		func autoDiff(_ old: [T], new: [T]) -> DataChange {
@@ -55,7 +55,7 @@ public final class AutoDiffDataSource<T>: DataSource {
 		self.changes = self.items.values
 			.withPrevious()
 			.map(autoDiff)
-            .multicast(disposeIn: self.pool)
+			.multicast(disposeIn: self.pool)
 	}
 
 	public let numberOfSections = 1

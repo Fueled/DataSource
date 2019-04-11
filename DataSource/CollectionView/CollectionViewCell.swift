@@ -18,7 +18,7 @@ import Ry
 ///   protocol directly in any `UICollectionViewCell` subclass.
 open class CollectionViewCell: UICollectionViewCell, DataSourceItemReceiver {
 
-    public final let cellModel = Property<Any?>(initialValue: nil)
+	public final let cellModel = Property<Any?>(initialValue: nil)
 
 	open func ds_setItem(_ item: Any) {
 		self.cellModel.value = item

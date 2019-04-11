@@ -23,7 +23,10 @@ public struct DataChangeMoveItem: DataChange {
 	}
 
 	public func mapSections(_ transform: (Int) -> Int) -> DataChangeMoveItem {
-		return DataChangeMoveItem(from: fromIndexPath.ds_mapSection(transform), to: toIndexPath.ds_mapSection(transform))
+		return DataChangeMoveItem(
+			from: fromIndexPath.ds_mapSection(transform),
+			to: toIndexPath.ds_mapSection(transform)
+		)
 	}
 
 }

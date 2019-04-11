@@ -18,7 +18,7 @@ import Ry
 ///   protocol directly in any `UITableViewCell` subclass.
 open class TableViewCell: UITableViewCell, DataSourceItemReceiver {
 
-    public final let cellModel = Property<Any?>(initialValue: nil)
+	public final let cellModel = Property<Any?>(initialValue: nil)
 
 	open func ds_setItem(_ item: Any) {
 		self.cellModel.value = item

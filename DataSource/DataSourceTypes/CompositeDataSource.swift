@@ -21,11 +21,11 @@ import Ry
 /// to correspond to the structure of the compositeDataSource.
 public final class CompositeDataSource: DataSource {
 
-    private let pool = DisposePool()
-    private let changesPipe = SignalPipe<DataChange>()
-    public var changes: Signal<DataChange> {
-        return changesPipe.signal
-    }
+	private let pool = DisposePool()
+	private let changesPipe = SignalPipe<DataChange>()
+	public var changes: Signal<DataChange> {
+		return changesPipe.signal
+	}
 
 	public let innerDataSources: [DataSource]
 
@@ -34,10 +34,10 @@ public final class CompositeDataSource: DataSource {
 		for (index, dataSource) in inner.enumerated() {
 			dataSource.changes.addObserver {
 				[weak self] change in
-                guard let self = self else { return }
-                let map = mapOutside(self.innerDataSources, index)
-                let mapped = change.mapSections(map)
-                self.changesPipe.send(mapped)
+				guard let self = self else { return }
+				let map = mapOutside(self.innerDataSources, index)
+				let mapped = change.mapSections(map)
+				self.changesPipe.send(mapped)
 			}.dispose(in: pool)
 		}
 	}
