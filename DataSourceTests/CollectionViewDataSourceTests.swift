@@ -21,7 +21,6 @@ class CollectionViewDataSourceTests: QuickSpecWithDataSets {
 			collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
 			let collectionViewDescriptors = [CellDescriptor(TestCollectionViewCell.reuseIdentifier, TestCellModel.self, .class(TestCollectionViewCell.self))]
 			collectionViewDataSource.configure(collectionView, using: collectionViewDescriptors)
-			collectionViewDataSource.dataSource.animatesChanges.value = false
 			collectionViewDataSource.dataSource.innerDataSource <~ dataSource.producer.map { $0 as DataSource }
 		}
 		itBehavesLike("CollectionViewDataSource object") { ["collectionViewDataSource": collectionViewDataSource, "TestCellModels": [self.dataSetWithTestCellModels], "collectionView": collectionView] }
