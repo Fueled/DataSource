@@ -8,7 +8,6 @@
 
 import Foundation
 import ReactiveSwift
-import Result
 
 /// `DataSource` implementation that is composed of an array
 /// of other dataSources (called inner dataSources).
@@ -22,14 +21,14 @@ import Result
 /// to correspond to the structure of the compositeDataSource.
 public final class CompositeDataSource: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
+	public let changes: Signal<DataChange, Never>
+	fileprivate let observer: Signal<DataChange, Never>.Observer
 	fileprivate let disposable = CompositeDisposable()
 
 	public let innerDataSources: [DataSource]
 
 	public init(_ inner: [DataSource]) {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
+		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
 		self.innerDataSources = inner
 		for (index, dataSource) in inner.enumerated() {
 			self.disposable += dataSource.changes.observeValues { [weak self] change in

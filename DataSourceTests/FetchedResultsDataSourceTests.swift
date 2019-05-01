@@ -19,6 +19,6 @@ class FetchedResultsDataSourceTests: QuickSpecWithDataSets {
 		beforeEach {
 			dataSource = try? FetchedResultsDataSource(fetchRequest: Items().fetchSortedRequest(), managedObjectContext: self.coreDataManager!.context)
 		}
-		itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet]] }
+		itBehavesLike("DataSource protocol") { ["DataSource": dataSource!, "InitialData": [self.testDataSet]] }
 	}
 }

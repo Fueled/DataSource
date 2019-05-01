@@ -31,13 +31,13 @@ class AutoDiffSectionsDataSourceTests: QuickSpecWithDataSets {
 				},
 				compareItems: { $0 == $1 })
 		}
-		itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet, self.testDataSet2]] }
+		itBehavesLike("DataSource protocol") { ["DataSource": dataSource!, "InitialData": [self.testDataSet, self.testDataSet2]] }
 		context("when changing dataSource sections") {
 			beforeEach {
 				dataSourceSections = [dataSourceSection2, dataSourceSection1]
 				dataSource.sections.value = dataSourceSections
 			}
-			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet2, self.testDataSet]] }
+			itBehavesLike("DataSource protocol") { ["DataSource": dataSource!, "InitialData": [self.testDataSet2, self.testDataSet]] }
 		}
 	}
 }

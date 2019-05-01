@@ -23,6 +23,6 @@ class CollectionViewDataSourceTests: QuickSpecWithDataSets {
 			collectionViewDataSource.configure(collectionView, using: collectionViewDescriptors)
 			collectionViewDataSource.dataSource.innerDataSource <~ dataSource.producer.map { $0 as DataSource }
 		}
-		itBehavesLike("CollectionViewDataSource object") { ["collectionViewDataSource": collectionViewDataSource, "TestCellModels": [self.dataSetWithTestCellModels], "collectionView": collectionView] }
+		itBehavesLike("CollectionViewDataSource object") { ["collectionViewDataSource": collectionViewDataSource!, "TestCellModels": [self.dataSetWithTestCellModels], "collectionView": collectionView!] }
 	}
 }

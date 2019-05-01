@@ -23,6 +23,6 @@ class TableViewDataSourceTests: QuickSpecWithDataSets {
 			tableViewDataSource.configure(tableView, using: tableViewDescriptors)
 			tableViewDataSource.dataSource.innerDataSource <~ dataSource.producer.map { $0 as DataSource }
 		}
-		itBehavesLike("TableViewDataSource object") { ["tableViewDataSource": tableViewDataSource, "TestCellModels": [self.dataSetWithTestCellModels, self.dataSetWithTestCellModels2], "tableView": tableView] }
+		itBehavesLike("TableViewDataSource object") { ["tableViewDataSource": tableViewDataSource!, "TestCellModels": [self.dataSetWithTestCellModels, self.dataSetWithTestCellModels2], "tableView": tableView!] }
 	}
 }
