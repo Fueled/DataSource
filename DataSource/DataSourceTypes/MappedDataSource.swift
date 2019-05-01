@@ -8,7 +8,6 @@
 
 import Foundation
 import ReactiveSwift
-import Result
 
 /// `DataSource` implementation that returns data from
 /// another dataSource (called inner dataSource) after transforming
@@ -19,8 +18,8 @@ import Result
 /// and emits them as its own changes.
 public final class MappedDataSource: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
+	public let changes: Signal<DataChange, Never>
+	fileprivate let observer: Signal<DataChange, Never>.Observer
 	fileprivate let disposable: Disposable?
 
 	public let innerDataSource: DataSource
@@ -36,7 +35,7 @@ public final class MappedDataSource: DataSource {
 	fileprivate let supplementaryTransform: (String, Any?) -> Any?
 
 	public init(_ inner: DataSource, supplementaryTransform: @escaping ((String, Any?) -> Any?) = { $1 }, transform: @escaping (Any) -> Any) {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
+		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
 		self.innerDataSource = inner
 		self.transform = transform
 		self.supplementaryTransform = supplementaryTransform

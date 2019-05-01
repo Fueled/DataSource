@@ -31,7 +31,7 @@ class TableViewDataSourceWithHeaderFooterViewsTests: QuickSpecWithDataSets {
 				footerDescriptor: HeaderFooterDescriptor(TestHeaderFooterView.reuseIdentifier, TestHeaderFooterViewModel.self, .class(TestHeaderFooterView.self)))
 			tableViewDataSource.dataSource.innerDataSource <~ dataSource.producer.map { $0 as DataSource }
 		}
-		itBehavesLike("TableViewDataSource object") { ["tableViewDataSource": tableViewDataSource, "TestCellModels": [self.dataSetWithTestCellModels], "tableView": tableView] }
+		itBehavesLike("TableViewDataSource object") { ["tableViewDataSource": tableViewDataSource!, "TestCellModels": [self.dataSetWithTestCellModels], "tableView": tableView!] }
 		it("has header") {
 			 expect(tableViewDataSource.tableView(tableView, viewForHeaderInSection: 0)).notTo(beNil())
 		}

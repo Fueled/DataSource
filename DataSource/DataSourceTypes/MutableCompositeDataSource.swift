@@ -8,7 +8,6 @@
 
 import Foundation
 import ReactiveSwift
-import Result
 
 /// `DataSource` implementation that is composed of a mutable array
 /// of other dataSources (called inner dataSources).
@@ -20,8 +19,8 @@ import Result
 /// a corresponding dataChange.
 public final class MutableCompositeDataSource: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
+	public let changes: Signal<DataChange, Never>
+	fileprivate let observer: Signal<DataChange, Never>.Observer
 	fileprivate let disposable = CompositeDisposable()
 
 	fileprivate let _innerDataSources: MutableProperty<[DataSource]>
@@ -31,7 +30,7 @@ public final class MutableCompositeDataSource: DataSource {
 	}
 
 	public init(_ inner: [DataSource] = []) {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
+		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
 		self._innerDataSources = MutableProperty(inner)
 		self.disposable += self._innerDataSources.producer
 			.flatMap(.latest, changesOfInnerDataSources)
@@ -155,7 +154,7 @@ public final class MutableCompositeDataSource: DataSource {
 
 }
 
-private func changesOfInnerDataSources(_ innerDataSources: [DataSource]) -> SignalProducer<DataChange, NoError> {
+private func changesOfInnerDataSources(_ innerDataSources: [DataSource]) -> SignalProducer<DataChange, Never> {
 	let arrayOfSignals = innerDataSources.enumerated().map { index, dataSource in
 		return dataSource.changes.map {
 			$0.mapSections(mapOutside(innerDataSources, index))

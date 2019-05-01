@@ -47,7 +47,6 @@
 		028602ED1B7E076300474D04 /* AutoDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602EC1B7E076200474D04 /* AutoDiff.swift */; };
 		028602F51B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift */; };
 		0286CF9F1BE26FB900F76C86 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0286CF9E1BE26FB900F76C86 /* ReactiveSwift.framework */; };
-		0286CFA11BE26FC000F76C86 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0286CFA01BE26FC000F76C86 /* Result.framework */; };
 		6B020AFD22045C6000DBAE00 /* TestCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B020AFC22045C6000DBAE00 /* TestCells.swift */; };
 		6B020B072208382000DBAE00 /* DataSourceSharedConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B020B062208382000DBAE00 /* DataSourceSharedConfiguration.swift */; };
 		6B020B09220842B500DBAE00 /* StaticDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B020B08220842B500DBAE00 /* StaticDataSourceTests.swift */; };
@@ -58,7 +57,6 @@
 		6B76E6572202E36E00D2B33E /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B76E6562202E36E00D2B33E /* Nimble.framework */; };
 		6B76E6592202E36E00D2B33E /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B76E6582202E36E00D2B33E /* Quick.framework */; };
 		6B76E65B2202E36E00D2B33E /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B76E65A2202E36E00D2B33E /* ReactiveSwift.framework */; };
-		6B76E65D2202E36E00D2B33E /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B76E65C2202E36E00D2B33E /* Result.framework */; };
 		6B76E65E2202E36E00D2B33E /* DataSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 022B0F991B2F2AE500DD4DCD /* DataSource.framework */; };
 		6B7E4AE022115E3700EC9031 /* FetchedResultsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7E4ADF22115E3700EC9031 /* FetchedResultsDataSourceTests.swift */; };
 		6B8941982213205500294F7D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8941972213205500294F7D /* CoreDataManager.swift */; };
@@ -116,7 +114,6 @@
 		FCBEE9091DA8F4AF00F59863 /* TableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FDB1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift */; };
 		FCBEE90A1DA8F4BB00F59863 /* DataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 022B0F9E1B2F2AE500DD4DCD /* DataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCBEE90B1DA8F4D400F59863 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC9E4A5D1DA83C7C00258CCF /* ReactiveSwift.framework */; };
-		FCBEE90C1DA8F4D400F59863 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC9E4A5E1DA83C7C00258CCF /* Result.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -203,7 +200,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0286CF9F1BE26FB900F76C86 /* ReactiveSwift.framework in Frameworks */,
-				0286CFA11BE26FC000F76C86 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,7 +211,6 @@
 				6B76E6572202E36E00D2B33E /* Nimble.framework in Frameworks */,
 				6B76E6592202E36E00D2B33E /* Quick.framework in Frameworks */,
 				6B76E65B2202E36E00D2B33E /* ReactiveSwift.framework in Frameworks */,
-				6B76E65D2202E36E00D2B33E /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,7 +219,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FCBEE90B1DA8F4D400F59863 /* ReactiveSwift.framework in Frameworks */,
-				FCBEE90C1DA8F4D400F59863 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,7 +509,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = Fueled;
 				TargetAttributes = {
 					022B0F981B2F2AE500DD4DCD = {
@@ -534,10 +528,11 @@
 			};
 			buildConfigurationList = 022B0F931B2F2AE500DD4DCD /* Build configuration list for PBXProject "DataSource" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 022B0F8F1B2F2AE500DD4DCD;
 			productRefGroup = 022B0F9A1B2F2AE500DD4DCD /* Products */;
@@ -703,6 +698,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -752,7 +748,7 @@
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -763,6 +759,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -804,7 +801,7 @@
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -832,7 +829,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fueled.$(PRODUCT_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -856,7 +852,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fueled.$(PRODUCT_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -877,7 +872,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fueled.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -894,7 +888,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fueled.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
@@ -919,7 +912,6 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
@@ -944,7 +936,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fueled.DataSource-tvOS";
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};

@@ -8,7 +8,6 @@
 
 import Foundation
 import ReactiveSwift
-import Result
 
 /// `DataSource` implementation that has a single section and
 /// uses key-value coding (KVC) to returns objects from an ordered
@@ -18,15 +17,15 @@ import Result
 /// in the to-many relationship and emit them as its own dataChanges.
 public final class  KVODataSource: NSObject, DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
+	public let changes: Signal<DataChange, Never>
+	fileprivate let observer: Signal<DataChange, Never>.Observer
 
 	public let target: NSObject
 	public let keyPath: String
 	public let supplementaryItems: [String: Any]
 
 	public init(target: NSObject, keyPath: String, supplementaryItems: [String: Any] = [:]) {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
+		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
 		self.target = target
 		self.keyPath = keyPath
 		self.supplementaryItems = supplementaryItems
@@ -86,6 +85,8 @@ public final class  KVODataSource: NSObject, DataSource {
 			self.observer.send(value: DataChangeReloadItems(indexPaths))
 		case .setting:
 			self.observer.send(value: DataChangeReloadSections([0]))
+		@unknown default:
+			NSLog("Unhandled case for NSKeyValueChange: \(type). DataSource should be updated to account for it or it could lead to unexpected results.")
 		}
 	}
 

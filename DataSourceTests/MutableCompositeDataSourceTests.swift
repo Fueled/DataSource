@@ -23,9 +23,9 @@ class MutableCompositeDataSourceTests: QuickSpecWithDataSets {
 			dataSource = MutableCompositeDataSource(staticDataSources)
 		}
 		itBehavesLike("DataSource protocol") {
-			["DataSource": dataSource,
+			["DataSource": dataSource!,
 			 "InitialData": [self.testDataSet, self.testDataSet2],
-			 "LeafDataSource": staticDataSources,
+			 "LeafDataSource": staticDataSources!,
 			 "SupplementaryItems": [self.supplementaryItemOfKind, self.supplementaryItemOfKind2], ]
 		}
 		context("when adding new dataSource") {
@@ -35,9 +35,9 @@ class MutableCompositeDataSourceTests: QuickSpecWithDataSets {
 				dataSource.insert(thirdStaticDataSource, at: staticDataSources.startIndex)
 			}
 			itBehavesLike("DataSource protocol") {
-				["DataSource": dataSource,
+				["DataSource": dataSource!,
 				 "InitialData": [self.testDataSet3, self.testDataSet, self.testDataSet2],
-				 "LeafDataSource": staticDataSources,
+				 "LeafDataSource": staticDataSources!,
 				 "SupplementaryItems": [self.supplementaryItemOfKind2, self.supplementaryItemOfKind, self.supplementaryItemOfKind2], ]
 			}
 		}
@@ -46,7 +46,7 @@ class MutableCompositeDataSourceTests: QuickSpecWithDataSets {
 				staticDataSources = [secondStaticDataSource]
 				dataSource.delete(at: staticDataSources.startIndex)
 			}
-			itBehavesLike("DataSource protocol") { ["DataSource": dataSource, "InitialData": [self.testDataSet2], "LeafDataSource": staticDataSources, "SupplementaryItems": [self.supplementaryItemOfKind2]] }
+			itBehavesLike("DataSource protocol") { ["DataSource": dataSource!, "InitialData": [self.testDataSet2], "LeafDataSource": staticDataSources!, "SupplementaryItems": [self.supplementaryItemOfKind2]] }
 		}
 		context("when replacing a dataSource") {
 			beforeEach {
@@ -55,9 +55,9 @@ class MutableCompositeDataSourceTests: QuickSpecWithDataSets {
 				dataSource.replaceDataSource(at: staticDataSources.startIndex, with: thirdStaticDataSource)
 			}
 			itBehavesLike("DataSource protocol") {
-				["DataSource": dataSource,
+				["DataSource": dataSource!,
 				 "InitialData": [self.testDataSet3, self.testDataSet2],
-				 "LeafDataSource": staticDataSources,
+				 "LeafDataSource": staticDataSources!,
 				 "SupplementaryItems": [[:], self.supplementaryItemOfKind2], ]
 			}
 		}
@@ -67,9 +67,9 @@ class MutableCompositeDataSourceTests: QuickSpecWithDataSets {
 				dataSource.moveData(at: staticDataSources.startIndex, to: staticDataSources.index(after: staticDataSources.startIndex))
 			}
 			itBehavesLike("DataSource protocol") {
-				["DataSource": dataSource,
+				["DataSource": dataSource!,
 				 "InitialData": [self.testDataSet2, self.testDataSet],
-				 "LeafDataSource": staticDataSources,
+				 "LeafDataSource": staticDataSources!,
 				 "SupplementaryItems": [self.supplementaryItemOfKind2, self.supplementaryItemOfKind], ]
 			}
 		}

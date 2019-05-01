@@ -8,7 +8,6 @@
 
 import Foundation
 import ReactiveSwift
-import Result
 
 /// A provider of items grouped into sections.
 /// Each section can optionally have a collection
@@ -21,7 +20,7 @@ public protocol DataSource {
 
 	/// A push-driven stream of values that represent every modification
 	/// of the dataSource contents immediately after they happen.
-	var changes: Signal<DataChange, NoError> { get }
+	var changes: Signal<DataChange, Never> { get }
 
 	var numberOfSections: Int { get }
 
