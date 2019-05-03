@@ -87,7 +87,8 @@ public final class  KVODataSource: NSObject, DataSource {
 			self.observer.send(value: DataChangeReloadSections([0]))
 		@unknown default:
 			NSLog("Unhandled case for NSKeyValueChange: \(type). DataSource should be updated to account for it or it could lead to unexpected results.")
-		}
+            assertionFailure("Unknown change in KVODataSource")
+        }
 	}
 
 }

@@ -10,11 +10,11 @@ import Foundation
 
 extension IndexPath {
 
-	public func ds_setSection(_ section: Int) -> IndexPath {
+    func ds_setSection(_ section: Int) -> IndexPath {
 		return IndexPath(item: self.item, section: section)
 	}
 
-	public func ds_mapSection(_ transform: (Int) -> Int) -> IndexPath {
+    func ds_mapSection(_ transform: (Int) -> Int) -> IndexPath {
 		return IndexPath(item: self.item, section: transform(self.section))
 	}
 
@@ -29,4 +29,5 @@ extension IndexSet {
 		}
 		self.init(res)
 	}
+
 }

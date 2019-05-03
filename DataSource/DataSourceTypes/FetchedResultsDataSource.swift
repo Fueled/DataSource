@@ -122,7 +122,8 @@ public final class FetchedResultsDataSource: DataSource {
 				self.currentBatch.append(DataChangeReloadItems(indexPath!))
 			@unknown default:
 				NSLog("Unhandled case for NSFetchedResultsChangeType: \(type). DataSource should be updated to account for it or it could lead to unexpected results.")
-			}
+                assertionFailure("Unknown change in FetchedResultsDataSource")
+            }
 		}
 
 	}
