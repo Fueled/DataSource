@@ -6,10 +6,9 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
+import CoreData
 import Foundation
 import ReactiveSwift
-import Result
-import CoreData
 import UIKit
 
 /// `DataSource` implementation whose items are Core Data managed objects fetched by an `NSFetchedResultsController`.
@@ -20,14 +19,15 @@ import UIKit
 /// in fetched objects and emit them as its own dataChanges.
 public final class FetchedResultsDataSource: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
+	public let changes: Signal<DataChange, Never>
+	fileprivate let observer: Signal<DataChange, Never>.Observer
 
 	fileprivate let frc: NSFetchedResultsController<NSFetchRequestResult>
+	// swiftlint:disable weak_delegate
 	fileprivate let frcDelegate: Delegate
 
 	public init(fetchRequest: NSFetchRequest<NSFetchRequestResult>, managedObjectContext: NSManagedObjectContext, sectionNameKeyPath: String? = nil, cacheName: String? = nil) throws {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
+		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
 		self.frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: sectionNameKeyPath, cacheName: cacheName)
 		self.frcDelegate = Delegate(observer: self.observer)
 		self.frc.delegate = self.frcDelegate
@@ -72,10 +72,10 @@ public final class FetchedResultsDataSource: DataSource {
 
 	@objc fileprivate final class Delegate: NSObject, NSFetchedResultsControllerDelegate {
 
-		let observer: Signal<DataChange, NoError>.Observer
+		let observer: Signal<DataChange, Never>.Observer
 		var currentBatch: [DataChange] = []
 
-		init(observer: Signal<DataChange, NoError>.Observer) {
+		init(observer: Signal<DataChange, Never>.Observer) {
 			self.observer = observer
 		}
 
@@ -88,7 +88,8 @@ public final class FetchedResultsDataSource: DataSource {
 			self.currentBatch = []
 		}
 
-		@objc func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+		@objc func controller(
+			_ controller: NSFetchedResultsController<NSFetchRequestResult>,
 			didChange sectionInfo: NSFetchedResultsSectionInfo,
 			atSectionIndex sectionIndex: Int,
 			for type: NSFetchedResultsChangeType)
@@ -103,7 +104,8 @@ public final class FetchedResultsDataSource: DataSource {
 			}
 		}
 
-		@objc func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+		@objc func controller(
+			_ controller: NSFetchedResultsController<NSFetchRequestResult>,
 			didChange anObject: Any,
 			at indexPath: IndexPath?,
 			for type: NSFetchedResultsChangeType,
@@ -118,7 +120,8 @@ public final class FetchedResultsDataSource: DataSource {
 				self.currentBatch.append(DataChangeMoveItem(from: indexPath!, to: newIndexPath!))
 			case .update:
 				self.currentBatch.append(DataChangeReloadItems(indexPath!))
-            @unknown default:
+			@unknown default:
+				NSLog("Unhandled case for NSFetchedResultsChangeType: \(type). DataSource should be updated to account for it or it could lead to unexpected results.")
                 assertionFailure("Unknown change in FetchedResultsDataSource")
             }
 		}

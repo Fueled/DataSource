@@ -8,7 +8,6 @@
 
 import Foundation
 import ReactiveSwift
-import Result
 
 /// `DataSource` implementation that has one section of items of type T.
 ///
@@ -17,8 +16,8 @@ import Result
 /// a corresponding dataChange.
 public final class MutableDataSource<T>: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
+	public let changes: Signal<DataChange, Never>
+	fileprivate let observer: Signal<DataChange, Never>.Observer
 
 	fileprivate let _items: MutableProperty<[T]>
 
@@ -29,7 +28,7 @@ public final class MutableDataSource<T>: DataSource {
 	public let supplementaryItems: [String: Any]
 
 	public init(_ items: [T] = [], supplementaryItems: [String: Any] = [:]) {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
+		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
 		self._items = MutableProperty(items)
 		self.supplementaryItems = supplementaryItems
 	}

@@ -8,7 +8,6 @@
 
 import Foundation
 import ReactiveSwift
-import Result
 
 /// `DataSource` implementation that has one section of items of type T.
 ///
@@ -18,8 +17,8 @@ import Result
 /// insert and move individual items.
 public final class AutoDiffDataSource<T>: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
+	public let changes: Signal<DataChange, Never>
+	fileprivate let observer: Signal<DataChange, Never>.Observer
 	fileprivate let disposable: Disposable
 
 	/// Mutable array of items in the only section of the autoDiffDataSource.
@@ -42,12 +41,13 @@ public final class AutoDiffDataSource<T>: DataSource {
 	///   - findMoves: Set `findMoves` to `false` to make the dataSource emit
 	///		a pair of deletion and insertion instead of item movement dataChanges.
 	///   - compare: Function that is used to compare a pair of items for equality.
-	public init(_ items: [T] = [],
+	public init(
+		_ items: [T] = [],
 		supplementaryItems: [String: Any] = [:],
 		findMoves: Bool = true,
 		compare: @escaping (T, T) -> Bool)
 	{
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
+		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
 		self.items = MutableProperty(items)
 		self.supplementaryItems = supplementaryItems
 		self.compare = compare

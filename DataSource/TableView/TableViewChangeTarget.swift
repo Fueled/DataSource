@@ -11,7 +11,7 @@ import UIKit
 
 extension UITableView: DataChangeTarget {
 
-	public func ds_performBatchChanges(_ batchChanges: @escaping ()->()) {
+	public func ds_performBatchChanges(_ batchChanges: @escaping () -> Void) {
 		self.beginUpdates()
 		batchChanges()
 		self.endUpdates()
@@ -22,7 +22,7 @@ extension UITableView: DataChangeTarget {
 	}
 
 	public func ds_deleteSections(_ sections: [Int]) {
-		self.deleteSections(IndexSet(ds_integers: sections), with: .fade)
+		self.deleteSections(IndexSet(dsIntegers: sections), with: .fade)
 	}
 
 	public func ds_insertItems(at indexPaths: [IndexPath]) {
@@ -30,7 +30,7 @@ extension UITableView: DataChangeTarget {
 	}
 
 	public func ds_insertSections(_ sections: [Int]) {
-		self.insertSections(IndexSet(ds_integers: sections), with: .fade)
+		self.insertSections(IndexSet(dsIntegers: sections), with: .fade)
 	}
 
 	public func ds_moveItem(at oldIndexPath: IndexPath, to newIndexPath: IndexPath) {
@@ -50,7 +50,7 @@ extension UITableView: DataChangeTarget {
 	}
 
 	public func ds_reloadSections(_ sections: [Int]) {
-		self.reloadSections(IndexSet(ds_integers: sections), with: .fade)
+		self.reloadSections(IndexSet(dsIntegers: sections), with: .fade)
 	}
 
 }

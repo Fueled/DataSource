@@ -8,7 +8,6 @@
 
 import Foundation
 import ReactiveSwift
-import Result
 
 /// `DataSource` implementation that returns data from
 /// another dataSource (called inner dataSource).
@@ -21,8 +20,8 @@ import Result
 /// and emits them as its own changes.
 public final class ProxyDataSource: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
+	public let changes: Signal<DataChange, Never>
+	fileprivate let observer: Signal<DataChange, Never>.Observer
 	fileprivate let disposable = CompositeDisposable()
 	fileprivate var lastDisposable: Disposable?
 
@@ -37,21 +36,20 @@ public final class ProxyDataSource: DataSource {
 	public let animatesChanges: MutableProperty<Bool>
 
 	public init(_ inner: DataSource = EmptyDataSource(), animateChanges: Bool = true) {
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
+		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
 		self.innerDataSource = MutableProperty(inner)
 		self.animatesChanges = MutableProperty(animateChanges)
 		self.lastDisposable = inner.changes.observe(self.observer)
 		self.disposable += self.innerDataSource.producer
 			.combinePrevious(inner)
 			.skip(first: 1)
-			.startWithValues {
-				[weak self] old, new in
+			.startWithValues { [weak self] old, new in
 				if let this = self {
 					this.lastDisposable?.dispose()
 					this.observer.send(value: changeDataSources(old, new, this.animatesChanges.value))
 					this.lastDisposable = new.changes.observe(this.observer)
 				}
-		}
+			}
 	}
 
 	deinit {

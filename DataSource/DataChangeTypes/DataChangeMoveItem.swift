@@ -12,7 +12,7 @@ public struct DataChangeMoveItem: DataChange {
 
 	public let fromIndexPath: IndexPath
 	public let toIndexPath: IndexPath
-
+	// swiftlint:disable identifier_name
 	public init(from: IndexPath, to: IndexPath) {
 		self.fromIndexPath = from
 		self.toIndexPath = to

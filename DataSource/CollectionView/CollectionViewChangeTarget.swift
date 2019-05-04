@@ -11,7 +11,7 @@ import UIKit
 
 extension UICollectionView: DataChangeTarget {
 
-	public func ds_performBatchChanges(_ batchChanges: @escaping () -> ()) {
+	public func ds_performBatchChanges(_ batchChanges: @escaping () -> Void) {
 		self.performBatchUpdates(batchChanges, completion: nil)
 	}
 
@@ -20,7 +20,7 @@ extension UICollectionView: DataChangeTarget {
 	}
 
 	public func ds_deleteSections(_ sections: [Int]) {
-		self.deleteSections(IndexSet(ds_integers: sections))
+		self.deleteSections(IndexSet(dsIntegers: sections))
 	}
 
 	public func ds_insertItems(at indexPaths: [IndexPath]) {
@@ -28,7 +28,7 @@ extension UICollectionView: DataChangeTarget {
 	}
 
 	public func ds_insertSections(_ sections: [Int]) {
-		self.insertSections(IndexSet(ds_integers: sections))
+		self.insertSections(IndexSet(dsIntegers: sections))
 	}
 
 	public func ds_moveItem(at oldIndexPath: IndexPath, to newIndexPath: IndexPath) {
@@ -48,7 +48,7 @@ extension UICollectionView: DataChangeTarget {
 	}
 
 	public func ds_reloadSections(_ sections: [Int]) {
-		self.reloadSections(IndexSet(ds_integers: sections))
+		self.reloadSections(IndexSet(dsIntegers: sections))
 	}
 
 }

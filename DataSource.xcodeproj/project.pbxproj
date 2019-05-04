@@ -7,12 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		021FAD3F1BB1C258001300A0 /* ReactiveSwift.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0286CF9E1BE26FB900F76C86 /* ReactiveSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		021FAD411BB1C279001300A0 /* Result.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0286CFA01BE26FC000F76C86 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		021FAD431BB1C3D8001300A0 /* DataSource.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 022B0F991B2F2AE500DD4DCD /* DataSource.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		021FAD451BB2D77C001300A0 /* DataSourceItemReceiver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021FAD441BB2D77C001300A0 /* DataSourceItemReceiver.swift */; };
 		022B0F9F1B2F2AE500DD4DCD /* DataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 022B0F9E1B2F2AE500DD4DCD /* DataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		022B0FAC1B2F2AE500DD4DCD /* DataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FAB1B2F2AE500DD4DCD /* DataSourceTests.swift */; };
 		022B0FDC1B2F2D4C00DD4DCD /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FB61B2F2D4B00DD4DCD /* CollectionViewCell.swift */; };
 		022B0FDD1B2F2D4C00DD4DCD /* CollectionViewChangeTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FB71B2F2D4B00DD4DCD /* CollectionViewChangeTarget.swift */; };
 		022B0FDE1B2F2D4C00DD4DCD /* CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FB81B2F2D4B00DD4DCD /* CollectionViewDataSource.swift */; };
@@ -51,7 +47,33 @@
 		028602ED1B7E076300474D04 /* AutoDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602EC1B7E076200474D04 /* AutoDiff.swift */; };
 		028602F51B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift */; };
 		0286CF9F1BE26FB900F76C86 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0286CF9E1BE26FB900F76C86 /* ReactiveSwift.framework */; };
-		0286CFA11BE26FC000F76C86 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0286CFA01BE26FC000F76C86 /* Result.framework */; };
+		6B020AFD22045C6000DBAE00 /* TestCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B020AFC22045C6000DBAE00 /* TestCells.swift */; };
+		6B020B072208382000DBAE00 /* DataSourceSharedConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B020B062208382000DBAE00 /* DataSourceSharedConfiguration.swift */; };
+		6B020B09220842B500DBAE00 /* StaticDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B020B08220842B500DBAE00 /* StaticDataSourceTests.swift */; };
+		6B020B0B2208479400DBAE00 /* EmptyDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B020B0A2208479400DBAE00 /* EmptyDataSourceTests.swift */; };
+		6B020B0D2208609B00DBAE00 /* QuickSpecWithDataSets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B020B0C2208609B00DBAE00 /* QuickSpecWithDataSets.swift */; };
+		6B020B11220864FC00DBAE00 /* ProxyDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B020B10220864FC00DBAE00 /* ProxyDataSourceTests.swift */; };
+		6B4082C622147FDA00A4CA90 /* Items.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6B4082C422147FDA00A4CA90 /* Items.xcdatamodeld */; };
+		6B76E6572202E36E00D2B33E /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B76E6562202E36E00D2B33E /* Nimble.framework */; };
+		6B76E6592202E36E00D2B33E /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B76E6582202E36E00D2B33E /* Quick.framework */; };
+		6B76E65B2202E36E00D2B33E /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B76E65A2202E36E00D2B33E /* ReactiveSwift.framework */; };
+		6B76E65E2202E36E00D2B33E /* DataSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 022B0F991B2F2AE500DD4DCD /* DataSource.framework */; };
+		6B7E4AE022115E3700EC9031 /* FetchedResultsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7E4ADF22115E3700EC9031 /* FetchedResultsDataSourceTests.swift */; };
+		6B8941982213205500294F7D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8941972213205500294F7D /* CoreDataManager.swift */; };
+		6BCA28EA2208798600D99D97 /* MutableDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCA28E92208798600D99D97 /* MutableDataSourceTests.swift */; };
+		6BCA28EC2209662C00D99D97 /* TableViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCA28EB2209662C00D99D97 /* TableViewDataSourceTests.swift */; };
+		6BCA28EE2209793A00D99D97 /* TableViewDataSourceWithHeaderFooterTitlesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCA28ED2209793A00D99D97 /* TableViewDataSourceWithHeaderFooterTitlesTests.swift */; };
+		6BCA28F0220979B600D99D97 /* TableViewDataSourceSharedConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCA28EF220979B600D99D97 /* TableViewDataSourceSharedConfiguration.swift */; };
+		6BCA28F2220981B800D99D97 /* TableViewDataSourceWithHeaderFooterViewsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCA28F1220981B800D99D97 /* TableViewDataSourceWithHeaderFooterViewsTests.swift */; };
+		6BCA28F42209CF4F00D99D97 /* MappedDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BCA28F32209CF4F00D99D97 /* MappedDataSourceTests.swift */; };
+		6BE5AD6B22144B2400066998 /* ItemsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BE5AD6A22144B2400066998 /* ItemsExtensions.swift */; };
+		6BEC0E422201B9FC00AEDC7E /* DataSourceCellDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BEC0E412201B9FC00AEDC7E /* DataSourceCellDescriptor.swift */; };
+		6BF8F6D5220A9024007F6209 /* MutableCompositeDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF8F6D4220A9024007F6209 /* MutableCompositeDataSourceTests.swift */; };
+		6BF8F6D9220B2633007F6209 /* CompositeDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF8F6D8220B2633007F6209 /* CompositeDataSourceTests.swift */; };
+		6BF8F6DB220B2887007F6209 /* AutoDiffDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF8F6DA220B2887007F6209 /* AutoDiffDataSourceTests.swift */; };
+		6BF8F6DD220B28A6007F6209 /* AutoDiffSectionsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF8F6DC220B28A6007F6209 /* AutoDiffSectionsDataSourceTests.swift */; };
+		6BF8F6E0220B28F0007F6209 /* CollectionViewDataSourceSharedConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF8F6DF220B28F0007F6209 /* CollectionViewDataSourceSharedConfiguration.swift */; };
+		6BF8F6E2220B2904007F6209 /* CollectionViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF8F6E1220B2904007F6209 /* CollectionViewDataSourceTests.swift */; };
 		FCBEE8E41DA8F4AF00F59863 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FB61B2F2D4B00DD4DCD /* CollectionViewCell.swift */; };
 		FCBEE8E51DA8F4AF00F59863 /* CollectionViewChangeTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FB71B2F2D4B00DD4DCD /* CollectionViewChangeTarget.swift */; };
 		FCBEE8E61DA8F4AF00F59863 /* CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FB81B2F2D4B00DD4DCD /* CollectionViewDataSource.swift */; };
@@ -92,33 +114,7 @@
 		FCBEE9091DA8F4AF00F59863 /* TableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FDB1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift */; };
 		FCBEE90A1DA8F4BB00F59863 /* DataSource.h in Headers */ = {isa = PBXBuildFile; fileRef = 022B0F9E1B2F2AE500DD4DCD /* DataSource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FCBEE90B1DA8F4D400F59863 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC9E4A5D1DA83C7C00258CCF /* ReactiveSwift.framework */; };
-		FCBEE90C1DA8F4D400F59863 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC9E4A5E1DA83C7C00258CCF /* Result.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		022B0FA61B2F2AE500DD4DCD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 022B0F901B2F2AE500DD4DCD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 022B0F981B2F2AE500DD4DCD;
-			remoteInfo = DataSource;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		021FAD3E1BB1C24C001300A0 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				021FAD431BB1C3D8001300A0 /* DataSource.framework in CopyFiles */,
-				021FAD411BB1C279001300A0 /* Result.framework in CopyFiles */,
-				021FAD3F1BB1C258001300A0 /* ReactiveSwift.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		021FAD441BB2D77C001300A0 /* DataSourceItemReceiver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataSourceItemReceiver.swift; sourceTree = "<group>"; };
@@ -127,7 +123,6 @@
 		022B0F9E1B2F2AE500DD4DCD /* DataSource.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataSource.h; sourceTree = "<group>"; };
 		022B0FA41B2F2AE500DD4DCD /* DataSourceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DataSourceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		022B0FAA1B2F2AE500DD4DCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		022B0FAB1B2F2AE500DD4DCD /* DataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceTests.swift; sourceTree = "<group>"; };
 		022B0FB61B2F2D4B00DD4DCD /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		022B0FB71B2F2D4B00DD4DCD /* CollectionViewChangeTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewChangeTarget.swift; sourceTree = "<group>"; };
 		022B0FB81B2F2D4B00DD4DCD /* CollectionViewDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewDataSource.swift; sourceTree = "<group>"; };
@@ -167,6 +162,33 @@
 		028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutoDiffSectionsDataSource.swift; sourceTree = "<group>"; };
 		0286CF9E1BE26FB900F76C86 /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ReactiveSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0286CFA01BE26FC000F76C86 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B020AFC22045C6000DBAE00 /* TestCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestCells.swift; sourceTree = "<group>"; };
+		6B020B062208382000DBAE00 /* DataSourceSharedConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceSharedConfiguration.swift; sourceTree = "<group>"; };
+		6B020B08220842B500DBAE00 /* StaticDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticDataSourceTests.swift; sourceTree = "<group>"; };
+		6B020B0A2208479400DBAE00 /* EmptyDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyDataSourceTests.swift; sourceTree = "<group>"; };
+		6B020B0C2208609B00DBAE00 /* QuickSpecWithDataSets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSpecWithDataSets.swift; sourceTree = "<group>"; };
+		6B020B10220864FC00DBAE00 /* ProxyDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyDataSourceTests.swift; sourceTree = "<group>"; };
+		6B4082C522147FDA00A4CA90 /* Items.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Items.xcdatamodel; sourceTree = "<group>"; };
+		6B76E6562202E36E00D2B33E /* Nimble.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Nimble.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B76E6582202E36E00D2B33E /* Quick.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Quick.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B76E65A2202E36E00D2B33E /* ReactiveSwift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ReactiveSwift.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B76E65C2202E36E00D2B33E /* Result.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Result.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B7E4ADF22115E3700EC9031 /* FetchedResultsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchedResultsDataSourceTests.swift; sourceTree = "<group>"; };
+		6B8941972213205500294F7D /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		6BCA28E92208798600D99D97 /* MutableDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutableDataSourceTests.swift; sourceTree = "<group>"; };
+		6BCA28EB2209662C00D99D97 /* TableViewDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSourceTests.swift; sourceTree = "<group>"; };
+		6BCA28ED2209793A00D99D97 /* TableViewDataSourceWithHeaderFooterTitlesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSourceWithHeaderFooterTitlesTests.swift; sourceTree = "<group>"; };
+		6BCA28EF220979B600D99D97 /* TableViewDataSourceSharedConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSourceSharedConfiguration.swift; sourceTree = "<group>"; };
+		6BCA28F1220981B800D99D97 /* TableViewDataSourceWithHeaderFooterViewsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDataSourceWithHeaderFooterViewsTests.swift; sourceTree = "<group>"; };
+		6BCA28F32209CF4F00D99D97 /* MappedDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MappedDataSourceTests.swift; sourceTree = "<group>"; };
+		6BE5AD6A22144B2400066998 /* ItemsExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsExtensions.swift; sourceTree = "<group>"; };
+		6BEC0E412201B9FC00AEDC7E /* DataSourceCellDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceCellDescriptor.swift; sourceTree = "<group>"; };
+		6BF8F6D4220A9024007F6209 /* MutableCompositeDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutableCompositeDataSourceTests.swift; sourceTree = "<group>"; };
+		6BF8F6D8220B2633007F6209 /* CompositeDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompositeDataSourceTests.swift; sourceTree = "<group>"; };
+		6BF8F6DA220B2887007F6209 /* AutoDiffDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoDiffDataSourceTests.swift; sourceTree = "<group>"; };
+		6BF8F6DC220B28A6007F6209 /* AutoDiffSectionsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoDiffSectionsDataSourceTests.swift; sourceTree = "<group>"; };
+		6BF8F6DF220B28F0007F6209 /* CollectionViewDataSourceSharedConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewDataSourceSharedConfiguration.swift; sourceTree = "<group>"; };
+		6BF8F6E1220B2904007F6209 /* CollectionViewDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewDataSourceTests.swift; sourceTree = "<group>"; };
 		FC9E4A5D1DA83C7C00258CCF /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveSwift.framework; path = "../../Library/Developer/Xcode/DerivedData/DataSource-bxcnryyouvctozbdlqspowjdewgq/Build/Products/Debug-appletvsimulator/ReactiveSwift.framework"; sourceTree = "<group>"; };
 		FC9E4A5E1DA83C7C00258CCF /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "../../Library/Developer/Xcode/DerivedData/DataSource-bxcnryyouvctozbdlqspowjdewgq/Build/Products/Debug-appletvsimulator/Result.framework"; sourceTree = "<group>"; };
 		FCBEE8DC1DA8F41C00F59863 /* DataSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -178,7 +200,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				0286CF9F1BE26FB900F76C86 /* ReactiveSwift.framework in Frameworks */,
-				0286CFA11BE26FC000F76C86 /* Result.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6B76E6552202E12D00D2B33E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6B76E65E2202E36E00D2B33E /* DataSource.framework in Frameworks */,
+				6B76E6572202E36E00D2B33E /* Nimble.framework in Frameworks */,
+				6B76E6592202E36E00D2B33E /* Quick.framework in Frameworks */,
+				6B76E65B2202E36E00D2B33E /* ReactiveSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,7 +219,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FCBEE90B1DA8F4D400F59863 /* ReactiveSwift.framework in Frameworks */,
-				FCBEE90C1DA8F4D400F59863 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,6 +254,7 @@
 				022B0FBC1B2F2D4C00DD4DCD /* DataChangeTypes */,
 				022B0F9E1B2F2AE500DD4DCD /* DataSource.h */,
 				022B0FC71B2F2D4C00DD4DCD /* DataSource.swift */,
+				6BEC0E412201B9FC00AEDC7E /* DataSourceCellDescriptor.swift */,
 				021FAD441BB2D77C001300A0 /* DataSourceItemReceiver.swift */,
 				022B0FC81B2F2D4C00DD4DCD /* DataSourceTypes */,
 				022B0FD41B2F2D4C00DD4DCD /* IndexPathExtensions.swift */,
@@ -243,7 +275,11 @@
 		022B0FA81B2F2AE500DD4DCD /* DataSourceTests */ = {
 			isa = PBXGroup;
 			children = (
-				022B0FAB1B2F2AE500DD4DCD /* DataSourceTests.swift */,
+				6BE5AD692214481600066998 /* Helpers */,
+				6BE5AD68221447FB00066998 /* Model */,
+				6BF8F6DE220B28B2007F6209 /* CollectionView */,
+				6B31D3FE2203372F001AFF01 /* TableView */,
+				6BD3F08A22031871002EA2D0 /* DataSourceTypes */,
 				022B0FA91B2F2AE500DD4DCD /* Supporting Files */,
 			);
 			path = DataSourceTests;
@@ -321,12 +357,73 @@
 		022B10351B2F341200DD4DCD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6B76E6562202E36E00D2B33E /* Nimble.framework */,
+				6B76E6582202E36E00D2B33E /* Quick.framework */,
+				6B76E65A2202E36E00D2B33E /* ReactiveSwift.framework */,
+				6B76E65C2202E36E00D2B33E /* Result.framework */,
 				FC9E4A5D1DA83C7C00258CCF /* ReactiveSwift.framework */,
 				FC9E4A5E1DA83C7C00258CCF /* Result.framework */,
 				0286CFA01BE26FC000F76C86 /* Result.framework */,
 				0286CF9E1BE26FB900F76C86 /* ReactiveSwift.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6B31D3FE2203372F001AFF01 /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				6BCA28EF220979B600D99D97 /* TableViewDataSourceSharedConfiguration.swift */,
+				6BCA28EB2209662C00D99D97 /* TableViewDataSourceTests.swift */,
+				6BCA28ED2209793A00D99D97 /* TableViewDataSourceWithHeaderFooterTitlesTests.swift */,
+				6BCA28F1220981B800D99D97 /* TableViewDataSourceWithHeaderFooterViewsTests.swift */,
+			);
+			name = TableView;
+			sourceTree = "<group>";
+		};
+		6BD3F08A22031871002EA2D0 /* DataSourceTypes */ = {
+			isa = PBXGroup;
+			children = (
+				6B020B0C2208609B00DBAE00 /* QuickSpecWithDataSets.swift */,
+				6B020B062208382000DBAE00 /* DataSourceSharedConfiguration.swift */,
+				6B020B0A2208479400DBAE00 /* EmptyDataSourceTests.swift */,
+				6B020B08220842B500DBAE00 /* StaticDataSourceTests.swift */,
+				6B020B10220864FC00DBAE00 /* ProxyDataSourceTests.swift */,
+				6BCA28E92208798600D99D97 /* MutableDataSourceTests.swift */,
+				6BCA28F32209CF4F00D99D97 /* MappedDataSourceTests.swift */,
+				6BF8F6D4220A9024007F6209 /* MutableCompositeDataSourceTests.swift */,
+				6BF8F6D8220B2633007F6209 /* CompositeDataSourceTests.swift */,
+				6BF8F6DA220B2887007F6209 /* AutoDiffDataSourceTests.swift */,
+				6BF8F6DC220B28A6007F6209 /* AutoDiffSectionsDataSourceTests.swift */,
+				6B7E4ADF22115E3700EC9031 /* FetchedResultsDataSourceTests.swift */,
+			);
+			name = DataSourceTypes;
+			sourceTree = "<group>";
+		};
+		6BE5AD68221447FB00066998 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6B020AFC22045C6000DBAE00 /* TestCells.swift */,
+				6B4082C422147FDA00A4CA90 /* Items.xcdatamodeld */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		6BE5AD692214481600066998 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				6B8941972213205500294F7D /* CoreDataManager.swift */,
+				6BE5AD6A22144B2400066998 /* ItemsExtensions.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		6BF8F6DE220B28B2007F6209 /* CollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				6BF8F6DF220B28F0007F6209 /* CollectionViewDataSourceSharedConfiguration.swift */,
+				6BF8F6E1220B2904007F6209 /* CollectionViewDataSourceTests.swift */,
+			);
+			name = CollectionView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -375,12 +472,11 @@
 			buildPhases = (
 				022B0FA01B2F2AE500DD4DCD /* Sources */,
 				022B0FA21B2F2AE500DD4DCD /* Resources */,
-				021FAD3E1BB1C24C001300A0 /* CopyFiles */,
+				6B76E6552202E12D00D2B33E /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				022B0FA71B2F2AE500DD4DCD /* PBXTargetDependency */,
 			);
 			name = DataSourceTests;
 			productName = DataSourceTests;
@@ -511,6 +607,7 @@
 				028602ED1B7E076300474D04 /* AutoDiff.swift in Sources */,
 				022B0FE01B2F2D4C00DD4DCD /* DataChange.swift in Sources */,
 				022B0FE21B2F2D4C00DD4DCD /* DataChangeBatch.swift in Sources */,
+				6BEC0E422201B9FC00AEDC7E /* DataSourceCellDescriptor.swift in Sources */,
 				022B0FF81B2F2D4C00DD4DCD /* IndexPathExtensions.swift in Sources */,
 				022B0FEA1B2F2D4C00DD4DCD /* DataChangeReloadItems.swift in Sources */,
 				022B0FF31B2F2D4C00DD4DCD /* MutableCompositeDataSource.swift in Sources */,
@@ -524,7 +621,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				022B0FAC1B2F2AE500DD4DCD /* DataSourceTests.swift in Sources */,
+				6B4082C622147FDA00A4CA90 /* Items.xcdatamodeld in Sources */,
+				6B020B09220842B500DBAE00 /* StaticDataSourceTests.swift in Sources */,
+				6BCA28EE2209793A00D99D97 /* TableViewDataSourceWithHeaderFooterTitlesTests.swift in Sources */,
+				6BF8F6E2220B2904007F6209 /* CollectionViewDataSourceTests.swift in Sources */,
+				6BCA28F42209CF4F00D99D97 /* MappedDataSourceTests.swift in Sources */,
+				6B020AFD22045C6000DBAE00 /* TestCells.swift in Sources */,
+				6BCA28EC2209662C00D99D97 /* TableViewDataSourceTests.swift in Sources */,
+				6BF8F6D5220A9024007F6209 /* MutableCompositeDataSourceTests.swift in Sources */,
+				6BCA28F0220979B600D99D97 /* TableViewDataSourceSharedConfiguration.swift in Sources */,
+				6BCA28EA2208798600D99D97 /* MutableDataSourceTests.swift in Sources */,
+				6B7E4AE022115E3700EC9031 /* FetchedResultsDataSourceTests.swift in Sources */,
+				6BE5AD6B22144B2400066998 /* ItemsExtensions.swift in Sources */,
+				6B8941982213205500294F7D /* CoreDataManager.swift in Sources */,
+				6BF8F6DB220B2887007F6209 /* AutoDiffDataSourceTests.swift in Sources */,
+				6BF8F6DD220B28A6007F6209 /* AutoDiffSectionsDataSourceTests.swift in Sources */,
+				6B020B0D2208609B00DBAE00 /* QuickSpecWithDataSets.swift in Sources */,
+				6BF8F6D9220B2633007F6209 /* CompositeDataSourceTests.swift in Sources */,
+				6B020B0B2208479400DBAE00 /* EmptyDataSourceTests.swift in Sources */,
+				6BF8F6E0220B28F0007F6209 /* CollectionViewDataSourceSharedConfiguration.swift in Sources */,
+				6BCA28F2220981B800D99D97 /* TableViewDataSourceWithHeaderFooterViewsTests.swift in Sources */,
+				6B020B072208382000DBAE00 /* DataSourceSharedConfiguration.swift in Sources */,
+				6B020B11220864FC00DBAE00 /* ProxyDataSourceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -575,14 +693,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		022B0FA71B2F2AE500DD4DCD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 022B0F981B2F2AE500DD4DCD /* DataSource-iOS */;
-			targetProxy = 022B0FA61B2F2AE500DD4DCD /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin XCBuildConfiguration section */
 		022B0FAD1B2F2AE500DD4DCD /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -632,13 +742,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -686,12 +796,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -715,6 +825,7 @@
 				);
 				INFOPLIST_FILE = DataSource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fueled.$(PRODUCT_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
@@ -738,6 +849,7 @@
 				);
 				INFOPLIST_FILE = DataSource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fueled.$(PRODUCT_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
@@ -749,6 +861,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
@@ -769,6 +882,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
@@ -803,7 +917,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Debug;
 		};
@@ -827,7 +941,7 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.0;
+				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Release;
 		};
@@ -871,6 +985,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		6B4082C422147FDA00A4CA90 /* Items.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6B4082C522147FDA00A4CA90 /* Items.xcdatamodel */,
+			);
+			currentVersion = 6B4082C522147FDA00A4CA90 /* Items.xcdatamodel */;
+			path = Items.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 022B0F901B2F2AE500DD4DCD /* Project object */;
 }

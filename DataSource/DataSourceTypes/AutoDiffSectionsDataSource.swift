@@ -8,7 +8,6 @@
 
 import Foundation
 import ReactiveSwift
-import Result
 
 /// `DataSource` implementation that has an arbitrary
 /// number of sections of items of type T.
@@ -31,8 +30,8 @@ import Result
 /// sections' `supplementaryItems` dictionary under some user-defined key.
 public final class AutoDiffSectionsDataSource<T>: DataSource {
 
-	public let changes: Signal<DataChange, NoError>
-	fileprivate let observer: Signal<DataChange, NoError>.Observer
+	public let changes: Signal<DataChange, Never>
+	fileprivate let observer: Signal<DataChange, Never>.Observer
 	fileprivate let disposable: Disposable
 
 	/// Mutable array of dataSourceSections.
@@ -61,17 +60,17 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 	///     Section moves are never generated.
 	///   - compareSections: Function that is used to compare a pair of sections for identity.
 	///   - compareItems: Function that is used to compare a pair of items for equality.
-	public init(sections: [DataSourceSection<T>] = [],
+	public init(
+		sections: [DataSourceSection<T>] = [],
 		findItemMoves: Bool = true,
 		compareSections: @escaping (DataSourceSection<T>, DataSourceSection<T>) -> Bool,
 		compareItems: @escaping (T, T) -> Bool)
 	{
-		(self.changes, self.observer) = Signal<DataChange, NoError>.pipe()
+		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
 		self.sections = MutableProperty(sections)
 		self.compareSections = compareSections
 		self.compareItems = compareItems
-		func autoDiff(_ oldSections: [DataSourceSection<T>],
-			newSections: [DataSourceSection<T>]) -> DataChange
+		func autoDiff(_ oldSections: [DataSourceSection<T>], newSections: [DataSourceSection<T>]) -> DataChange
 		{
 			let sectionsResult = AutoDiff.compare(
 				old: oldSections,

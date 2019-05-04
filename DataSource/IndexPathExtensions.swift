@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension IndexPath {
+extension IndexPath {
 
     func ds_setSection(_ section: Int) -> IndexPath {
 		return IndexPath(item: self.item, section: section)
@@ -20,14 +20,14 @@ public extension IndexPath {
 
 }
 
-public extension IndexSet {
+extension IndexSet {
 
-    init<S: Sequence>(ds_integers: S) where S.Iterator.Element == Int {
+	public init<S: Sequence>(dsIntegers: S) where S.Iterator.Element == Int {
 		var res = IndexSet()
-		for i in ds_integers {
+		for i in dsIntegers {
 			res.insert(i)
 		}
 		self.init(res)
 	}
-	
+
 }
