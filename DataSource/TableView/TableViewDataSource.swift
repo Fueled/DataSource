@@ -37,12 +37,12 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 
 	public final var dataChangeTarget: DataChangeTarget?
 
-	fileprivate let disposable = CompositeDisposable()
+	private let disposable = CompositeDisposable()
 
 	override public init() {
 		super.init()
 		self.disposable += self.dataSource.changes.observeValues { [weak self] change in
-			if let this = self, let dataChangeTarget = this.dataChangeTarget ?? this.tableView {
+			if let self = self, let dataChangeTarget = self.dataChangeTarget ?? self.tableView {
 				change.apply(to: dataChangeTarget)
 			}
 		}

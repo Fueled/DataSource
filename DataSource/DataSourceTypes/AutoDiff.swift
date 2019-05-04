@@ -7,6 +7,7 @@
 //
 
 import Foundation
+
 // swiftlint:disable convenience_type
 public struct AutoDiff {
 
@@ -25,9 +26,8 @@ public struct AutoDiff {
 			if !inserted.isEmpty {
 				changes.append(DataChangeInsertSections(inserted))
 			}
-			// swiftlint:disable identifier_name
-			for (from, to) in moved {
-				changes.append(DataChangeMoveSection(from: from, to: to))
+			for (fromSection, toSection) in moved {
+				changes.append(DataChangeMoveSection(from: fromSection, to: toSection))
 			}
 			return changes
 		}
@@ -46,10 +46,9 @@ public struct AutoDiff {
 				}
 				changes.append(DataChangeInsertItems(indexPaths))
 			}
-			// swiftlint:disable identifier_name
-			for (from, to) in moved {
-				let fromPath = IndexPath(item: from, section: oldSection)
-				let toPath = IndexPath(item: to, section: newSection)
+			for (fromItem, toItem) in moved {
+				let fromPath = IndexPath(item: fromItem, section: oldSection)
+				let toPath = IndexPath(item: toItem, section: newSection)
 				changes.append(DataChangeMoveItem(from: fromPath, to: toPath))
 			}
 			return changes
@@ -136,7 +135,7 @@ public struct AutoDiff {
 		return result
 	}
 
-	fileprivate enum LCSMove {
+	private enum LCSMove {
 		case unknown
 		case fromPrevOld
 		case fromPrevNew

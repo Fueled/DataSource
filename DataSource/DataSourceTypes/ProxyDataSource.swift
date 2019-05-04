@@ -21,9 +21,9 @@ import ReactiveSwift
 public final class ProxyDataSource: DataSource {
 
 	public let changes: Signal<DataChange, Never>
-	fileprivate let observer: Signal<DataChange, Never>.Observer
-	fileprivate let disposable = CompositeDisposable()
-	fileprivate var lastDisposable: Disposable?
+	private let observer: Signal<DataChange, Never>.Observer
+	private let disposable = CompositeDisposable()
+	private var lastDisposable: Disposable?
 
 	public let innerDataSource: MutableProperty<DataSource>
 
@@ -44,10 +44,10 @@ public final class ProxyDataSource: DataSource {
 			.combinePrevious(inner)
 			.skip(first: 1)
 			.startWithValues { [weak self] old, new in
-				if let this = self {
-					this.lastDisposable?.dispose()
-					this.observer.send(value: changeDataSources(old, new, this.animatesChanges.value))
-					this.lastDisposable = new.changes.observe(this.observer)
+				if let self = self {
+					self.lastDisposable?.dispose()
+					self.observer.send(value: changeDataSources(old, new, self.animatesChanges.value))
+					self.lastDisposable = new.changes.observe(self.observer)
 				}
 			}
 	}

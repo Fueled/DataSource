@@ -1,7 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'Fueled-DataSource'
   s.version = '1.0.1'
-  s.version = '0.6'
   s.summary = 'A Swift framework that helps to deal with sectioned collections of collection items in an MVVM fashion.'
   s.homepage = 'https://github.com/Vadim-Yelagin/DataSource'
   s.license = { :type => 'MIT', :file => 'LICENSE' }

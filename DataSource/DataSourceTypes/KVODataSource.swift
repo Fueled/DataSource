@@ -18,7 +18,7 @@ import ReactiveSwift
 public final class  KVODataSource: NSObject, DataSource {
 
 	public let changes: Signal<DataChange, Never>
-	fileprivate let observer: Signal<DataChange, Never>.Observer
+	private let observer: Signal<DataChange, Never>.Observer
 
 	public let target: NSObject
 	public let keyPath: String
@@ -56,9 +56,10 @@ public final class  KVODataSource: NSObject, DataSource {
 		return (self, indexPath)
 	}
 
-	fileprivate var items: NSArray {
+	private var items: NSArray {
 		return self.target.value(forKeyPath: self.keyPath) as! NSArray
 	}
+	
 	// swiftlint:disable block_based_kvo
 	override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
 		if let target = object as? NSObject,
@@ -71,7 +72,7 @@ public final class  KVODataSource: NSObject, DataSource {
 		}
 	}
 
-	fileprivate func observeChangeOfType(_ type: NSKeyValueChange, atIndices indices: IndexSet) {
+	private func observeChangeOfType(_ type: NSKeyValueChange, atIndices indices: IndexSet) {
 		var indexPaths: [IndexPath] = []
 		for index in indices {
 			indexPaths.append(IndexPath(item: index, section: 0))
@@ -87,8 +88,8 @@ public final class  KVODataSource: NSObject, DataSource {
 			self.observer.send(value: DataChangeReloadSections([0]))
 		@unknown default:
 			NSLog("Unhandled case for NSKeyValueChange: \(type). DataSource should be updated to account for it or it could lead to unexpected results.")
-            assertionFailure("Unknown change in KVODataSource")
-        }
+			assertionFailure()
+		}
 	}
 
 }

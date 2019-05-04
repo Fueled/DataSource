@@ -19,20 +19,20 @@ import ReactiveSwift
 public final class MappedDataSource: DataSource {
 
 	public let changes: Signal<DataChange, Never>
-	fileprivate let observer: Signal<DataChange, Never>.Observer
-	fileprivate let disposable: Disposable?
+	private let observer: Signal<DataChange, Never>.Observer
+	private let disposable: Disposable?
 
 	public let innerDataSource: DataSource
 
 	/// Function that is applied to items of the inner dataSource
 	/// before they are returned as items of the mappedDataSource.
-	fileprivate let transform: (Any) -> Any
+	private let transform: (Any) -> Any
 
 	/// Function that is applied to supplementary items of the inner dataSource
 	/// before they are returned as supplementary items of the mappedDataSource.
 	///
 	/// The first parameter is the kind of the supplementary item.
-	fileprivate let supplementaryTransform: (String, Any?) -> Any?
+	private let supplementaryTransform: (String, Any?) -> Any?
 
 	public init(_ inner: DataSource, supplementaryTransform: @escaping ((String, Any?) -> Any?) = { $1 }, transform: @escaping (Any) -> Any) {
 		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()

@@ -22,8 +22,8 @@ import ReactiveSwift
 public final class CompositeDataSource: DataSource {
 
 	public let changes: Signal<DataChange, Never>
-	fileprivate let observer: Signal<DataChange, Never>.Observer
-	fileprivate let disposable = CompositeDisposable()
+	private let observer: Signal<DataChange, Never>.Observer
+	private let disposable = CompositeDisposable()
 
 	public let innerDataSources: [DataSource]
 
@@ -32,10 +32,10 @@ public final class CompositeDataSource: DataSource {
 		self.innerDataSources = inner
 		for (index, dataSource) in inner.enumerated() {
 			self.disposable += dataSource.changes.observeValues { [weak self] change in
-				if let this = self {
-					let map = mapOutside(this.innerDataSources, index)
+				if let self = self {
+					let map = mapOutside(self.innerDataSources, index)
 					let mapped = change.mapSections(map)
-					this.observer.send(value: mapped)
+					self.observer.send(value: mapped)
 				}
 			}
 		}

@@ -20,10 +20,10 @@ import ReactiveSwift
 public final class MutableCompositeDataSource: DataSource {
 
 	public let changes: Signal<DataChange, Never>
-	fileprivate let observer: Signal<DataChange, Never>.Observer
-	fileprivate let disposable = CompositeDisposable()
+	private let observer: Signal<DataChange, Never>.Observer
+	private let disposable = CompositeDisposable()
 
-	fileprivate let _innerDataSources: MutableProperty<[DataSource]>
+	private let _innerDataSources: MutableProperty<[DataSource]>
 
 	public var innerDataSources: Property<[DataSource]> {
 		return Property(_innerDataSources)
@@ -141,13 +141,13 @@ public final class MutableCompositeDataSource: DataSource {
 		}
 	}
 
-	fileprivate func sections(of dataSource: DataSource, at index: Int) -> [Int] {
+	private func sections(of dataSource: DataSource, at index: Int) -> [Int] {
 		let location = mapOutside(self._innerDataSources.value, index)(0)
 		let length = dataSource.numberOfSections
 		return Array(location ..< location + length)
 	}
 
-	fileprivate func sectionsOfDataSource(at index: Int) -> [Int] {
+	private func sectionsOfDataSource(at index: Int) -> [Int] {
 		let dataSource = self._innerDataSources.value[index]
 		return self.sections(of: dataSource, at: index)
 	}

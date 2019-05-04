@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 
 /// A value representing a modification of a dataSource contents.
 /// - seealso: DataSource

@@ -17,9 +17,9 @@ import ReactiveSwift
 public final class MutableDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, Never>
-	fileprivate let observer: Signal<DataChange, Never>.Observer
+	private let observer: Signal<DataChange, Never>.Observer
 
-	fileprivate let _items: MutableProperty<[T]>
+	private let _items: MutableProperty<[T]>
 
 	public var items: Property<[T]> {
 		return Property(_items)

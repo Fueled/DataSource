@@ -15,7 +15,7 @@ import ReactiveSwift
 public final class EmptyDataSource: DataSource {
 
 	public let changes: Signal<DataChange, Never>
-	fileprivate let observer: Signal<DataChange, Never>.Observer
+	private let observer: Signal<DataChange, Never>.Observer
 
 	public init() {
 		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()

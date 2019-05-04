@@ -12,10 +12,10 @@ public struct DataChangeMoveItem: DataChange {
 
 	public let fromIndexPath: IndexPath
 	public let toIndexPath: IndexPath
-	// swiftlint:disable identifier_name
-	public init(from: IndexPath, to: IndexPath) {
-		self.fromIndexPath = from
-		self.toIndexPath = to
+
+	public init(from fromIndexPath: IndexPath, to toIndexPath: IndexPath) {
+		self.fromIndexPath = fromIndexPath
+		self.toIndexPath = toIndexPath
 	}
 
 	public func apply(to target: DataChangeTarget) {

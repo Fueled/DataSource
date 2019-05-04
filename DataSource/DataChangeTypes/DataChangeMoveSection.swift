@@ -12,10 +12,10 @@ public struct DataChangeMoveSection: DataChange {
 
 	public let fromSection: Int
 	public let toSection: Int
-	// swiftlint:disable identifier_name
-	public init(from: Int, to: Int) {
-		self.fromSection = from
-		self.toSection = to
+
+	public init(from fromSection: Int, to toSection: Int) {
+		self.fromSection = fromSection
+		self.toSection = toSection
 	}
 
 	public func apply(to target: DataChangeTarget) {

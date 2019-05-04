@@ -44,12 +44,12 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
 	public final var dataChangeTarget: DataChangeTarget?
 
-	fileprivate let disposable = CompositeDisposable()
+	private let disposable = CompositeDisposable()
 
 	override public init() {
 		super.init()
 		self.disposable += self.dataSource.changes.observeValues { [weak self] change in
-			if let this = self, let dataChangeTarget = this.dataChangeTarget ?? this.collectionView {
+			if let self = self, let dataChangeTarget = self.dataChangeTarget ?? self.collectionView {
 				change.apply(to: dataChangeTarget)
 			}
 		}

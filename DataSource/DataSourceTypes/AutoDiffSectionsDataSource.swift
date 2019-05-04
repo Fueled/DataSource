@@ -31,8 +31,8 @@ import ReactiveSwift
 public final class AutoDiffSectionsDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, Never>
-	fileprivate let observer: Signal<DataChange, Never>.Observer
-	fileprivate let disposable: Disposable
+	private let observer: Signal<DataChange, Never>.Observer
+	private let disposable: Disposable
 
 	/// Mutable array of dataSourceSections.
 	///

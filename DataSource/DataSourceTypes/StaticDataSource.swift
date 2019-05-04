@@ -18,7 +18,7 @@ import ReactiveSwift
 public final class StaticDataSource<T>: DataSource {
 
 	public let changes: Signal<DataChange, Never>
-	fileprivate let observer: Signal<DataChange, Never>.Observer
+	private let observer: Signal<DataChange, Never>.Observer
 
 	public let sections: [DataSourceSection<T>]
 

@@ -20,11 +20,11 @@ import UIKit
 public final class FetchedResultsDataSource: DataSource {
 
 	public let changes: Signal<DataChange, Never>
-	fileprivate let observer: Signal<DataChange, Never>.Observer
+	private let observer: Signal<DataChange, Never>.Observer
 
-	fileprivate let frc: NSFetchedResultsController<NSFetchRequestResult>
+	private let frc: NSFetchedResultsController<NSFetchRequestResult>
 	// swiftlint:disable weak_delegate
-	fileprivate let frcDelegate: Delegate
+	private let frcDelegate: Delegate
 
 	public init(fetchRequest: NSFetchRequest<NSFetchRequestResult>, managedObjectContext: NSManagedObjectContext, sectionNameKeyPath: String? = nil, cacheName: String? = nil) throws {
 		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
@@ -40,7 +40,7 @@ public final class FetchedResultsDataSource: DataSource {
 		self.observer.sendCompleted()
 	}
 
-	fileprivate func infoForSection(_ section: Int) -> NSFetchedResultsSectionInfo {
+	private func infoForSection(_ section: Int) -> NSFetchedResultsSectionInfo {
 		return self.frc.sections![section]
 	}
 
@@ -70,7 +70,7 @@ public final class FetchedResultsDataSource: DataSource {
 		return (self, indexPath)
 	}
 
-	@objc fileprivate final class Delegate: NSObject, NSFetchedResultsControllerDelegate {
+	@objc private final class Delegate: NSObject, NSFetchedResultsControllerDelegate {
 
 		let observer: Signal<DataChange, Never>.Observer
 		var currentBatch: [DataChange] = []
@@ -122,8 +122,8 @@ public final class FetchedResultsDataSource: DataSource {
 				self.currentBatch.append(DataChangeReloadItems(indexPath!))
 			@unknown default:
 				NSLog("Unhandled case for NSFetchedResultsChangeType: \(type). DataSource should be updated to account for it or it could lead to unexpected results.")
-                assertionFailure("Unknown change in FetchedResultsDataSource")
-            }
+				assertionFailure()
+			}
 		}
 
 	}
