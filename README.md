@@ -14,11 +14,11 @@ A data source for a `UITableView` or a `UICollectionView` can be constructed by 
 ## Installation
 
 The recommended way to add DataSource to your project is with [Carthage](https://github.com/Carthage/Carthage/releases/).
-Add `github "Vadim-Yelagin/DataSource"` line to your Cartfile and proceed with your favorite way to update and integrate your Carthage dependencies.
+Add `github "Fueled/DataSource"` line to your Cartfile and proceed with your favorite way to update and integrate your Carthage dependencies.
 
 ## Example Project
 
-You will find examples of using DataSource framework in [DataSourceExample](https://github.com/Vadim-Yelagin/DataSourceExample) project.
+You will find examples of using DataSource framework in [DataSourceExample](https://github.com/Fueled/DataSourceExample) project.
 
 ## Rationale
 
