@@ -10,5 +10,5 @@ Pod::Spec.new do |s|
   s.swift_version = '5'
   s.source = { :git => 'https://github.com/Fueled/DataSource.git', :tag => s.version }
   s.source_files = 'DataSource/**/*.swift'
-  s.dependency 'ReactiveSwift', '~> 6.0'
+  s.dependency 'ReactiveSwift', '~> 6.1'
 end
