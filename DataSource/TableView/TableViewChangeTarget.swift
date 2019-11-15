@@ -12,9 +12,13 @@ import UIKit
 extension UITableView: DataChangeTarget {
 
 	public func ds_performBatchChanges(_ batchChanges: @escaping () -> Void) {
-		self.beginUpdates()
-		batchChanges()
-		self.endUpdates()
+		if #available(iOSApplicationExtension 11.0, *) {
+			self.performBatchUpdates(batchChanges)
+		} else {
+			self.beginUpdates()
+			batchChanges()
+			self.endUpdates()
+		}
 	}
 
 	public func ds_deleteItems(at indexPaths: [IndexPath]) {
