@@ -12,7 +12,7 @@ import UIKit
 extension UITableView: DataChangeTarget {
 
 	public func ds_performBatchChanges(_ batchChanges: @escaping () -> Void) {
-		if #available(iOSApplicationExtension 11.0, *) {
+		if #available(iOS 11.0, *) {
 			self.performBatchUpdates(batchChanges)
 		} else {
 			self.beginUpdates()
