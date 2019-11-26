@@ -106,6 +106,9 @@ extension TableViewDataSource {
 		}
 		tableView.dataSource = self
 		self.tableView = tableView
+		if #available(iOS 11.0, *) {
+			tableView.performBatchUpdates(nil)
+		}
 	}
 }
 
@@ -156,6 +159,9 @@ extension TableViewDataSourceWithHeaderFooterViews {
 
 		tableView.dataSource = self
 		self.tableView = tableView
+		if #available(iOS 11.0, *) {
+			tableView.performBatchUpdates(nil)
+		}
 	}
 }
 
