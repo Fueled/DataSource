@@ -14,6 +14,18 @@ final class TestTableViewCell: TableViewCell, ReusableItem  { }
 
 final class TestCollectionViewCell: CollectionViewCell, ReusableItem { }
 
-struct TestHeaderFooterViewModel { }
+struct TestHeaderFirstViewModel { }
 
-final class TestHeaderFooterView: TableViewHeaderFooterView, ReusableItem { }
+final class TestHeaderFirstView: TableViewHeaderFooterView, ReusableItem { }
+
+struct TestHeaderSecondViewModel { }
+
+final class TestHeaderSecondView: TableViewHeaderFooterView, ReusableItem { }
+
+struct TestFooterFirstViewModel { }
+
+final class TestFooterFirstView: TableViewHeaderFooterView, ReusableItem { }
+
+struct TestFooterSecondViewModel { }
+
+final class TestFooterSecondView: TableViewHeaderFooterView, ReusableItem { }

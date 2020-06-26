@@ -35,12 +35,12 @@ public class CellDescriptor: NSObject {
 public class HeaderFooterDescriptor: NSObject {
 	public let reuseIdentifier: String
 	public let prototypeSource: PrototypeSource
-	public let isMatching: (IndexPath, Any) -> Bool
+	public let isMatching: (Int, Any) -> Bool
 
 	public init(
 		_ reuseIdentifier: String,
 		_ prototypeSource: PrototypeSource,
-		isMatching: @escaping (IndexPath, Any) -> Bool)
+		isMatching: @escaping (Int, Any) -> Bool)
 	{
 		self.reuseIdentifier = reuseIdentifier
 		self.prototypeSource = prototypeSource
@@ -113,7 +113,7 @@ extension TableViewDataSource {
 }
 
 extension TableViewDataSourceWithHeaderFooterViews {
-	@objc open func configure(_ tableView: UITableView, using cellDescriptors: [CellDescriptor], headerDescriptor: HeaderFooterDescriptor?, footerDescriptor: HeaderFooterDescriptor?) {
+	@objc open func configure(_ tableView: UITableView, using cellDescriptors: [CellDescriptor], headerDescriptors: [HeaderFooterDescriptor], footerDescriptors: [HeaderFooterDescriptor]) {
 		self.reuseIdentifierForItem = { indexPath, item in
 			guard let reuseIdentifier = cellDescriptors.first(where: { $0.isMatching(indexPath, item) })?.reuseIdentifier else {
 				fatalError("Unable to determine reuse identifier")
@@ -130,10 +130,14 @@ extension TableViewDataSourceWithHeaderFooterViews {
 				tableView.register(type, forCellReuseIdentifier: descriptor.reuseIdentifier)
 			}
 		}
-		if let headerDescriptor = headerDescriptor {
-			self.reuseIdentifierForHeaderItem = { index, item in
-				return headerDescriptor.reuseIdentifier
+		self.reuseIdentifierForHeaderItem = { section, item in
+			guard let reuseIdentifier = headerDescriptors.first(where: { $0.isMatching(section, item) })?.reuseIdentifier else {
+				fatalError("Unable to determine reuse identifier")
 			}
+			return reuseIdentifier
+		}
+
+		for headerDescriptor in headerDescriptors {
 			switch headerDescriptor.prototypeSource {
 			case .storyboard:
 				break
@@ -143,10 +147,15 @@ extension TableViewDataSourceWithHeaderFooterViews {
 				tableView.register(type, forHeaderFooterViewReuseIdentifier: headerDescriptor.reuseIdentifier)
 			}
 		}
-		if let footerDescriptor = footerDescriptor {
-			self.reuseIdentifierForFooterItem = { index, item in
-				return footerDescriptor.reuseIdentifier
+
+		self.reuseIdentifierForFooterItem = { section, item in
+			guard let reuseIdentifier = footerDescriptors.first(where: { $0.isMatching(section, item) })?.reuseIdentifier else {
+				fatalError("Unable to determine reuse identifier")
 			}
+			return reuseIdentifier
+		}
+
+		for footerDescriptor in footerDescriptors {
 			switch footerDescriptor.prototypeSource {
 			case .storyboard:
 				break

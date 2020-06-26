@@ -15,12 +15,11 @@ class TableViewDataSourceWithHeaderFooterTitlesTests: QuickSpecWithDataSets {
 	override func spec() {
 		var tableViewDataSource: TableViewDataSourceWithHeaderFooterTitles!
 		var tableView: UITableView!
-		var headerTitle: String!
-		var footerTitle: String!
+		let headerTitle = "headerTitle"
+		let footerTitle = "footerTitle"
+		let headerSection = DataSourceSection(items: self.dataSetWithTestCellModels, supplementaryItems: [UICollectionView.elementKindSectionHeader: headerTitle, UICollectionView.elementKindSectionFooter: footerTitle])
 		beforeEach {
-			headerTitle = "headerTitle"
-			footerTitle = "footerTitle"
-			let headerSection = DataSourceSection(items: self.dataSetWithTestCellModels, supplementaryItems: [UICollectionView.elementKindSectionHeader: headerTitle!, UICollectionView.elementKindSectionFooter: footerTitle!])
+
 			let dataSource = Property(value: StaticDataSource(sections: [headerSection]))
 			tableViewDataSource = TableViewDataSourceWithHeaderFooterTitles()
 			tableView = UITableView(frame: CGRect.zero)
@@ -28,7 +27,14 @@ class TableViewDataSourceWithHeaderFooterTitlesTests: QuickSpecWithDataSets {
 			tableViewDataSource.configure(tableView, using: tableViewDescriptors)
 			tableViewDataSource.dataSource.innerDataSource <~ dataSource.producer.map { $0 as DataSource }
 		}
-		itBehavesLike("TableViewDataSource object") { ["tableViewDataSource": tableViewDataSource!, "TestCellModels": [self.dataSetWithTestCellModels], "tableView": tableView!] }
+		itBehavesLike("TableViewDataSource object") {
+			[
+				"tableViewDataSource": tableViewDataSource!,
+				"TestCellModels": [self.dataSetWithTestCellModels],
+				"TestSections": [headerSection],
+				"tableView": tableView!
+			]
+		}
 		it("has correct header") {
 			expect(tableViewDataSource.tableView(tableView, titleForHeaderInSection: 0)) == headerTitle
 		}
