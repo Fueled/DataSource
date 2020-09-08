@@ -16,17 +16,19 @@ class TableViewDataSourceSharedConfiguration: QuickConfiguration {
 			describe("TableView tests") {
 				var tableViewDataSource: TableViewDataSource!
 				var initialData: [[TestCellModel]]!
+				var testSections: [DataSourceSection<TestCellModel>]!
 				var tableView: UITableView!
 				beforeEach {
 					tableViewDataSource = sharedExampleContext()["tableViewDataSource"] as? TableViewDataSource
 					initialData = sharedExampleContext()["TestCellModels"] as? [[TestCellModel]]
+					testSections = sharedExampleContext()["TestSections"] as? [DataSourceSection<TestCellModel>]
 					tableView = sharedExampleContext()["tableView"] as? UITableView
 				}
 				it("configure visible cells") {
 					tableViewDataSource.configureVisibleCells()
 				}
 				it("has correct number of section") {
-					expect(tableViewDataSource.numberOfSections(in: tableView)) == initialData.count
+					expect(tableViewDataSource.numberOfSections(in: tableView)) == testSections.map { $0.count } ?? 1
 				}
 				it("has correct number of items in sections") {
 					for index in initialData.indices {
