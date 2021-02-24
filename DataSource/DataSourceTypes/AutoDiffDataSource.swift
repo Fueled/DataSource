@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
+import Combine
 
 /// `DataSource` implementation that has one section of items of type T.
 ///
@@ -16,16 +16,11 @@ import ReactiveSwift
 /// and produces minimal batch of dataChanges that delete,
 /// insert and move individual items.
 public final class AutoDiffDataSource<T>: DataSource {
-
-	public let changes: Signal<DataChange, Never>
-	private let observer: Signal<DataChange, Never>.Observer
-	private let disposable: Disposable
-
 	/// Mutable array of items in the only section of the autoDiffDataSource.
 	///
 	/// Every modification of the array causes calculation
 	/// and emission of appropriate dataChanges.
-	public let items: MutableProperty<[T]>
+	@Published public var items: [T]
 
 	public let supplementaryItems: [String: Any]
 
@@ -33,6 +28,11 @@ public final class AutoDiffDataSource<T>: DataSource {
 	/// Returns `true` if the items are equal, and no dataChange is required
 	/// to replace the first item with the second.
 	public let compare: (T, T) -> Bool
+
+	public let changes: AnyPublisher<DataChange, Never>
+	private let changesPassthroughSubject = PassthroughSubject<DataChange, Never>()
+
+	private let cancellable: AnyCancellable
 
 	/// Creates an autoDiffDataSource.
 	/// - parameters:
@@ -42,35 +42,33 @@ public final class AutoDiffDataSource<T>: DataSource {
 	///		a pair of deletion and insertion instead of item movement dataChanges.
 	///   - compare: Function that is used to compare a pair of items for equality.
 	public init(
-		_ items: [T] = [],
+		items: [T] = [],
 		supplementaryItems: [String: Any] = [:],
 		findMoves: Bool = true,
 		compare: @escaping (T, T) -> Bool)
 	{
-		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
-		self.items = MutableProperty(items)
+		self.changes = self.changesPassthroughSubject.eraseToAnyPublisher()
+		self.items = items
 		self.supplementaryItems = supplementaryItems
 		self.compare = compare
 		func autoDiff(_ old: [T], new: [T]) -> DataChange {
 			let result = AutoDiff.compare(old: old, new: new, findMoves: findMoves, compare: compare)
 			return DataChangeBatch(result.toItemChanges())
 		}
-		self.disposable = self.items.producer
-			.combinePrevious(items)
-			.skip(first: 1)
+		self.cancellable = self._items.projectedValue
+			.combinePrevious()
 			.map(autoDiff)
-			.start(self.observer)
+			.subscribe(self.changesPassthroughSubject)
 	}
 
 	deinit {
-		self.observer.sendCompleted()
-		self.disposable.dispose()
+		self.changesPassthroughSubject.send(completion: .finished)
 	}
 
 	public let numberOfSections = 1
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		return self.items.value.count
+		return self.items.count
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
@@ -78,11 +76,10 @@ public final class AutoDiffDataSource<T>: DataSource {
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		return self.items.value[indexPath.item]
+		return self.items[indexPath.item]
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
-
 }

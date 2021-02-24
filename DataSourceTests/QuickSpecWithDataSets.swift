@@ -9,7 +9,6 @@
 import Quick
 
 class QuickSpecWithDataSets: QuickSpec {
-
 	let testDataSet = Array(1...7)
 	let testDataSet2 = Array(33...43)
 	let testDataSet3 = Array(50...55)

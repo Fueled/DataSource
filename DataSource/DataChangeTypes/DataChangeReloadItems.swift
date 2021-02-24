@@ -9,7 +9,6 @@
 import Foundation
 
 public struct DataChangeReloadItems: DataChange {
-
 	public let indexPaths: [IndexPath]
 
 	public init(_ indexPaths: [IndexPath]) {
@@ -27,5 +26,4 @@ public struct DataChangeReloadItems: DataChange {
 	public func mapSections(_ transform: (Int) -> Int) -> DataChangeReloadItems {
 		return DataChangeReloadItems(indexPaths.map { $0.ds_mapSection(transform) })
 	}
-
 }

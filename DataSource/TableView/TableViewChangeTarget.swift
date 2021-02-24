@@ -52,5 +52,4 @@ extension UITableView: DataChangeTarget {
 	public func ds_reloadSections(_ sections: [Int]) {
 		self.reloadSections(IndexSet(dsIntegers: sections), with: .fade)
 	}
-
 }

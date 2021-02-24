@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
+import Combine
 import UIKit
 
 /// An object that implements `UICollectionViewDataSource` protocol
@@ -24,8 +24,7 @@ import UIKit
 ///
 /// If a cell or reusableView implements the `DataSourceItemReceiver` protocol
 /// (e.g. by subclassing the `CollectionViewCell` or `CollectionViewReusableView` class),
-/// the item at the indexPath is passed to it via `ds_setItem` method.
-///
+/// the item at the indexPath is passed to it via `ds_setItem` NB/.0///
 /// A collectionViewDataSource observes changes of the associated dataSource
 /// and applies those changes to the associated collectionView.
 open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
@@ -44,19 +43,19 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
 	public final var dataChangeTarget: DataChangeTarget?
 
-	private let disposable = CompositeDisposable()
+	private var cancellable: AnyCancellable?
 
 	override public init() {
 		super.init()
-		self.disposable += self.dataSource.changes.observeValues { [weak self] change in
-			if let self = self, let dataChangeTarget = self.dataChangeTarget ?? self.collectionView {
-				change.apply(to: dataChangeTarget)
+		self.cancellable = self.dataSource.changes.sink { [weak self] change in
+			guard
+				let self = self,
+				let dataChangeTarget = self.dataChangeTarget ?? self.collectionView
+			else {
+				return
 			}
+			change.apply(to: dataChangeTarget)
 		}
-	}
-
-	deinit {
-		self.disposable.dispose()
 	}
 
 	open func configureCell(_ cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -104,5 +103,4 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		self.configureCell(cell, forItemAt: indexPath)
 		return cell
 	}
-
 }

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
+import Combine
 
 /// `DataSource` implementation that has an arbitrary
 /// number of sections of items of type T.
@@ -29,16 +29,11 @@ import ReactiveSwift
 /// userData that is used to identify them. Such data can be stored in
 /// sections' `supplementaryItems` dictionary under some user-defined key.
 public final class AutoDiffSectionsDataSource<T>: DataSource {
-
-	public let changes: Signal<DataChange, Never>
-	private let observer: Signal<DataChange, Never>.Observer
-	private let disposable: Disposable
-
 	/// Mutable array of dataSourceSections.
 	///
 	/// Every modification of the array causes calculation
 	/// and emission of appropriate dataChanges.
-	public let sections: MutableProperty<[DataSourceSection<T>]>
+	@Published public var sections: [DataSourceSection<T>]
 
 	/// Function that is used to compare a pair of sections for identity.
 	/// Returns `true` if the sections are identical, in which case the items
@@ -51,6 +46,10 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 	/// Returns `true` if the items are equal, and no dataChange is required
 	/// to replace the first item with the second.
 	public let compareItems: (T, T) -> Bool
+
+	public let changes: AnyPublisher<DataChange, Never>
+	private let changesPassthroughSubject = PassthroughSubject<DataChange, Never>()
+	private let cancellable: AnyCancellable
 
 	/// Creates an autoDiffSectionsDataSource.
 	/// - parameters:
@@ -66,8 +65,8 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 		compareSections: @escaping (DataSourceSection<T>, DataSourceSection<T>) -> Bool,
 		compareItems: @escaping (T, T) -> Bool)
 	{
-		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
-		self.sections = MutableProperty(sections)
+		self.changes = self.changesPassthroughSubject.eraseToAnyPublisher()
+		self.sections = sections
 		self.compareSections = compareSections
 		self.compareItems = compareItems
 		func autoDiff(_ oldSections: [DataSourceSection<T>], newSections: [DataSourceSection<T>]) -> DataChange
@@ -90,36 +89,33 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 			}
 			return DataChangeBatch(changes)
 		}
-		self.disposable = self.sections.producer
-			.combinePrevious(sections)
-			.skip(first: 1)
+		self.cancellable = self._sections.projectedValue
+			.combinePrevious()
 			.map(autoDiff)
-			.start(self.observer)
+			.subscribe(self.changesPassthroughSubject)
 	}
 
 	deinit {
-		self.observer.sendCompleted()
-		self.disposable.dispose()
+		self.changesPassthroughSubject.send(completion: .finished)
 	}
 
 	public var numberOfSections: Int {
-		return self.sections.value.count
+		return self.sections.count
 	}
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		return self.sections.value[section].items.count
+		return self.sections[section].items.count
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		return self.sections.value[section].supplementaryItems[kind]
+		return self.sections[section].supplementaryItems[kind]
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		return self.sections.value[indexPath.section].items[indexPath.item]
+		return self.sections[indexPath.section].items[indexPath.item]
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
 		return (self, indexPath)
 	}
-
 }

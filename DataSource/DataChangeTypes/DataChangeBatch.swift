@@ -9,7 +9,6 @@
 import Foundation
 
 public struct DataChangeBatch: DataChange {
-
 	public let changes: [DataChange]
 
 	public init(_ changes: [DataChange]) {
@@ -28,5 +27,4 @@ public struct DataChangeBatch: DataChange {
 		let mapped = self.changes.map { $0.mapSections(transform) }
 		return DataChangeBatch(mapped)
 	}
-
 }

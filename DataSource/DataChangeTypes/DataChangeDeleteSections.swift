@@ -9,7 +9,6 @@
 import Foundation
 
 public struct DataChangeDeleteSections: DataChange {
-
 	public let sections: [Int]
 
 	public init(_ sections: [Int]) {
@@ -23,5 +22,4 @@ public struct DataChangeDeleteSections: DataChange {
 	public func mapSections(_ transform: (Int) -> Int) -> DataChangeDeleteSections {
 		return DataChangeDeleteSections(sections.map(transform))
 	}
-
 }

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
+import Combine
 import UIKit
 
 /// An object that implements `UITableViewDataSource` protocol
@@ -37,19 +37,19 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 
 	public final var dataChangeTarget: DataChangeTarget?
 
-	private let disposable = CompositeDisposable()
+	private var cancellable: AnyCancellable?
 
 	override public init() {
 		super.init()
-		self.disposable += self.dataSource.changes.observeValues { [weak self] change in
-			if let self = self, let dataChangeTarget = self.dataChangeTarget ?? self.tableView {
-				change.apply(to: dataChangeTarget)
+		self.cancellable = self.dataSource.changes.sink { [weak self] change in
+			guard
+				let self = self,
+				let dataChangeTarget = self.dataChangeTarget ?? self.tableView
+			else {
+				return
 			}
+			change.apply(to: dataChangeTarget)
 		}
-	}
-
-	deinit {
-		self.disposable.dispose()
 	}
 
 	open func configureCell(_ cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -86,5 +86,4 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 		self.configureCell(cell, forRowAt: indexPath)
 		return cell
 	}
-
 }

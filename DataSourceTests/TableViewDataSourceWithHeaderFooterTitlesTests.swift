@@ -9,37 +9,44 @@
 import DataSource
 import Nimble
 import Quick
-import ReactiveSwift
+import Combine
 
 class TableViewDataSourceWithHeaderFooterTitlesTests: QuickSpecWithDataSets {
+	var tableViewDataSource: TableViewDataSourceWithHeaderFooterTitles!
+	var cancellable: AnyCancellable?
+
 	override func spec() {
-		var tableViewDataSource: TableViewDataSourceWithHeaderFooterTitles!
 		var tableView: UITableView!
 		let headerTitle = "headerTitle"
 		let footerTitle = "footerTitle"
 		let headerSection = DataSourceSection(items: self.dataSetWithTestCellModels, supplementaryItems: [UICollectionView.elementKindSectionHeader: headerTitle, UICollectionView.elementKindSectionFooter: footerTitle])
 		beforeEach {
-
-			let dataSource = Property(value: StaticDataSource(sections: [headerSection]))
-			tableViewDataSource = TableViewDataSourceWithHeaderFooterTitles()
-			tableView = UITableView(frame: CGRect.zero)
+			let dataSource = CurrentValueSubject<StaticDataSource, Never>(
+				StaticDataSource(
+					sections: [headerSection]
+				)
+			)
+			self.tableViewDataSource = TableViewDataSourceWithHeaderFooterTitles()
+			tableView = UITableView(frame: .zero)
 			let tableViewDescriptors = [CellDescriptor(TestTableViewCell.reuseIdentifier, TestCellModel.self, .class(TestTableViewCell.self))]
-			tableViewDataSource.configure(tableView, using: tableViewDescriptors)
-			tableViewDataSource.dataSource.innerDataSource <~ dataSource.producer.map { $0 as DataSource }
+			self.tableViewDataSource.configure(tableView, using: tableViewDescriptors)
+			self.cancellable = dataSource
+				.map { $0 as DataSource }
+				.assign(to: \.dataSource.innerDataSource, on: self.tableViewDataSource)
 		}
 		itBehavesLike("TableViewDataSource object") {
 			[
-				"tableViewDataSource": tableViewDataSource!,
+				"tableViewDataSource": self.tableViewDataSource!,
 				"TestCellModels": [self.dataSetWithTestCellModels],
 				"TestSections": [headerSection],
 				"tableView": tableView!
 			]
 		}
 		it("has correct header") {
-			expect(tableViewDataSource.tableView(tableView, titleForHeaderInSection: 0)) == headerTitle
+			expect(self.tableViewDataSource.tableView(tableView, titleForHeaderInSection: 0)) == headerTitle
 		}
 		it("has correct footer") {
-			expect(tableViewDataSource.tableView(tableView, titleForFooterInSection: 0)) == footerTitle
+			expect(self.tableViewDataSource.tableView(tableView, titleForFooterInSection: 0)) == footerTitle
 		}
 	}
 }

@@ -9,20 +9,34 @@
 import DataSource
 import Nimble
 import Quick
-import ReactiveSwift
+import Combine
 
 class CollectionViewDataSourceTests: QuickSpecWithDataSets {
+	var collectionViewDataSource: CollectionViewDataSource!
+	var cancellable: AnyCancellable?
+
 	override func spec() {
-		var collectionViewDataSource: CollectionViewDataSource!
 		var collectionView: UICollectionView!
 		beforeEach {
-			let dataSource = Property(value: StaticDataSource(items: self.dataSetWithTestCellModels))
-			collectionViewDataSource = CollectionViewDataSource()
+			let dataSource = CurrentValueSubject<StaticDataSource, Never>(
+				StaticDataSource(
+					items: self.dataSetWithTestCellModels
+				)
+			)
+			self.collectionViewDataSource = CollectionViewDataSource()
 			collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
 			let collectionViewDescriptors = [CellDescriptor(TestCollectionViewCell.reuseIdentifier, TestCellModel.self, .class(TestCollectionViewCell.self))]
-			collectionViewDataSource.configure(collectionView, using: collectionViewDescriptors)
-			collectionViewDataSource.dataSource.innerDataSource <~ dataSource.producer.map { $0 as DataSource }
+			self.collectionViewDataSource.configure(collectionView, using: collectionViewDescriptors)
+			self.cancellable = dataSource
+				.map { $0 as DataSource }
+				.assign(to: \.dataSource.innerDataSource, on: self.collectionViewDataSource)
 		}
-		itBehavesLike("CollectionViewDataSource object") { ["collectionViewDataSource": collectionViewDataSource!, "TestCellModels": [self.dataSetWithTestCellModels], "collectionView": collectionView!] }
+		itBehavesLike("CollectionViewDataSource object") {
+			[
+				"collectionViewDataSource": self.collectionViewDataSource!,
+				"TestCellModels": [self.dataSetWithTestCellModels],
+				"collectionView": collectionView!
+			]
+		}
 	}
 }

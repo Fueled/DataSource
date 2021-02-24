@@ -9,7 +9,6 @@
 import Foundation
 
 public struct DataChangeMoveSection: DataChange {
-
 	public let fromSection: Int
 	public let toSection: Int
 
@@ -25,5 +24,4 @@ public struct DataChangeMoveSection: DataChange {
 	public func mapSections(_ transform: (Int) -> Int) -> DataChangeMoveSection {
 		return DataChangeMoveSection(from: transform(fromSection), to: transform(toSection))
 	}
-
 }

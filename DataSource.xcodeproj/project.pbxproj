@@ -46,7 +46,6 @@
 		022B0FFE1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FDB1B2F2D4C00DD4DCD /* TableViewHeaderFooterView.swift */; };
 		028602ED1B7E076300474D04 /* AutoDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602EC1B7E076200474D04 /* AutoDiff.swift */; };
 		028602F51B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028602F41B7E1D2B00474D04 /* AutoDiffSectionsDataSource.swift */; };
-		0286CF9F1BE26FB900F76C86 /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0286CF9E1BE26FB900F76C86 /* ReactiveSwift.framework */; };
 		6B020AFD22045C6000DBAE00 /* TestCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B020AFC22045C6000DBAE00 /* TestCells.swift */; };
 		6B020B072208382000DBAE00 /* DataSourceSharedConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B020B062208382000DBAE00 /* DataSourceSharedConfiguration.swift */; };
 		6B020B09220842B500DBAE00 /* StaticDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B020B08220842B500DBAE00 /* StaticDataSourceTests.swift */; };
@@ -56,7 +55,6 @@
 		6B4082C622147FDA00A4CA90 /* Items.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6B4082C422147FDA00A4CA90 /* Items.xcdatamodeld */; };
 		6B76E6572202E36E00D2B33E /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B76E6562202E36E00D2B33E /* Nimble.framework */; };
 		6B76E6592202E36E00D2B33E /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B76E6582202E36E00D2B33E /* Quick.framework */; };
-		6B76E65B2202E36E00D2B33E /* ReactiveSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B76E65A2202E36E00D2B33E /* ReactiveSwift.framework */; };
 		6B76E65E2202E36E00D2B33E /* DataSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 022B0F991B2F2AE500DD4DCD /* DataSource.framework */; };
 		6B7E4AE022115E3700EC9031 /* FetchedResultsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B7E4ADF22115E3700EC9031 /* FetchedResultsDataSourceTests.swift */; };
 		6B8941982213205500294F7D /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8941972213205500294F7D /* CoreDataManager.swift */; };
@@ -74,6 +72,12 @@
 		6BF8F6DD220B28A6007F6209 /* AutoDiffSectionsDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF8F6DC220B28A6007F6209 /* AutoDiffSectionsDataSourceTests.swift */; };
 		6BF8F6E0220B28F0007F6209 /* CollectionViewDataSourceSharedConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF8F6DF220B28F0007F6209 /* CollectionViewDataSourceSharedConfiguration.swift */; };
 		6BF8F6E2220B2904007F6209 /* CollectionViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF8F6E1220B2904007F6209 /* CollectionViewDataSourceTests.swift */; };
+		F4E343DB25E6B4F700BA4013 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E343DA25E6B4F700BA4013 /* Publisher+Helpers.swift */; };
+		F4E343DC25E6B4F700BA4013 /* Publisher+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E343DA25E6B4F700BA4013 /* Publisher+Helpers.swift */; };
+		F4E343F025E6BC0F00BA4013 /* MapHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E343EF25E6BC0F00BA4013 /* MapHelpers.swift */; };
+		F4E343F125E6BC0F00BA4013 /* MapHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E343EF25E6BC0F00BA4013 /* MapHelpers.swift */; };
+		F4E343F625E6BE9F00BA4013 /* Sequence+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E343F525E6BE9F00BA4013 /* Sequence+DataSource.swift */; };
+		F4E343F725E6BE9F00BA4013 /* Sequence+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4E343F525E6BE9F00BA4013 /* Sequence+DataSource.swift */; };
 		FCBEE8E41DA8F4AF00F59863 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FB61B2F2D4B00DD4DCD /* CollectionViewCell.swift */; };
 		FCBEE8E51DA8F4AF00F59863 /* CollectionViewChangeTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FB71B2F2D4B00DD4DCD /* CollectionViewChangeTarget.swift */; };
 		FCBEE8E61DA8F4AF00F59863 /* CollectionViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022B0FB81B2F2D4B00DD4DCD /* CollectionViewDataSource.swift */; };
@@ -189,6 +193,9 @@
 		6BF8F6DC220B28A6007F6209 /* AutoDiffSectionsDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoDiffSectionsDataSourceTests.swift; sourceTree = "<group>"; };
 		6BF8F6DF220B28F0007F6209 /* CollectionViewDataSourceSharedConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewDataSourceSharedConfiguration.swift; sourceTree = "<group>"; };
 		6BF8F6E1220B2904007F6209 /* CollectionViewDataSourceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewDataSourceTests.swift; sourceTree = "<group>"; };
+		F4E343DA25E6B4F700BA4013 /* Publisher+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Publisher+Helpers.swift"; sourceTree = "<group>"; };
+		F4E343EF25E6BC0F00BA4013 /* MapHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapHelpers.swift; sourceTree = "<group>"; };
+		F4E343F525E6BE9F00BA4013 /* Sequence+DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+DataSource.swift"; sourceTree = "<group>"; };
 		FC9E4A5D1DA83C7C00258CCF /* ReactiveSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReactiveSwift.framework; path = "../../Library/Developer/Xcode/DerivedData/DataSource-bxcnryyouvctozbdlqspowjdewgq/Build/Products/Debug-appletvsimulator/ReactiveSwift.framework"; sourceTree = "<group>"; };
 		FC9E4A5E1DA83C7C00258CCF /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = "../../Library/Developer/Xcode/DerivedData/DataSource-bxcnryyouvctozbdlqspowjdewgq/Build/Products/Debug-appletvsimulator/Result.framework"; sourceTree = "<group>"; };
 		FCBEE8DC1DA8F41C00F59863 /* DataSource.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DataSource.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -199,7 +206,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0286CF9F1BE26FB900F76C86 /* ReactiveSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -210,7 +216,6 @@
 				6B76E65E2202E36E00D2B33E /* DataSource.framework in Frameworks */,
 				6B76E6572202E36E00D2B33E /* Nimble.framework in Frameworks */,
 				6B76E6592202E36E00D2B33E /* Quick.framework in Frameworks */,
-				6B76E65B2202E36E00D2B33E /* ReactiveSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +253,7 @@
 		022B0F9B1B2F2AE500DD4DCD /* DataSource */ = {
 			isa = PBXGroup;
 			children = (
+				F4E343D925E6B4E600BA4013 /* Helpers */,
 				022B0FB51B2F2D4B00DD4DCD /* CollectionView */,
 				022B0FBA1B2F2D4C00DD4DCD /* DataChange.swift */,
 				022B0FBB1B2F2D4C00DD4DCD /* DataChangeTarget.swift */,
@@ -426,6 +432,16 @@
 			name = CollectionView;
 			sourceTree = "<group>";
 		};
+		F4E343D925E6B4E600BA4013 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				F4E343DA25E6B4F700BA4013 /* Publisher+Helpers.swift */,
+				F4E343EF25E6BC0F00BA4013 /* MapHelpers.swift */,
+				F4E343F525E6BE9F00BA4013 /* Sequence+DataSource.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -599,12 +615,15 @@
 				022B0FE41B2F2D4C00DD4DCD /* DataChangeDeleteSections.swift in Sources */,
 				022B0FF01B2F2D4C00DD4DCD /* FetchedResultsDataSource.swift in Sources */,
 				022B0FE81B2F2D4C00DD4DCD /* DataChangeMoveSection.swift in Sources */,
+				F4E343F025E6BC0F00BA4013 /* MapHelpers.swift in Sources */,
 				021FAD451BB2D77C001300A0 /* DataSourceItemReceiver.swift in Sources */,
 				022B0FF21B2F2D4C00DD4DCD /* MappedDataSource.swift in Sources */,
 				022B0FF71B2F2D4C00DD4DCD /* DataSourceSection.swift in Sources */,
 				022B0FDC1B2F2D4C00DD4DCD /* CollectionViewCell.swift in Sources */,
 				022B0FE61B2F2D4C00DD4DCD /* DataChangeInsertSections.swift in Sources */,
 				028602ED1B7E076300474D04 /* AutoDiff.swift in Sources */,
+				F4E343F625E6BE9F00BA4013 /* Sequence+DataSource.swift in Sources */,
+				F4E343DB25E6B4F700BA4013 /* Publisher+Helpers.swift in Sources */,
 				022B0FE01B2F2D4C00DD4DCD /* DataChange.swift in Sources */,
 				022B0FE21B2F2D4C00DD4DCD /* DataChangeBatch.swift in Sources */,
 				6BEC0E422201B9FC00AEDC7E /* DataSourceCellDescriptor.swift in Sources */,
@@ -651,9 +670,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				FCBEE8E41DA8F4AF00F59863 /* CollectionViewCell.swift in Sources */,
+				F4E343F725E6BE9F00BA4013 /* Sequence+DataSource.swift in Sources */,
 				FCBEE8E51DA8F4AF00F59863 /* CollectionViewChangeTarget.swift in Sources */,
 				FCBEE8E61DA8F4AF00F59863 /* CollectionViewDataSource.swift in Sources */,
 				FCBEE8E71DA8F4AF00F59863 /* CollectionViewReusableView.swift in Sources */,
+				F4E343F125E6BC0F00BA4013 /* MapHelpers.swift in Sources */,
 				FCBEE8E81DA8F4AF00F59863 /* DataChange.swift in Sources */,
 				FCBEE8E91DA8F4AF00F59863 /* DataChangeTarget.swift in Sources */,
 				FCBEE8EA1DA8F4AF00F59863 /* DataChangeBatch.swift in Sources */,
@@ -683,6 +704,7 @@
 				FCBEE9021DA8F4AF00F59863 /* StaticDataSource.swift in Sources */,
 				FCBEE9031DA8F4AF00F59863 /* IndexPathExtensions.swift in Sources */,
 				FCBEE9041DA8F4AF00F59863 /* TableViewCell.swift in Sources */,
+				F4E343DC25E6B4F700BA4013 /* Publisher+Helpers.swift in Sources */,
 				FCBEE9051DA8F4AF00F59863 /* TableViewChangeTarget.swift in Sources */,
 				FCBEE9061DA8F4AF00F59863 /* TableViewDataSource.swift in Sources */,
 				FCBEE9071DA8F4AF00F59863 /* TableViewDataSourceWithHeaderFooterTitles.swift in Sources */,
@@ -742,7 +764,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
@@ -750,6 +772,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -796,13 +819,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 13.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -825,7 +849,6 @@
 				);
 				INFOPLIST_FILE = DataSource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fueled.$(PRODUCT_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
@@ -849,7 +872,6 @@
 				);
 				INFOPLIST_FILE = DataSource/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.fueled.$(PRODUCT_NAME:rfc1034identifier)";
 				SKIP_INSTALL = YES;
@@ -917,7 +939,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Debug;
 		};
@@ -941,7 +962,6 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 12.0;
 			};
 			name = Release;
 		};

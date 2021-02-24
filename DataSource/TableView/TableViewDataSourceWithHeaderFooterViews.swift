@@ -50,5 +50,4 @@ open class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITabl
 		configureReceiver(view, withItem: item)
 		return view
 	}
-
 }

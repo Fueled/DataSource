@@ -9,11 +9,13 @@
 import DataSource
 import Nimble
 import Quick
-import ReactiveSwift
+import Combine
 
 class TableViewDataSourceWithHeaderFooterViewsTests: QuickSpecWithDataSets {
+	var tableViewDataSource: TableViewDataSourceWithHeaderFooterViews!
+	var cancellable: AnyCancellable?
+
 	override func spec() {
-		var tableViewDataSource: TableViewDataSourceWithHeaderFooterViews!
 		var tableView: UITableView!
 
 		let testSections = [
@@ -34,17 +36,17 @@ class TableViewDataSourceWithHeaderFooterViewsTests: QuickSpecWithDataSets {
 		]
 
 		beforeEach {
-			let dataSource = Property(
-				value: StaticDataSource(
+			let dataSource = CurrentValueSubject<StaticDataSource, Never>(
+				StaticDataSource(
 					sections: testSections
 				)
 			)
-			tableViewDataSource = TableViewDataSourceWithHeaderFooterViews()
+			self.tableViewDataSource = TableViewDataSourceWithHeaderFooterViews()
 			tableView = UITableView(frame: CGRect.zero)
 			let cellDescriptors = [
 				CellDescriptor(TestTableViewCell.reuseIdentifier, TestCellModel.self, .class(TestTableViewCell.self))
 			]
-			tableViewDataSource.configure(
+			self.tableViewDataSource.configure(
 				tableView,
 				using: cellDescriptors,
 				headerDescriptors: [
@@ -56,24 +58,26 @@ class TableViewDataSourceWithHeaderFooterViewsTests: QuickSpecWithDataSets {
 					HeaderFooterDescriptor(TestFooterSecondView.reuseIdentifier, TestFooterSecondViewModel.self, .class(TestFooterSecondView.self)),
 				]
 			)
-			tableViewDataSource.dataSource.innerDataSource <~ dataSource.producer.map { $0 as DataSource }
+			self.cancellable = dataSource
+				.map { $0 as DataSource }
+				.assign(to: \.dataSource.innerDataSource, on: self.tableViewDataSource)
 		}
 
 		itBehavesLike("TableViewDataSource object") {
 			[
-				"tableViewDataSource": tableViewDataSource!,
+				"tableViewDataSource": self.tableViewDataSource!,
 				"TestCellModels": [self.dataSetWithTestCellModels],
 				"TestSections": testSections,
 				"tableView": tableView!
 			]
 		}
 		it("has header") {
-			expect(tableViewDataSource.tableView(tableView, viewForHeaderInSection: 0)).to(beAKindOf(TestHeaderFirstView.self))
-			expect(tableViewDataSource.tableView(tableView, viewForHeaderInSection: 1)).to(beAKindOf(TestHeaderSecondView.self))
+			expect(self.tableViewDataSource.tableView(tableView, viewForHeaderInSection: 0)).to(beAKindOf(TestHeaderFirstView.self))
+			expect(self.tableViewDataSource.tableView(tableView, viewForHeaderInSection: 1)).to(beAKindOf(TestHeaderSecondView.self))
 		}
 		it("has footer") {
-			expect(tableViewDataSource.tableView(tableView, viewForFooterInSection: 0)).to(beAKindOf(TestFooterFirstView.self))
-			expect(tableViewDataSource.tableView(tableView, viewForFooterInSection: 1)).to(beAKindOf(TestFooterSecondView.self))
+			expect(self.tableViewDataSource.tableView(tableView, viewForFooterInSection: 0)).to(beAKindOf(TestFooterFirstView.self))
+			expect(self.tableViewDataSource.tableView(tableView, viewForFooterInSection: 1)).to(beAKindOf(TestFooterSecondView.self))
 		}
 	}
 }

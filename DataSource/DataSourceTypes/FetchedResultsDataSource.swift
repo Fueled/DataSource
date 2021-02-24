@@ -8,7 +8,7 @@
 
 import CoreData
 import Foundation
-import ReactiveSwift
+import Combine
 import UIKit
 
 /// `DataSource` implementation whose items are Core Data managed objects fetched by an `NSFetchedResultsController`.
@@ -18,34 +18,43 @@ import UIKit
 /// Uses `NSFetchedResultsControllerDelegate` protocol internally to observe changes
 /// in fetched objects and emit them as its own dataChanges.
 public final class FetchedResultsDataSource: DataSource {
+	public let changes: AnyPublisher<DataChange, Never>
+	private let changesPassthroughSubject = PassthroughSubject<DataChange, Never>()
 
-	public let changes: Signal<DataChange, Never>
-	private let observer: Signal<DataChange, Never>.Observer
-
-	private let frc: NSFetchedResultsController<NSFetchRequestResult>
+	private let fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>
 	// swiftlint:disable weak_delegate
-	private let frcDelegate: Delegate
+	private let fetchedResultsControllerDelegate: Delegate
 
-	public init(fetchRequest: NSFetchRequest<NSFetchRequestResult>, managedObjectContext: NSManagedObjectContext, sectionNameKeyPath: String? = nil, cacheName: String? = nil) throws {
-		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
-		self.frc = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: managedObjectContext, sectionNameKeyPath: sectionNameKeyPath, cacheName: cacheName)
-		self.frcDelegate = Delegate(observer: self.observer)
-		self.frc.delegate = self.frcDelegate
+	public init(
+		fetchRequest: NSFetchRequest<NSFetchRequestResult>,
+		managedObjectContext: NSManagedObjectContext,
+		sectionNameKeyPath: String? = nil,
+		cacheName: String? = nil
+	) throws {
+		self.changes = self.changesPassthroughSubject.eraseToAnyPublisher()
+		self.fetchedResultsController = NSFetchedResultsController(
+			fetchRequest: fetchRequest,
+			managedObjectContext: managedObjectContext,
+			sectionNameKeyPath: sectionNameKeyPath,
+			cacheName: cacheName
+		)
+		self.fetchedResultsControllerDelegate = Delegate(changesPassthroughSubject: self.changesPassthroughSubject)
+		self.fetchedResultsController.delegate = self.fetchedResultsControllerDelegate
 
-		try self.frc.performFetch()
+		try self.fetchedResultsController.performFetch()
 	}
 
 	deinit {
-		self.frc.delegate = nil
-		self.observer.sendCompleted()
+		self.fetchedResultsController.delegate = nil
+		self.changesPassthroughSubject.send(completion: .finished)
 	}
 
 	private func infoForSection(_ section: Int) -> NSFetchedResultsSectionInfo {
-		return self.frc.sections![section]
+		return self.fetchedResultsController.sections![section]
 	}
 
 	public var numberOfSections: Int {
-		return self.frc.sections?.count ?? 0
+		return self.fetchedResultsController.sections?.count ?? 0
 	}
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
@@ -71,12 +80,11 @@ public final class FetchedResultsDataSource: DataSource {
 	}
 
 	@objc private final class Delegate: NSObject, NSFetchedResultsControllerDelegate {
-
-		let observer: Signal<DataChange, Never>.Observer
+		let changesPassthroughSubject: PassthroughSubject<DataChange, Never>
 		var currentBatch: [DataChange] = []
 
-		init(observer: Signal<DataChange, Never>.Observer) {
-			self.observer = observer
+		init(changesPassthroughSubject: PassthroughSubject<DataChange, Never>) {
+			self.changesPassthroughSubject = changesPassthroughSubject
 		}
 
 		@objc func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
@@ -84,7 +92,7 @@ public final class FetchedResultsDataSource: DataSource {
 		}
 
 		@objc func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-			self.observer.send(value: DataChangeBatch(self.currentBatch))
+			self.changesPassthroughSubject.send(DataChangeBatch(self.currentBatch))
 			self.currentBatch = []
 		}
 
@@ -121,11 +129,8 @@ public final class FetchedResultsDataSource: DataSource {
 			case .update:
 				self.currentBatch.append(DataChangeReloadItems(indexPath!))
 			@unknown default:
-				NSLog("Unhandled case for NSFetchedResultsChangeType: \(type). DataSource should be updated to account for it or it could lead to unexpected results.")
-				assertionFailure()
+				fatalError("Unhandled case for NSFetchedResultsChangeType: \(type). DataSource should be updated to account for it or it could lead to unexpected results.")
 			}
 		}
-
 	}
-
 }

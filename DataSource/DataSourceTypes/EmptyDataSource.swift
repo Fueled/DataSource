@@ -7,22 +7,21 @@
 //
 
 import Foundation
-import ReactiveSwift
+import Combine
 
 /// `DataSource` implementation that has zero sections.
 ///
 /// Never emits any dataChanges.
 public final class EmptyDataSource: DataSource {
-
-	public let changes: Signal<DataChange, Never>
-	private let observer: Signal<DataChange, Never>.Observer
+	public let changes: AnyPublisher<DataChange, Never>
+	private let changesPassthroughSubject = PassthroughSubject<DataChange, Never>()
 
 	public init() {
-		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
+		self.changes = self.changesPassthroughSubject.eraseToAnyPublisher()
 	}
 
 	deinit {
-		self.observer.sendCompleted()
+		self.changesPassthroughSubject.send(completion: .finished)
 	}
 
 	public let numberOfSections = 0
@@ -42,5 +41,4 @@ public final class EmptyDataSource: DataSource {
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
 		fatalError("Trying to access EmptyDataSource.leafDataSource(at:)")
 	}
-
 }

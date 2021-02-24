@@ -9,7 +9,6 @@
 import Foundation
 
 public struct DataChangeInsertItems: DataChange {
-
 	public let indexPaths: [IndexPath]
 
 	public init(_ indexPaths: [IndexPath]) {
@@ -27,5 +26,4 @@ public struct DataChangeInsertItems: DataChange {
 	public func mapSections(_ transform: (Int) -> Int) -> DataChangeInsertItems {
 		return DataChangeInsertItems(indexPaths.map { $0.ds_mapSection(transform) })
 	}
-
 }

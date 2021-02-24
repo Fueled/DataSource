@@ -6,34 +6,38 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
+import Combine
 import DataSource
 import Nimble
 import Quick
-import ReactiveSwift
 
 class TableViewDataSourceTests: QuickSpecWithDataSets {
+	var tableViewDataSource: TableViewDataSource!
+	var cancellable: AnyCancellable?
+
 	override func spec() {
-		var tableViewDataSource: TableViewDataSource!
 		var tableView: UITableView!
 		let testSections = [
 			DataSourceSection(items: self.dataSetWithTestCellModels),
 			DataSourceSection(items: self.dataSetWithTestCellModels2)
 		]
 		beforeEach {
-			let dataSource = Property(
-				value: StaticDataSource(
+			let dataSource = CurrentValueSubject<StaticDataSource, Never>(
+				StaticDataSource(
 					sections: testSections
 				)
 			)
-			tableViewDataSource = TableViewDataSource()
+			self.tableViewDataSource = TableViewDataSource()
 			tableView = UITableView(frame: CGRect.zero)
 			let tableViewDescriptors = [CellDescriptor(TestTableViewCell.reuseIdentifier, TestCellModel.self, .class(TestTableViewCell.self))]
-			tableViewDataSource.configure(tableView, using: tableViewDescriptors)
-			tableViewDataSource.dataSource.innerDataSource <~ dataSource.producer.map { $0 as DataSource }
+			self.tableViewDataSource.configure(tableView, using: tableViewDescriptors)
+			self.cancellable = dataSource
+				.map { $0 as DataSource }
+				.assign(to: \.dataSource.innerDataSource, on: self.tableViewDataSource)
 		}
 		itBehavesLike("TableViewDataSource object") {
 			[
-				"tableViewDataSource": tableViewDataSource!,
+				"tableViewDataSource": self.tableViewDataSource!,
 				"TestCellModels": [self.dataSetWithTestCellModels, self.dataSetWithTestCellModels2],
 				"TestSections": testSections,
 				"tableView": tableView!

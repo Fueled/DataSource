@@ -9,7 +9,6 @@
 import Foundation
 
 public struct DataChangeReloadData: DataChange {
-
 	public init() {}
 
 	public func apply(to target: DataChangeTarget) {
@@ -19,5 +18,4 @@ public struct DataChangeReloadData: DataChange {
 	public func mapSections(_ transform: (Int) -> Int) -> DataChangeReloadData {
 		return self
 	}
-
 }

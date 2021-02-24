@@ -36,7 +36,7 @@ class AutoDiffSectionsDataSourceTests: QuickSpecWithDataSets {
 		context("when changing dataSource sections") {
 			beforeEach {
 				dataSourceSections = [dataSourceSection2, dataSourceSection1]
-				dataSource.sections.value = dataSourceSections
+				dataSource.sections = dataSourceSections
 			}
 			itBehavesLike("DataSource protocol") { ["DataSource": dataSource!, "InitialData": [self.testDataSet2, self.testDataSet]] }
 			it("should generate corresponding dataChanges") {

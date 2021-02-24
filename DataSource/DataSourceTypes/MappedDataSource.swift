@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
+import Combine
 
 /// `DataSource` implementation that returns data from
 /// another dataSource (called inner dataSource) after transforming
@@ -17,10 +17,6 @@ import ReactiveSwift
 /// MappedDataSource listens to dataChanges of its inner dataSource
 /// and emits them as its own changes.
 public final class MappedDataSource: DataSource {
-
-	public let changes: Signal<DataChange, Never>
-	private let observer: Signal<DataChange, Never>.Observer
-	private let disposable: Disposable?
 
 	public let innerDataSource: DataSource
 
@@ -34,17 +30,22 @@ public final class MappedDataSource: DataSource {
 	/// The first parameter is the kind of the supplementary item.
 	private let supplementaryTransform: (String, Any?) -> Any?
 
+
+	public let changes: AnyPublisher<DataChange, Never>
+	private let changesPassthroughSubject = PassthroughSubject<DataChange, Never>()
+
+	private let cancellable: AnyCancellable
+
 	public init(_ inner: DataSource, supplementaryTransform: @escaping ((String, Any?) -> Any?) = { $1 }, transform: @escaping (Any) -> Any) {
-		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
+		self.changes = self.changesPassthroughSubject.eraseToAnyPublisher()
 		self.innerDataSource = inner
 		self.transform = transform
 		self.supplementaryTransform = supplementaryTransform
-		self.disposable = inner.changes.observe(self.observer)
+		self.cancellable = inner.changes.subscribe(self.changesPassthroughSubject)
 	}
 
 	deinit {
-		self.observer.sendCompleted()
-		self.disposable?.dispose()
+		self.changesPassthroughSubject.send(completion: .finished)
 	}
 
 	public var numberOfSections: Int {
@@ -73,5 +74,4 @@ public final class MappedDataSource: DataSource {
 		let inner = self.innerDataSource
 		return inner.leafDataSource(at: indexPath)
 	}
-
 }

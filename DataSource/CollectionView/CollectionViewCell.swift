@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
-import ReactiveSwift
+import Combine
 import UIKit
 
 /// `UICollectionViewCell` subclass that implements `DataSourceItemReceiver` protocol
@@ -17,11 +17,9 @@ import UIKit
 ///   Instead you can implement `DataSourceItemReceiver`
 ///   protocol directly in any `UICollectionViewCell` subclass.
 open class CollectionViewCell: UICollectionViewCell, DataSourceItemReceiver {
+	@Published public final var cellModel: Any?
 
-	public final let cellModel = MutableProperty<Any?>(nil)
-
-	open func ds_setItem(_ item: Any) {
-		self.cellModel.value = item
+	@nonobjc open func ds_setItem(_ item: Any) {
+		self.cellModel = item
 	}
-
 }

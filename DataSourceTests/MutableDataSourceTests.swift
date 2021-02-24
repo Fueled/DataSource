@@ -14,7 +14,7 @@ class MutableDataSourceTests: QuickSpecWithDataSets {
 	override func spec() {
 		var dataSource: MutableDataSource<Int>!
 		beforeEach {
-			dataSource = MutableDataSource(self.testDataSet, supplementaryItems: self.supplementaryItemOfKind)
+			dataSource = MutableDataSource(items: self.testDataSet, supplementaryItems: self.supplementaryItemOfKind)
 		}
 		itBehavesLike("DataSource protocol") { ["DataSource": dataSource!, "InitialData": [self.testDataSet], "SupplementaryItems": [self.supplementaryItemOfKind]] }
 		context("when adding new value") {

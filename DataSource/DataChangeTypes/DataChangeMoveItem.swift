@@ -9,7 +9,6 @@
 import Foundation
 
 public struct DataChangeMoveItem: DataChange {
-
 	public let fromIndexPath: IndexPath
 	public let toIndexPath: IndexPath
 
@@ -25,5 +24,4 @@ public struct DataChangeMoveItem: DataChange {
 	public func mapSections(_ transform: (Int) -> Int) -> DataChangeMoveItem {
 		return DataChangeMoveItem(from: fromIndexPath.ds_mapSection(transform), to: toIndexPath.ds_mapSection(transform))
 	}
-
 }

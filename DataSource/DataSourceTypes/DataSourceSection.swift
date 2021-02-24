@@ -9,7 +9,6 @@
 import Foundation
 
 public struct DataSourceSection<T> {
-
 	public var items: [T]
 	public var supplementaryItems: [String: Any]
 
@@ -17,5 +16,4 @@ public struct DataSourceSection<T> {
 		self.items = items
 		self.supplementaryItems = supplementaryItems
 	}
-
 }

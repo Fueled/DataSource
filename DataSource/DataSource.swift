@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
+import Combine
 
 /// A provider of items grouped into sections.
 /// Each section can optionally have a collection
@@ -16,11 +16,10 @@ import ReactiveSwift
 /// A dataSource can be mutable, i.e. change the number and/or contents of its sections.
 /// Immediately after any such change, a dataSource emits a dataChange value representing
 /// that change via its `changes` property.
-public protocol DataSource {
-
+public protocol DataSource: AnyObject {
 	/// A push-driven stream of values that represent every modification
 	/// of the dataSource contents immediately after they happen.
-	var changes: Signal<DataChange, Never> { get }
+	var changes: AnyPublisher<DataChange, Never> { get }
 
 	var numberOfSections: Int { get }
 
@@ -39,5 +38,4 @@ public protocol DataSource {
 	///
 	/// Otherwise, this method simply returns the receiving dataSource itself and the given indexPath unchanged.
 	func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath)
-
 }

@@ -10,7 +10,6 @@ import Foundation
 
 // swiftlint:disable convenience_type
 public struct AutoDiff {
-
 	public struct Result {
 
 		public var matches: [(Int, Int)] = []
@@ -141,7 +140,6 @@ public struct AutoDiff {
 		case fromPrevNew
 		case match
 	}
-
 }
 
 private func findFirst<S: Sequence>

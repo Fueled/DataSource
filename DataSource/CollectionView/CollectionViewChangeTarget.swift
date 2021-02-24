@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 extension UICollectionView: DataChangeTarget {
-
 	public func ds_performBatchChanges(_ batchChanges: @escaping () -> Void) {
 		self.performBatchUpdates(batchChanges, completion: nil)
 	}
@@ -50,5 +49,4 @@ extension UICollectionView: DataChangeTarget {
 	public func ds_reloadSections(_ sections: [Int]) {
 		self.reloadSections(IndexSet(dsIntegers: sections))
 	}
-
 }

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
+import Combine
 
 /// `DataSource` implementation that returns data from
 /// another dataSource (called inner dataSource).
@@ -19,13 +19,7 @@ import ReactiveSwift
 /// ProxyDataSource listens to dataChanges of its inner dataSource
 /// and emits them as its own changes.
 public final class ProxyDataSource: DataSource {
-
-	public let changes: Signal<DataChange, Never>
-	private let observer: Signal<DataChange, Never>.Observer
-	private let disposable = CompositeDisposable()
-	private var lastDisposable: Disposable?
-
-	public let innerDataSource: MutableProperty<DataSource>
+	@Published public var innerDataSource: DataSource
 
 	/// When `true`, switching innerDataSource produces
 	/// a dataChange consisting of deletions of all the
@@ -33,70 +27,71 @@ public final class ProxyDataSource: DataSource {
 	/// the sections of the new innerDataSource.
 	///
 	/// when `false`, switching innerDataSource produces `DataChangeReloadData`.
-	public let animatesChanges: MutableProperty<Bool>
+	@Published public var animatesChanges: Bool
 
-	public init(_ inner: DataSource = EmptyDataSource(), animateChanges: Bool = true) {
-		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
-		self.innerDataSource = MutableProperty(inner)
-		self.animatesChanges = MutableProperty(animateChanges)
-		self.lastDisposable = inner.changes.observe(self.observer)
-		self.disposable += self.innerDataSource.producer
-			.combinePrevious(inner)
-			.skip(first: 1)
-			.startWithValues { [weak self] old, new in
-				if let self = self {
-					self.lastDisposable?.dispose()
-					self.observer.send(value: changeDataSources(old, new, self.animatesChanges.value))
-					self.lastDisposable = new.changes.observe(self.observer)
+	public let changes: AnyPublisher<DataChange, Never>
+	private let changesPassthroughSubject = PassthroughSubject<DataChange, Never>()
+
+	private var cancellables = Set<AnyCancellable>()
+	private var lastCancellable: AnyCancellable?
+
+	public init(_ innerDataSource: DataSource = EmptyDataSource(), animateChanges: Bool = true) {
+		self.changes = self.changesPassthroughSubject.eraseToAnyPublisher()
+		self.innerDataSource = innerDataSource
+		self.animatesChanges = animateChanges
+		self.lastCancellable = innerDataSource.changes.subscribe(self.changesPassthroughSubject)
+		self.$innerDataSource
+			.combinePrevious()
+			.receive(on: DispatchQueue.main)
+			.filter { $0 !== $1 }
+			.sink { [weak self] old, new in
+				guard let self = self else {
+					return
 				}
+				self.lastCancellable = nil
+				self.changesPassthroughSubject.send(self.changeDataSources(old, new))
+				self.lastCancellable = new.changes.subscribe(self.changesPassthroughSubject)
 			}
+			.store(in: &self.cancellables)
 	}
 
 	deinit {
-		self.observer.sendCompleted()
-		self.disposable.dispose()
-		self.lastDisposable?.dispose()
+		self.changesPassthroughSubject.send(completion: .finished)
 	}
 
 	public var numberOfSections: Int {
-		let inner = self.innerDataSource.value
-		return inner.numberOfSections
+		self.innerDataSource.numberOfSections
 	}
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		let inner = self.innerDataSource.value
-		return inner.numberOfItemsInSection(section)
+		self.innerDataSource.numberOfItemsInSection(section)
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		let inner = self.innerDataSource.value
-		return inner.supplementaryItemOfKind(kind, inSection: section)
+		self.innerDataSource.supplementaryItemOfKind(kind, inSection: section)
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		let inner = self.innerDataSource.value
-		return inner.item(at: indexPath)
+		self.innerDataSource.item(at: indexPath)
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
-		let inner = self.innerDataSource.value
-		return inner.leafDataSource(at: indexPath)
+		self.innerDataSource.leafDataSource(at: indexPath)
 	}
 
-}
-
-private func changeDataSources(_ old: DataSource, _ new: DataSource, _ animateChanges: Bool) -> DataChange {
-	if !animateChanges {
-		return DataChangeReloadData()
+	private func changeDataSources(_ old: DataSource, _ new: DataSource) -> DataChange {
+		if !self.animatesChanges {
+			return DataChangeReloadData()
+		}
+		var batch: [DataChange] = []
+		let oldSections = old.numberOfSections
+		if oldSections > 0 {
+			batch.append(DataChangeDeleteSections(Array(0 ..< oldSections)))
+		}
+		let newSections = new.numberOfSections
+		if newSections > 0 {
+			batch.append(DataChangeInsertSections(Array(0 ..< newSections)))
+		}
+		return DataChangeBatch(batch)
 	}
-	var batch: [DataChange] = []
-	let oldSections = old.numberOfSections
-	if oldSections > 0 {
-		batch.append(DataChangeDeleteSections(Array(0 ..< oldSections)))
-	}
-	let newSections = new.numberOfSections
-	if newSections > 0 {
-		batch.append(DataChangeInsertSections(Array(0 ..< newSections)))
-	}
-	return DataChangeBatch(batch)
 }

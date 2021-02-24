@@ -19,7 +19,7 @@ class ProxyDataSourceTests: QuickSpecWithDataSets {
 			let dataSourceSection = DataSourceSection(items: self.testDataSet, supplementaryItems: self.supplementaryItemOfKind2)
 			staticDataSource = StaticDataSource(sections: [dataSourceSection])
 			dataSource = ProxyDataSource(staticDataSource)
-			dataSource.animatesChanges.value = true
+			dataSource.animatesChanges = true
 		}
 		itBehavesLike("DataSource protocol") { ["DataSource": dataSource!, "InitialData": [self.testDataSet], "LeafDataSource": [staticDataSource], "SupplementaryItems": [self.supplementaryItemOfKind2]] }
 		context("when change inner data source value") {
@@ -28,8 +28,8 @@ class ProxyDataSourceTests: QuickSpecWithDataSets {
 				let dataSourceSection2 = DataSourceSection(items: self.testDataSet, supplementaryItems: self.supplementaryItemOfKind2)
 				let dataSourceSections = [dataSourceSection, dataSourceSection2]
 				staticDataSource = StaticDataSource(sections: dataSourceSections)
-				dataSource.animatesChanges.value = false
-				dataSource.innerDataSource.value = staticDataSource
+				dataSource.animatesChanges = false
+				dataSource.innerDataSource = staticDataSource
 			}
 			itBehavesLike("DataSource protocol") {
 				["DataSource": dataSource!,

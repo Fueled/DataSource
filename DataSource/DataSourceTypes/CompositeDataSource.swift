@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import ReactiveSwift
+import Combine
 
 /// `DataSource` implementation that is composed of an array
 /// of other dataSources (called inner dataSources).
@@ -20,30 +20,31 @@ import ReactiveSwift
 /// and emits them as its own changes, after mapping section indices in them
 /// to correspond to the structure of the compositeDataSource.
 public final class CompositeDataSource: DataSource {
-
-	public let changes: Signal<DataChange, Never>
-	private let observer: Signal<DataChange, Never>.Observer
-	private let disposable = CompositeDisposable()
-
 	public let innerDataSources: [DataSource]
 
+	public let changes: AnyPublisher<DataChange, Never>
+	private let changesPassthroughSubject = PassthroughSubject<DataChange, Never>()
+
+	private var cancellables = Set<AnyCancellable>()
+
 	public init(_ inner: [DataSource]) {
-		(self.changes, self.observer) = Signal<DataChange, Never>.pipe()
+		self.changes = self.changesPassthroughSubject.eraseToAnyPublisher()
 		self.innerDataSources = inner
 		for (index, dataSource) in inner.enumerated() {
-			self.disposable += dataSource.changes.observeValues { [weak self] change in
-				if let self = self {
-					let map = mapOutside(self.innerDataSources, index)
-					let mapped = change.mapSections(map)
-					self.observer.send(value: mapped)
+			dataSource.changes.sink { [weak self] change in
+				guard let self = self else {
+					return
 				}
+				let map = mapOutside(self.innerDataSources, index)
+				let mapped = change.mapSections(map)
+				self.changesPassthroughSubject.send(mapped)
 			}
+				.store(in: &self.cancellables)
 		}
 	}
 
 	deinit {
-		self.observer.sendCompleted()
-		self.disposable.dispose()
+		self.changesPassthroughSubject.send(completion: .finished)
 	}
 
 	public var numberOfSections: Int {
@@ -72,26 +73,5 @@ public final class CompositeDataSource: DataSource {
 		let (index, innerSection) = mapInside(self.innerDataSources, (indexPath as NSIndexPath).section)
 		let innerPath = indexPath.ds_setSection(innerSection)
 		return self.innerDataSources[index].leafDataSource(at: innerPath)
-	}
-
-}
-
-func mapInside(_ inner: [DataSource], _ outerSection: Int) -> (Int, Int) {
-	var innerSection = outerSection
-	var index = 0
-	while innerSection >= inner[index].numberOfSections {
-		innerSection -= inner[index].numberOfSections
-		index += 1
-	}
-	return (index, innerSection)
-}
-
-func mapOutside(_ inner: [DataSource], _ index: Int) -> (Int) -> Int {
-	return { innerSection in
-		var outerSection = innerSection
-		for i in 0 ..< index {
-			outerSection += inner[i].numberOfSections
-		}
-		return outerSection
 	}
 }

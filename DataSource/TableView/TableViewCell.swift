@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
-import ReactiveSwift
+import Combine
 import UIKit
 
 /// `UITableViewCell` subclass that implements `DataSourceItemReceiver` protocol
@@ -17,11 +17,9 @@ import UIKit
 ///   Instead you can implement `DataSourceItemReceiver`
 ///   protocol directly in any `UITableViewCell` subclass.
 open class TableViewCell: UITableViewCell, DataSourceItemReceiver {
-
-	public final let cellModel = MutableProperty<Any?>(nil)
+	@Published public final var cellModel: Any?
 
 	open func ds_setItem(_ item: Any) {
-		self.cellModel.value = item
+		self.cellModel = item
 	}
-
 }

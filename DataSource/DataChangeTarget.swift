@@ -15,7 +15,6 @@ import Foundation
 ///
 /// `UITableView` and `UICollectionView` are implementing this protocol.
 public protocol DataChangeTarget {
-
 	func ds_performBatchChanges(_ batchChanges: @escaping () -> Void)
 
 	func ds_deleteItems(at indexPaths: [IndexPath])
@@ -35,5 +34,4 @@ public protocol DataChangeTarget {
 	func ds_reloadItems(at indexPaths: [IndexPath])
 
 	func ds_reloadSections(_ sections: [Int])
-
 }
