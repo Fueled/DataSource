@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 /// A provider of items grouped into sections.
 /// Each section can optionally have a collection

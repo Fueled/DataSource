@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
+import Combine
 import CoreData
 import Foundation
-import Combine
 import UIKit
 
 /// `DataSource` implementation whose items are Core Data managed objects fetched by an `NSFetchedResultsController`.

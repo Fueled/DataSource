@@ -19,7 +19,7 @@ class TableViewDataSourceTests: QuickSpecWithDataSets {
 		var tableView: UITableView!
 		let testSections = [
 			DataSourceSection(items: self.dataSetWithTestCellModels),
-			DataSourceSection(items: self.dataSetWithTestCellModels2)
+			DataSourceSection(items: self.dataSetWithTestCellModels2),
 		]
 		beforeEach {
 			let dataSource = CurrentValueSubject<StaticDataSource, Never>(
@@ -40,7 +40,7 @@ class TableViewDataSourceTests: QuickSpecWithDataSets {
 				"tableViewDataSource": self.tableViewDataSource!,
 				"TestCellModels": [self.dataSetWithTestCellModels, self.dataSetWithTestCellModels2],
 				"TestSections": testSections,
-				"tableView": tableView!
+				"tableView": tableView!,
 			]
 		}
 	}

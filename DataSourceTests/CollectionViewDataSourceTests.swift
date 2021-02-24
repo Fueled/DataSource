@@ -6,10 +6,10 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
+import Combine
 import DataSource
 import Nimble
 import Quick
-import Combine
 
 class CollectionViewDataSourceTests: QuickSpecWithDataSets {
 	var collectionViewDataSource: CollectionViewDataSource!
@@ -35,7 +35,7 @@ class CollectionViewDataSourceTests: QuickSpecWithDataSets {
 			[
 				"collectionViewDataSource": self.collectionViewDataSource!,
 				"TestCellModels": [self.dataSetWithTestCellModels],
-				"collectionView": collectionView!
+				"collectionView": collectionView!,
 			]
 		}
 	}

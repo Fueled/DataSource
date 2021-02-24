@@ -6,10 +6,10 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
+import Combine
 import DataSource
 import Nimble
 import Quick
-import Combine
 
 class TableViewDataSourceWithHeaderFooterTitlesTests: QuickSpecWithDataSets {
 	var tableViewDataSource: TableViewDataSourceWithHeaderFooterTitles!
@@ -39,7 +39,7 @@ class TableViewDataSourceWithHeaderFooterTitlesTests: QuickSpecWithDataSets {
 				"tableViewDataSource": self.tableViewDataSource!,
 				"TestCellModels": [self.dataSetWithTestCellModels],
 				"TestSections": [headerSection],
-				"tableView": tableView!
+				"tableView": tableView!,
 			]
 		}
 		it("has correct header") {

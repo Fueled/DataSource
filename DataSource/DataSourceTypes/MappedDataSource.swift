@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 /// `DataSource` implementation that returns data from
 /// another dataSource (called inner dataSource) after transforming
@@ -29,7 +29,6 @@ public final class MappedDataSource: DataSource {
 	///
 	/// The first parameter is the kind of the supplementary item.
 	private let supplementaryTransform: (String, Any?) -> Any?
-
 
 	public let changes: AnyPublisher<DataChange, Never>
 	private let changesPassthroughSubject = PassthroughSubject<DataChange, Never>()

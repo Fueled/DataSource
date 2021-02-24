@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 /// `DataSource` implementation that has an immutable array of section.
 /// 

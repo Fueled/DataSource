@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 /// `DataSource` implementation that is composed of an array
 /// of other dataSources (called inner dataSources).

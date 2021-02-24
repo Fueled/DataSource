@@ -6,10 +6,10 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
+import Combine
 import DataSource
 import Nimble
 import Quick
-import Combine
 
 class TableViewDataSourceWithHeaderFooterViewsTests: QuickSpecWithDataSets {
 	var tableViewDataSource: TableViewDataSourceWithHeaderFooterViews!
@@ -23,14 +23,14 @@ class TableViewDataSourceWithHeaderFooterViewsTests: QuickSpecWithDataSets {
 				items: self.dataSetWithTestCellModels,
 				supplementaryItems: [
 					UICollectionView.elementKindSectionHeader: TestHeaderFirstViewModel(),
-					UICollectionView.elementKindSectionFooter: TestFooterFirstViewModel()
+					UICollectionView.elementKindSectionFooter: TestFooterFirstViewModel(),
 				]
 			),
 			DataSourceSection(
 				items: self.dataSetWithTestCellModels,
 				supplementaryItems: [
 					UICollectionView.elementKindSectionHeader: TestHeaderSecondViewModel(),
-					UICollectionView.elementKindSectionFooter: TestFooterSecondViewModel()
+					UICollectionView.elementKindSectionFooter: TestFooterSecondViewModel(),
 				]
 			),
 		]
@@ -44,7 +44,7 @@ class TableViewDataSourceWithHeaderFooterViewsTests: QuickSpecWithDataSets {
 			self.tableViewDataSource = TableViewDataSourceWithHeaderFooterViews()
 			tableView = UITableView(frame: CGRect.zero)
 			let cellDescriptors = [
-				CellDescriptor(TestTableViewCell.reuseIdentifier, TestCellModel.self, .class(TestTableViewCell.self))
+				CellDescriptor(TestTableViewCell.reuseIdentifier, TestCellModel.self, .class(TestTableViewCell.self)),
 			]
 			self.tableViewDataSource.configure(
 				tableView,
@@ -68,7 +68,7 @@ class TableViewDataSourceWithHeaderFooterViewsTests: QuickSpecWithDataSets {
 				"tableViewDataSource": self.tableViewDataSource!,
 				"TestCellModels": [self.dataSetWithTestCellModels],
 				"TestSections": testSections,
-				"tableView": tableView!
+				"tableView": tableView!,
 			]
 		}
 		it("has header") {

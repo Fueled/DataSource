@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 
 /// `DataSource` implementation that has a single section and
 /// uses key-value coding (KVC) to returns objects from an ordered
@@ -58,7 +58,7 @@ public final class KVODataSource<Target: NSObject>: NSObject, DataSource {
 	private var items: NSArray {
 		return self.target.value(forKeyPath: self.keyPath) as! NSArray
 	}
-	
+
 	// swiftlint:disable block_based_kvo
 	override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
 		if let target = object as? NSObject,

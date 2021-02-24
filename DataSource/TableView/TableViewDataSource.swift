@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
 import UIKit
 
 /// An object that implements `UITableViewDataSource` protocol
