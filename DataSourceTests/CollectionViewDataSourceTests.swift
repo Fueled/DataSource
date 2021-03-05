@@ -29,7 +29,7 @@ class CollectionViewDataSourceTests: QuickSpecWithDataSets {
 			self.collectionViewDataSource.configure(collectionView, using: collectionViewDescriptors)
 			self.cancellable = dataSource
 				.map { $0 as DataSource }
-				.assign(to: \.dataSource.innerDataSource, on: self.collectionViewDataSource)
+				.subscribe(self.collectionViewDataSource.dataSource.innerDataSource)
 		}
 		itBehavesLike("CollectionViewDataSource object") {
 			[

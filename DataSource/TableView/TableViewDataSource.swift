@@ -52,6 +52,10 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 		}
 	}
 
+	deinit {
+		self.cancellable?.cancel()
+	}
+
 	open func configureCell(_ cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		let item = self.dataSource.item(at: indexPath)
 		configureReceiver(cell, withItem: item)

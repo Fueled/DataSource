@@ -6,12 +6,14 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
+import Combine
 import DataSource
 import Nimble
 import Quick
-import ReactiveSwift
 
 class CompositeDataSourceTests: QuickSpecWithDataSets {
+	private var cancellable: AnyCancellable?
+
 	override func spec() {
 		var dataSource: CompositeDataSource!
 		var staticDataSources: [StaticDataSource<Int>]!
@@ -26,13 +28,13 @@ class CompositeDataSourceTests: QuickSpecWithDataSets {
 			let firstDataSource = StaticDataSource(items: [1, 2, 3])
 			let secondDataSource = ProxyDataSource(animateChanges: false)
 			dataSource = CompositeDataSource([firstDataSource, secondDataSource])
-			let lastChange = MutableProperty<DataChange?>(nil)
-			lastChange <~ dataSource.changes
+			let lastChange = CurrentValueSubject<DataChange?, Never>(nil)
+			self.cancellable = dataSource.changes.map { Optional($0) }.subscribe(lastChange)
 			expect(lastChange.value).to(beNil())
 			secondDataSource.innerDataSource.value = StaticDataSource(items: [4, 5, 6])
 			expect(lastChange.value).notTo(beNil())
 			expect(lastChange.value).to(beAKindOf(DataChangeReloadData.self))
-			secondDataSource.animatesChanges.value = true
+			secondDataSource.animatesChanges = true
 			secondDataSource.innerDataSource.value = StaticDataSource(items: [4, 5, 6])
 			expect(lastChange.value).to(beAKindOf(DataChangeBatch.self))
 			let batches = (lastChange.value as! DataChangeBatch).changes

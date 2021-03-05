@@ -6,12 +6,14 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
+import Combine
 import DataSource
 import Nimble
 import Quick
-import ReactiveSwift
 
 class AutoDiffSectionsDataSourceTests: QuickSpecWithDataSets {
+	private var cancellable: AnyCancellable?
+
 	override func spec() {
 		var dataSource: AutoDiffSectionsDataSource<Int>!
 		var dataSourceSection1: DataSourceSection<Int>!
@@ -36,12 +38,12 @@ class AutoDiffSectionsDataSourceTests: QuickSpecWithDataSets {
 		context("when changing dataSource sections") {
 			beforeEach {
 				dataSourceSections = [dataSourceSection2, dataSourceSection1]
-				dataSource.sections = dataSourceSections
+				dataSource.sections.value = dataSourceSections
 			}
 			itBehavesLike("DataSource protocol") { ["DataSource": dataSource!, "InitialData": [self.testDataSet2, self.testDataSet]] }
 			it("should generate corresponding dataChanges") {
-				let lastChange = MutableProperty<DataChange?>(nil)
-				lastChange <~ dataSource.changes
+				let lastChange = CurrentValueSubject<DataChange?, Never>(nil)
+				self.cancellable = dataSource.changes.map { Optional($0) }.subscribe(lastChange)
 				expect(lastChange.value).to(beNil())
 				dataSource.sections.value.append(DataSourceSection(items: self.testDataSet3, supplementaryItems: ["sectionId": "3"]))
 				expect(lastChange.value).notTo(beNil())

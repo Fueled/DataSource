@@ -20,16 +20,17 @@ import Foundation
 public final class MutableCompositeDataSource: DataSource {
 	public let changes: AnyPublisher<DataChange, Never>
 	private let changesPassthroughSubject = PassthroughSubject<DataChange, Never>()
-	private let cancellable: AnyCancellable
+	private var cancellable: AnyCancellable!
 
-	@Published private(set) var innerDataSources: [DataSource]
+	private(set) var innerDataSources: CurrentValueSubject<[DataSource], Never>
 
 	public init(_ innerDataSources: [DataSource] = []) {
 		self.changes = self.changesPassthroughSubject.eraseToAnyPublisher()
-		self.innerDataSources = innerDataSources
-		self.cancellable = self._innerDataSources.projectedValue
-			.flatMap(Self.changesOfInnerDataSources)
-			.subscribe(self.changesPassthroughSubject)
+		self.innerDataSources = CurrentValueSubject(innerDataSources)
+		self.cancellable = self.innerDataSources
+			.map(Self.changesOfInnerDataSources)
+			.switchToLatest()
+			.sink { self.changesPassthroughSubject.send($0) }
 	}
 
 	deinit {
@@ -37,31 +38,31 @@ public final class MutableCompositeDataSource: DataSource {
 	}
 
 	public var numberOfSections: Int {
-		return self.innerDataSources.reduce(into: 0) { subtotal, dataSource in
+		return self.innerDataSources.value.reduce(into: 0) { subtotal, dataSource in
 			subtotal += dataSource.numberOfSections
 		}
 	}
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		let (index, innerSection) = mapInside(self.innerDataSources, section)
-		return self.innerDataSources[index].numberOfItemsInSection(innerSection)
+		let (index, innerSection) = mapInside(self.innerDataSources.value, section)
+		return self.innerDataSources.value[index].numberOfItemsInSection(innerSection)
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		let (index, innerSection) = mapInside(self.innerDataSources, section)
-		return self.innerDataSources[index].supplementaryItemOfKind(kind, inSection: innerSection)
+		let (index, innerSection) = mapInside(self.innerDataSources.value, section)
+		return self.innerDataSources.value[index].supplementaryItemOfKind(kind, inSection: innerSection)
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		let (index, innerSection) = mapInside(self.innerDataSources, indexPath.section)
+		let (index, innerSection) = mapInside(self.innerDataSources.value, indexPath.section)
 		let innerPath = indexPath.ds_setSection(innerSection)
-		return self.innerDataSources[index].item(at: innerPath)
+		return self.innerDataSources.value[index].item(at: innerPath)
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
-		let (index, innerSection) = mapInside(self.innerDataSources, indexPath.section)
+		let (index, innerSection) = mapInside(self.innerDataSources.value, indexPath.section)
 		let innerPath = indexPath.ds_setSection(innerSection)
-		return self.innerDataSources[index].leafDataSource(at: innerPath)
+		return self.innerDataSources.value[index].leafDataSource(at: innerPath)
 	}
 
 	/// Inserts a given inner dataSource at a given index
@@ -73,7 +74,7 @@ public final class MutableCompositeDataSource: DataSource {
 	/// Inserts an array of dataSources at a given index
 	/// and emits `DataChangeInsertSections` for their sections.
 	public func insert(_ dataSources: [DataSource], at index: Int) {
-		self.innerDataSources.insert(contentsOf: dataSources, at: index)
+		self.innerDataSources.value.insert(contentsOf: dataSources, at: index)
 		let sections = dataSources.enumerated().flatMap { self.sections(of: $1, at: index + $0) }
 		if !sections.isEmpty {
 			let change = DataChangeInsertSections(sections)
@@ -91,7 +92,7 @@ public final class MutableCompositeDataSource: DataSource {
 	/// and emits `DataChangeDeleteSections` for its corresponding sections.
 	public func delete(in range: Range<Int>) {
 		let sections = range.flatMap(self.sectionsOfDataSource)
-		self.innerDataSources.removeSubrange(range)
+		self.innerDataSources.value.removeSubrange(range)
 		if !sections.isEmpty {
 			let change = DataChangeDeleteSections(sections)
 			self.changesPassthroughSubject.send(change)
@@ -111,7 +112,7 @@ public final class MutableCompositeDataSource: DataSource {
 		if !newSections.isEmpty {
 			batch.append(DataChangeInsertSections(newSections))
 		}
-		self.innerDataSources[index] = dataSource
+		self.innerDataSources.value[index] = dataSource
 		if !batch.isEmpty {
 			let change = DataChangeBatch(batch)
 			self.changesPassthroughSubject.send(change)
@@ -121,10 +122,10 @@ public final class MutableCompositeDataSource: DataSource {
 	/// Moves an inner dataSource at a given index to another index
 	/// and emits a batch of `DataChangeMoveSection` for its sections.
 	public func moveData(at oldIndex: Int, to newIndex: Int) {
-		let oldLocation = mapOutside(self.innerDataSources, oldIndex)(0)
-		let dataSource = self.innerDataSources.remove(at: oldIndex)
-		self.innerDataSources.insert(dataSource, at: newIndex)
-		let newLocation = mapOutside(self.innerDataSources, newIndex)(0)
+		let oldLocation = mapOutside(self.innerDataSources.value, oldIndex)(0)
+		let dataSource = self.innerDataSources.value.remove(at: oldIndex)
+		self.innerDataSources.value.insert(dataSource, at: newIndex)
+		let newLocation = mapOutside(self.innerDataSources.value, newIndex)(0)
 		let numberOfSections = dataSource.numberOfSections
 		let batch: [DataChange] = (0 ..< numberOfSections).map {
 			DataChangeMoveSection(from: oldLocation + $0, to: newLocation + $0)
@@ -136,13 +137,13 @@ public final class MutableCompositeDataSource: DataSource {
 	}
 
 	private func sections(of dataSource: DataSource, at index: Int) -> [Int] {
-		let location = mapOutside(self.innerDataSources, index)(0)
+		let location = mapOutside(self.innerDataSources.value, index)(0)
 		let length = dataSource.numberOfSections
 		return Array(location..<location + length)
 	}
 
 	private func sectionsOfDataSource(at index: Int) -> [Int] {
-		let dataSource = self.innerDataSources[index]
+		let dataSource = self.innerDataSources.value[index]
 		return self.sections(of: dataSource, at: index)
 	}
 

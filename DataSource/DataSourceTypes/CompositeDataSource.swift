@@ -45,6 +45,7 @@ public final class CompositeDataSource: DataSource {
 
 	deinit {
 		self.changesPassthroughSubject.send(completion: .finished)
+		self.cancellables.forEach { $0.cancel() }
 	}
 
 	public var numberOfSections: Int {

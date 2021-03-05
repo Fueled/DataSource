@@ -33,7 +33,7 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 	///
 	/// Every modification of the array causes calculation
 	/// and emission of appropriate dataChanges.
-	@Published public var sections: [DataSourceSection<T>]
+	public var sections: CurrentValueSubject<[DataSourceSection<T>], Never>
 
 	/// Function that is used to compare a pair of sections for identity.
 	/// Returns `true` if the sections are identical, in which case the items
@@ -49,7 +49,7 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 
 	public let changes: AnyPublisher<DataChange, Never>
 	private let changesPassthroughSubject = PassthroughSubject<DataChange, Never>()
-	private let cancellable: AnyCancellable
+	private var cancellable: AnyCancellable!
 
 	/// Creates an autoDiffSectionsDataSource.
 	/// - parameters:
@@ -66,7 +66,7 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 		compareItems: @escaping (T, T) -> Bool)
 	{
 		self.changes = self.changesPassthroughSubject.eraseToAnyPublisher()
-		self.sections = sections
+		self.sections = CurrentValueSubject(sections)
 		self.compareSections = compareSections
 		self.compareItems = compareItems
 		func autoDiff(_ oldSections: [DataSourceSection<T>], newSections: [DataSourceSection<T>]) -> DataChange
@@ -89,10 +89,11 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 			}
 			return DataChangeBatch(changes)
 		}
-		self.cancellable = self._sections.projectedValue
-			.combinePrevious()
+		self.cancellable = self.sections
+			.combinePrevious(sections)
+			.dropFirst()
 			.map(autoDiff)
-			.subscribe(self.changesPassthroughSubject)
+			.sink { self.changesPassthroughSubject.send($0) }
 	}
 
 	deinit {
@@ -100,19 +101,19 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 	}
 
 	public var numberOfSections: Int {
-		return self.sections.count
+		return self.sections.value.count
 	}
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		return self.sections[section].items.count
+		return self.sections.value[section].items.count
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		return self.sections[section].supplementaryItems[kind]
+		return self.sections.value[section].supplementaryItems[kind]
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		return self.sections[indexPath.section].items[indexPath.item]
+		return self.sections.value[indexPath.section].items[indexPath.item]
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {

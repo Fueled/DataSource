@@ -60,7 +60,7 @@ class TableViewDataSourceWithHeaderFooterViewsTests: QuickSpecWithDataSets {
 			)
 			self.cancellable = dataSource
 				.map { $0 as DataSource }
-				.assign(to: \.dataSource.innerDataSource, on: self.tableViewDataSource)
+				.subscribe(self.tableViewDataSource.dataSource.innerDataSource)
 		}
 
 		itBehavesLike("TableViewDataSource object") {

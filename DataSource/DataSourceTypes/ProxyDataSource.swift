@@ -19,7 +19,7 @@ import Foundation
 /// ProxyDataSource listens to dataChanges of its inner dataSource
 /// and emits them as its own changes.
 public final class ProxyDataSource: DataSource {
-	@Published public var innerDataSource: DataSource
+	public var innerDataSource: CurrentValueSubject<DataSource, Never>
 
 	/// When `true`, switching innerDataSource produces
 	/// a dataChange consisting of deletions of all the
@@ -37,18 +37,17 @@ public final class ProxyDataSource: DataSource {
 
 	public init(_ innerDataSource: DataSource = EmptyDataSource(), animateChanges: Bool = true) {
 		self.changes = self.changesPassthroughSubject.eraseToAnyPublisher()
-		self.innerDataSource = innerDataSource
+		self.innerDataSource = CurrentValueSubject(innerDataSource)
 		self.animatesChanges = animateChanges
 		self.lastCancellable = innerDataSource.changes.subscribe(self.changesPassthroughSubject)
-		self.$innerDataSource
-			.combinePrevious()
-			.receive(on: DispatchQueue.main)
-			.filter { $0 !== $1 }
+		self.innerDataSource
+			.combinePrevious(innerDataSource)
+			.dropFirst()
 			.sink { [weak self] old, new in
 				guard let self = self else {
 					return
 				}
-				self.lastCancellable = nil
+				self.lastCancellable?.cancel()
 				self.changesPassthroughSubject.send(self.changeDataSources(old, new))
 				self.lastCancellable = new.changes.subscribe(self.changesPassthroughSubject)
 			}
@@ -57,26 +56,28 @@ public final class ProxyDataSource: DataSource {
 
 	deinit {
 		self.changesPassthroughSubject.send(completion: .finished)
+		self.cancellables.forEach { $0.cancel() }
+		self.lastCancellable?.cancel()
 	}
 
 	public var numberOfSections: Int {
-		self.innerDataSource.numberOfSections
+		self.innerDataSource.value.numberOfSections
 	}
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		self.innerDataSource.numberOfItemsInSection(section)
+		self.innerDataSource.value.numberOfItemsInSection(section)
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
-		self.innerDataSource.supplementaryItemOfKind(kind, inSection: section)
+		self.innerDataSource.value.supplementaryItemOfKind(kind, inSection: section)
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		self.innerDataSource.item(at: indexPath)
+		self.innerDataSource.value.item(at: indexPath)
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {
-		self.innerDataSource.leafDataSource(at: indexPath)
+		self.innerDataSource.value.leafDataSource(at: indexPath)
 	}
 
 	private func changeDataSources(_ old: DataSource, _ new: DataSource) -> DataChange {

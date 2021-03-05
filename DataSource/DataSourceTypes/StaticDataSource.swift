@@ -21,7 +21,7 @@ public final class StaticDataSource<T>: DataSource {
 	public let sections: [DataSourceSection<T>]
 
 	public init(sections: [DataSourceSection<T>]) {
-		self.changes = Empty().eraseToAnyPublisher()
+		self.changes = Empty(completeImmediately: false).eraseToAnyPublisher()
 		self.sections = sections
 	}
 

@@ -33,14 +33,14 @@ public final class MappedDataSource: DataSource {
 	public let changes: AnyPublisher<DataChange, Never>
 	private let changesPassthroughSubject = PassthroughSubject<DataChange, Never>()
 
-	private let cancellable: AnyCancellable
+	private var cancellable: AnyCancellable!
 
 	public init(_ inner: DataSource, supplementaryTransform: @escaping ((String, Any?) -> Any?) = { $1 }, transform: @escaping (Any) -> Any) {
 		self.changes = self.changesPassthroughSubject.eraseToAnyPublisher()
 		self.innerDataSource = inner
 		self.transform = transform
 		self.supplementaryTransform = supplementaryTransform
-		self.cancellable = inner.changes.subscribe(self.changesPassthroughSubject)
+		self.cancellable = inner.changes.sink { self.changesPassthroughSubject.send($0) }
 	}
 
 	deinit {

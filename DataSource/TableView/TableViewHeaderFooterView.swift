@@ -17,9 +17,9 @@ import UIKit
 ///   Instead you can implement `DataSourceItemReceiver`
 ///   protocol directly in any `UITableViewHeaderFooterView` subclass.
 open class TableViewHeaderFooterView: UITableViewHeaderFooterView, DataSourceItemReceiver {
-	@Published public final var viewModel: Any?
+	public final var viewModel = CurrentValueSubject<Any?, Never>(nil)
 
 	open func ds_setItem(_ item: Any) {
-		self.viewModel = item
+		self.viewModel.value = item
 	}
 }

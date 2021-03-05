@@ -17,9 +17,9 @@ import UIKit
 ///   Instead you can implement `DataSourceItemReceiver`
 ///   protocol directly in any `UICollectionViewCell` subclass.
 open class CollectionViewCell: UICollectionViewCell, DataSourceItemReceiver {
-	@Published public final var cellModel: Any?
+	public final var cellModel = CurrentValueSubject<Any?, Never>(nil)
 
 	@nonobjc open func ds_setItem(_ item: Any) {
-		self.cellModel = item
+		self.cellModel.value = item
 	}
 }

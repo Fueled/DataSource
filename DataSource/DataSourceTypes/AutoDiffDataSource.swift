@@ -20,7 +20,7 @@ public final class AutoDiffDataSource<T>: DataSource {
 	///
 	/// Every modification of the array causes calculation
 	/// and emission of appropriate dataChanges.
-	@Published public var items: [T]
+	public var items: CurrentValueSubject<[T], Never>
 
 	public let supplementaryItems: [String: Any]
 
@@ -32,7 +32,7 @@ public final class AutoDiffDataSource<T>: DataSource {
 	public let changes: AnyPublisher<DataChange, Never>
 	private let changesPassthroughSubject = PassthroughSubject<DataChange, Never>()
 
-	private let cancellable: AnyCancellable
+	private var cancellable: AnyCancellable!
 
 	/// Creates an autoDiffDataSource.
 	/// - parameters:
@@ -48,27 +48,29 @@ public final class AutoDiffDataSource<T>: DataSource {
 		compare: @escaping (T, T) -> Bool)
 	{
 		self.changes = self.changesPassthroughSubject.eraseToAnyPublisher()
-		self.items = items
+		self.items = CurrentValueSubject(items)
 		self.supplementaryItems = supplementaryItems
 		self.compare = compare
 		func autoDiff(_ old: [T], new: [T]) -> DataChange {
 			let result = AutoDiff.compare(old: old, new: new, findMoves: findMoves, compare: compare)
 			return DataChangeBatch(result.toItemChanges())
 		}
-		self.cancellable = self._items.projectedValue
-			.combinePrevious()
+		self.cancellable = self.items
+			.combinePrevious(items)
+			.dropFirst()
 			.map(autoDiff)
-			.subscribe(self.changesPassthroughSubject)
+			.sink { self.changesPassthroughSubject.send($0) }
 	}
 
 	deinit {
 		self.changesPassthroughSubject.send(completion: .finished)
+		self.cancellable?.cancel()
 	}
 
 	public let numberOfSections = 1
 
 	public func numberOfItemsInSection(_ section: Int) -> Int {
-		return self.items.count
+		return self.items.value.count
 	}
 
 	public func supplementaryItemOfKind(_ kind: String, inSection section: Int) -> Any? {
@@ -76,7 +78,7 @@ public final class AutoDiffDataSource<T>: DataSource {
 	}
 
 	public func item(at indexPath: IndexPath) -> Any {
-		return self.items[indexPath.item]
+		return self.items.value[indexPath.item]
 	}
 
 	public func leafDataSource(at indexPath: IndexPath) -> (DataSource, IndexPath) {

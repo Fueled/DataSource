@@ -20,7 +20,7 @@ extension Publisher {
 	private func combinePreviousImplementation(_ initial: Output?) -> AnyPublisher<(previous: Output, current: Output), Failure> {
 		var previousValue = initial
 		return self
-			.flatMap { output -> AnyPublisher<(previous: Output, current: Output), Failure> in
+			.map { output -> AnyPublisher<(previous: Output, current: Output), Failure> in
 				defer {
 					previousValue = output
 				}
@@ -32,6 +32,7 @@ extension Publisher {
 					return Empty(completeImmediately: false).eraseToAnyPublisher()
 				}
 			}
+			.switchToLatest()
 			.eraseToAnyPublisher()
 	}
 }

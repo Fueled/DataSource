@@ -6,12 +6,14 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
+import Combine
 import DataSource
 import Nimble
 import Quick
-import ReactiveSwift
 
 class ProxyDataSourceTests: QuickSpecWithDataSets {
+	private var cancellable: AnyCancellable?
+
 	override func spec() {
 		var dataSource: ProxyDataSource!
 		var staticDataSource: StaticDataSource<Int>!
@@ -29,7 +31,7 @@ class ProxyDataSourceTests: QuickSpecWithDataSets {
 				let dataSourceSections = [dataSourceSection, dataSourceSection2]
 				staticDataSource = StaticDataSource(sections: dataSourceSections)
 				dataSource.animatesChanges = false
-				dataSource.innerDataSource = staticDataSource
+				dataSource.innerDataSource.value = staticDataSource
 			}
 			itBehavesLike("DataSource protocol") {
 				["DataSource": dataSource!,
@@ -38,8 +40,8 @@ class ProxyDataSourceTests: QuickSpecWithDataSets {
 				 "SupplementaryItems": [self.supplementaryItemOfKind, self.supplementaryItemOfKind2], ]
 			}
 			it("should generate corresponding dataChanges") {
-				let lastChange = MutableProperty<DataChange?>(nil)
-				lastChange <~ dataSource.changes
+				let lastChange = CurrentValueSubject<DataChange?, Never>(nil)
+				self.cancellable = dataSource.changes.map { Optional($0) }.subscribe(lastChange)
 				expect(lastChange.value).to(beNil())
 				dataSource.innerDataSource.value = StaticDataSource(items: [1, 2, 3])
 				expect(lastChange.value).notTo(beNil())

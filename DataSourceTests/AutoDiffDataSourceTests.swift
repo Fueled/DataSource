@@ -6,12 +6,14 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
+import Combine
 import DataSource
 import Nimble
 import Quick
-import ReactiveSwift
 
 class AutoDiffDataSourceTests: QuickSpecWithDataSets {
+	private var cancellable: AnyCancellable?
+
 	override func spec() {
 		var dataSource: AutoDiffDataSource<Int>!
 		beforeEach {
@@ -20,12 +22,12 @@ class AutoDiffDataSourceTests: QuickSpecWithDataSets {
 		itBehavesLike("DataSource protocol") { ["DataSource": dataSource!, "InitialData": [self.testDataSet], "SupplementaryItems": [self.supplementaryItemOfKind2]] }
 		context("when changing dataSource items") {
 			beforeEach {
-				dataSource.items = self.testDataSet3
+				dataSource.items.value = self.testDataSet3
 			}
 			itBehavesLike("DataSource protocol") { ["DataSource": dataSource!, "InitialData": [self.testDataSet3], "SupplementaryItems": [self.supplementaryItemOfKind2]] }
 			it("should generate corresponding dataChanges") {
-				let lastChange = MutableProperty<DataChange?>(nil)
-				lastChange <~ dataSource.changes
+				let lastChange = CurrentValueSubject<DataChange?, Never>(nil)
+				self.cancellable = dataSource.changes.map { Optional($0) }.subscribe(lastChange)
 				expect(lastChange.value).to(beNil())
 				dataSource.items.value = Array(51...55)
 				expect(lastChange.value).notTo(beNil())

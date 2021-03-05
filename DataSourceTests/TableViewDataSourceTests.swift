@@ -28,12 +28,12 @@ class TableViewDataSourceTests: QuickSpecWithDataSets {
 				)
 			)
 			self.tableViewDataSource = TableViewDataSource()
-			tableView = UITableView(frame: CGRect.zero)
+			tableView = UITableView(frame: .zero)
 			let tableViewDescriptors = [CellDescriptor(TestTableViewCell.reuseIdentifier, TestCellModel.self, .class(TestTableViewCell.self))]
 			self.tableViewDataSource.configure(tableView, using: tableViewDescriptors)
 			self.cancellable = dataSource
 				.map { $0 as DataSource }
-				.assign(to: \.dataSource.innerDataSource, on: self.tableViewDataSource)
+				.subscribe(self.tableViewDataSource.dataSource.innerDataSource)
 		}
 		itBehavesLike("TableViewDataSource object") {
 			[

@@ -17,9 +17,9 @@ import UIKit
 ///   Instead you can implement `DataSourceItemReceiver`
 ///   protocol directly in any `UITableViewCell` subclass.
 open class TableViewCell: UITableViewCell, DataSourceItemReceiver {
-	@Published public final var cellModel: Any?
+	public final var cellModel = CurrentValueSubject<Any?, Never>(nil)
 
 	open func ds_setItem(_ item: Any) {
-		self.cellModel = item
+		self.cellModel.value = item
 	}
 }
