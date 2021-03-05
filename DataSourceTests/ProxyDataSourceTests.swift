@@ -9,6 +9,7 @@
 import DataSource
 import Nimble
 import Quick
+import ReactiveSwift
 
 class ProxyDataSourceTests: QuickSpecWithDataSets {
 	override func spec() {
@@ -35,6 +36,14 @@ class ProxyDataSourceTests: QuickSpecWithDataSets {
 				 "InitialData": [self.testDataSet2, self.testDataSet],
 				 "LeafDataSource": [staticDataSource],
 				 "SupplementaryItems": [self.supplementaryItemOfKind, self.supplementaryItemOfKind2], ]
+			}
+			it("should generate corresponding dataChanges") {
+				let lastChange = MutableProperty<DataChange?>(nil)
+				lastChange <~ dataSource.changes
+				expect(lastChange.value).to(beNil())
+				dataSource.innerDataSource.value = StaticDataSource(items: [1, 2, 3])
+				expect(lastChange.value).notTo(beNil())
+				expect(lastChange.value).to(beAKindOf(DataChangeReloadData.self))
 			}
 		}
 	}

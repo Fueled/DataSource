@@ -9,6 +9,7 @@
 import DataSource
 import Nimble
 import Quick
+import ReactiveSwift
 
 class AutoDiffSectionsDataSourceTests: QuickSpecWithDataSets {
 	override func spec() {
@@ -38,6 +39,23 @@ class AutoDiffSectionsDataSourceTests: QuickSpecWithDataSets {
 				dataSource.sections.value = dataSourceSections
 			}
 			itBehavesLike("DataSource protocol") { ["DataSource": dataSource!, "InitialData": [self.testDataSet2, self.testDataSet]] }
+			it("should generate corresponding dataChanges") {
+				let lastChange = MutableProperty<DataChange?>(nil)
+				lastChange <~ dataSource.changes
+				expect(lastChange.value).to(beNil())
+				dataSource.sections.value.append(DataSourceSection(items: self.testDataSet3, supplementaryItems: ["sectionId": "3"]))
+				expect(lastChange.value).notTo(beNil())
+				expect(lastChange.value).to(beAKindOf(DataChangeBatch.self))
+				var batches = (lastChange.value as! DataChangeBatch).changes
+				expect(batches.count) == 1
+				expect(batches.first).to(beAKindOf(DataChangeInsertSections.self))
+				dataSource.sections.value[2] = DataSourceSection(items: self.testDataSet3 + [56], supplementaryItems: ["sectionId": "3"])
+				expect(lastChange.value).to(beAKindOf(DataChangeBatch.self))
+				batches = (lastChange.value as! DataChangeBatch).changes
+				expect(batches.count) == 1
+				expect(batches.first).to(beAKindOf(DataChangeInsertItems.self))
+				expect((batches.first as! DataChangeInsertItems).indexPaths.first).to(be(IndexPath(row: 6, section: 2)))
+			}
 		}
 	}
 }
