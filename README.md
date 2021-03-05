@@ -13,7 +13,9 @@ A data source for a `UITableView` or a `UICollectionView` can be constructed by 
 
 ## Installation
 
-The recommended way to add DataSource to your project is with [Carthage](https://github.com/Carthage/Carthage/releases/).
+The recommended way to add DataSource to your project is with CocoaPods. Add `pod 'DataSource', :git => 'https://github.com/Fueled/DataSource.git'` to your Podfile and run `pod install`.
+
+An alternative is to use [Carthage](https://github.com/Carthage/Carthage/releases/).
 Add `github "Fueled/DataSource"` line to your Cartfile and proceed with your favorite way to update and integrate your Carthage dependencies.
 
 ## Example Project
