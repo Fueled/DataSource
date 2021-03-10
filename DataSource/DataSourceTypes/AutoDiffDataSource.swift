@@ -59,7 +59,9 @@ public final class AutoDiffDataSource<T>: DataSource {
 			.combinePrevious(items)
 			.dropFirst()
 			.map(autoDiff)
-			.sink { self.changesPassthroughSubject.send($0) }
+			.sink { [weak self] in
+				self?.changesPassthroughSubject.send($0)
+			}
 	}
 
 	deinit {

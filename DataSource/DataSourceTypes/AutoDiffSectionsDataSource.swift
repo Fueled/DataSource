@@ -93,7 +93,9 @@ public final class AutoDiffSectionsDataSource<T>: DataSource {
 			.combinePrevious(sections)
 			.dropFirst()
 			.map(autoDiff)
-			.sink { self.changesPassthroughSubject.send($0) }
+			.sink { [weak self] in
+				self?.changesPassthroughSubject.send($0)
+			}
 	}
 
 	deinit {

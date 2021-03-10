@@ -40,7 +40,10 @@ public final class MappedDataSource: DataSource {
 		self.innerDataSource = inner
 		self.transform = transform
 		self.supplementaryTransform = supplementaryTransform
-		self.cancellable = inner.changes.sink { self.changesPassthroughSubject.send($0) }
+		self.cancellable = inner.changes
+			.sink { [weak self] in
+				self?.changesPassthroughSubject.send($0)
+			}
 	}
 
 	deinit {

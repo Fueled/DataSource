@@ -30,7 +30,9 @@ public final class MutableCompositeDataSource: DataSource {
 		self.cancellable = self.innerDataSources
 			.map(Self.changesOfInnerDataSources)
 			.switchToLatest()
-			.sink { self.changesPassthroughSubject.send($0) }
+			.sink { [weak self] in
+				self?.changesPassthroughSubject.send($0)
+			}
 	}
 
 	deinit {
