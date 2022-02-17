@@ -7,6 +7,7 @@
 //
 
 import Combine
+#if canImport(UIKit)
 import UIKit
 
 /// `UICollectionReusableView` subclass that implements `DataSourceItemReceiver` protocol
@@ -23,3 +24,4 @@ open class CollectionViewReusableView: UICollectionReusableView, DataSourceItemR
 		self.viewModel.value = item
 	}
 }
+#endif

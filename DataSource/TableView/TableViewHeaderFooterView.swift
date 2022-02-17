@@ -7,6 +7,7 @@
 //
 
 import Combine
+#if canImport(UIKit)
 import UIKit
 
 /// `UITableViewHeaderFooterView` subclass that implements `DataSourceItemReceiver` protocol
@@ -23,3 +24,4 @@ open class TableViewHeaderFooterView: UITableViewHeaderFooterView, DataSourceIte
 		self.viewModel.value = item
 	}
 }
+#endif

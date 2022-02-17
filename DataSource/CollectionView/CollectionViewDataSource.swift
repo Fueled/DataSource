@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+#if canImport(UIKit)
 import UIKit
 
 /// An object that implements `UICollectionViewDataSource` protocol
@@ -104,3 +105,4 @@ open class CollectionViewDataSource: NSObject, UICollectionViewDataSource {
 		return cell
 	}
 }
+#endif
