@@ -6,6 +6,7 @@
 //  Copyright © 2019 Fueled. All rights reserved.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 public class CellDescriptor: NSObject {
@@ -189,3 +190,4 @@ extension ReusableItem where Self: UIView {
 extension ReusableNib where Self: UIView, Self: ReusableItem {
 	public static var nib: UINib { return UINib(nibName: self.reuseIdentifier, bundle: nil) }
 }
+#endif

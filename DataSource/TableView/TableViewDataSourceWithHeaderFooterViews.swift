@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 Fueled. All rights reserved.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 /// A `TableViewDataSource` subclass that additionally provides
@@ -51,3 +52,4 @@ open class TableViewDataSourceWithHeaderFooterViews: TableViewDataSource, UITabl
 		return view
 	}
 }
+#endif

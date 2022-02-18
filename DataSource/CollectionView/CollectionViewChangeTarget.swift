@@ -7,6 +7,7 @@
 //
 
 import Foundation
+#if canImport(UIKit)
 import UIKit
 
 extension UICollectionView: DataChangeTarget {
@@ -50,3 +51,4 @@ extension UICollectionView: DataChangeTarget {
 		self.reloadSections(IndexSet(dsIntegers: sections))
 	}
 }
+#endif

@@ -7,6 +7,7 @@
 //
 
 import Combine
+#if canImport(UIKit)
 import UIKit
 
 /// `UITableViewCell` subclass that implements `DataSourceItemReceiver` protocol
@@ -23,3 +24,4 @@ open class TableViewCell: UITableViewCell, DataSourceItemReceiver {
 		self.cellModel.value = item
 	}
 }
+#endif

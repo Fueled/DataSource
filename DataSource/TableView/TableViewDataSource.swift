@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+#if canImport(UIKit)
 import UIKit
 
 /// An object that implements `UITableViewDataSource` protocol
@@ -91,3 +92,4 @@ open class TableViewDataSource: NSObject, UITableViewDataSource {
 		return cell
 	}
 }
+#endif

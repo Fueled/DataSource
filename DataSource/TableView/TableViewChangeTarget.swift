@@ -7,6 +7,7 @@
 //
 
 import Foundation
+#if canImport(UIKit)
 import UIKit
 
 extension UITableView: DataChangeTarget {
@@ -53,3 +54,4 @@ extension UITableView: DataChangeTarget {
 		self.reloadSections(IndexSet(dsIntegers: sections), with: .fade)
 	}
 }
+#endif
