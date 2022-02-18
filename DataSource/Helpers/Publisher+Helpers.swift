@@ -9,15 +9,15 @@
 import Combine
 
 extension Publisher {
-	public func combinePrevious() -> AnyPublisher<(previous: Output, current: Output), Failure> {
+	func combinePrevious() -> AnyPublisher<(previous: Output, current: Output), Failure> {
 		self.combinePreviousImplementation(nil)
 	}
 
-	public func combinePrevious(_ initial: Output) -> AnyPublisher<(previous: Output, current: Output), Failure> {
+	func combinePrevious(_ initial: Output) -> AnyPublisher<(previous: Output, current: Output), Failure> {
 		self.combinePreviousImplementation(initial)
 	}
 
-	private func combinePreviousImplementation(_ initial: Output?) -> AnyPublisher<(previous: Output, current: Output), Failure> {
+	func combinePreviousImplementation(_ initial: Output?) -> AnyPublisher<(previous: Output, current: Output), Failure> {
 		var previousValue = initial
 		return self
 			.map { output -> AnyPublisher<(previous: Output, current: Output), Failure> in
